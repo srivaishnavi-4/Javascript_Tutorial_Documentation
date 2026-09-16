@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Scope
+        </title>
+    </head>
+    <body>
+        <script>
+            //Global scope
+            const appName = "Shopping App";
+function showAppName() {
+    console.log(appName);
+}
+showAppName();
+console.log(appName);
+//Local scope
+function calculateTotal() {
+    let price = 500;
+    let quantity = 2;
+    let total = price * quantity;
+    console.log(total);
+}
+calculateTotal();
+//block scope
+if (true) {
+    let message = "Login successful";
+    console.log(message);
+}
+// console.log(message); // Error
+//let company = "ABC Ltd";
+//Lexical Scope
+function employee() {
+    let name = "Arun";
+    function display() {
+        console.log(name);
+        console.log(company);
+    }
+    display();
+}
+employee();
+//Closures
+function createCounter() {
+    let count = 0;
+    return function() {
+        count++;
+        return count;
+    };
+}
+let counter = createCounter();
+console.log(counter());
+console.log(counter());
+console.log(counter());
+//variable shadowing
+let name = "Arun";
+function displayName() {
+    let name = "Kumar";
+    console.log(name);
+}
+displayName();
+console.log(name);
+        </script>
+    </body>
+</html>

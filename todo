@@ -1,0 +1,345 @@
+Javascript topics 
+Topic
+Subtopics / Concepts
+
+1-C
+	
+Introduction to JavaScript
+	
+What is JS, History, Setup (Browser & Node.js), Console.log, Comments
+
+
+2-C
+	
+Variables and Data Types
+	
+var, let, const, String, Number, Boolean, null, undefined, BigInt, Symbol
+
+
+3-C
+	
+Operators
+	
+Arithmetic, Assignment, Comparison, Logical, Bitwise, Ternary
+
+
+4-C
+	
+Control Flow
+	
+if, else if, else, switch, conditional (ternary)
+
+
+5-C
+	
+Loops
+	
+for, while, do...while, break, continue, for...in, for...of
+
+
+6-C
+	
+Functions
+	
+Function declarations, expressions, arrow functions, parameters, return, hoisting
+
+
+7-C
+	
+Scope & Closures
+	
+Global vs local scope, lexical scope, closures, variable shadowing
+
+
+8-C
+	
+Arrays
+	
+Creation, indexing, push/pop/shift/unshift, splice, slice, map, filter, reduce
+
+
+9
+	
+Objects
+	
+Properties, methods, nested objects, destructuring, Object.keys/values/entries
+
+
+10
+	
+Strings
+	
+String methods, template literals, concatenation, escaping, length
+
+
+11
+	
+Numbers & Math
+	
+parseInt, parseFloat, toFixed, isNaN, Math methods
+
+
+12
+	
+Dates & Times
+	
+Date object, formatting, timestamps, date methods
+
+
+13
+	
+Error Handling
+	
+try, catch, finally, throw, custom errors
+
+
+14
+	
+Events
+	
+Event listeners, event object, bubbling, delegation
+
+
+15
+	
+DOM Manipulation
+	
+getElementById, querySelector, createElement, innerHTML, classList, attributes
+
+
+16
+	
+BOM (Browser Object Model)
+	
+window, alert, confirm, prompt, location, navigator, screen
+
+
+17
+	
+Timers
+	
+setTimeout, setInterval, clearTimeout, clearInterval
+
+
+18
+	
+ES6+ Features
+	
+let & const, arrow functions, template literals, spread/rest, destructuring, modules
+
+
+19
+	
+Modules
+	
+export/import, default exports, module bundlers (intro to Webpack, Vite)
+
+
+20
+	
+JSON
+	
+Parsing, stringifying, APIs, deep vs shallow copy
+
+
+21
+	
+Storage
+	
+localStorage, sessionStorage, cookies
+
+
+22
+	
+Fetch API & AJAX
+	
+fetch, async requests, Promises, XMLHttpRequest, headers, JSON
+
+
+23
+	
+Promises
+	
+.then, .catch, .finally, chaining, Promise.all/race
+
+
+24
+	
+Async/Await
+	
+async functions, await, error handling, concurrency
+
+
+25
+	
+Classes
+	
+class syntax, constructors, methods, inheritance, super, static
+
+
+26
+	
+Prototypes & Inheritance
+	
+Prototype chain, proto, Object.create, constructor functions
+
+
+27
+	
+this Keyword
+	
+Global, object, function, class context, bind, call, apply
+
+
+28
+	
+Higher-Order Functions
+	
+Callbacks, map, filter, reduce, forEach, function returning functions
+
+
+29
+	
+Functional Programming Concepts
+	
+Pure functions, immutability, composition, currying
+
+
+30
+	
+Regular Expressions (RegEx)
+	
+Syntax, flags, test, match, replace, exec
+
+
+31
+	
+Error Handling (Advanced)
+	
+Custom errors, error propagation, stack traces
+
+
+32
+	
+Event Loop & Concurrency
+	
+Call stack, Web APIs, task queue, microtasks, rendering
+
+
+33
+	
+Memory Management
+	
+Garbage collection, memory leaks, references
+
+
+34
+	
+Web APIs
+	
+DOM API, Canvas, Geolocation, Web Storage, Notifications
+
+
+35
+	
+Debugging
+	
+console methods, breakpoints, dev tools, watch expressions
+
+
+36
+	
+Performance Optimization
+	
+Debounce, throttle, lazy loading, async loading, Web Workers
+
+
+37
+	
+Unit Testing
+	
+Jest, Mocha, Chai, writing test cases, mocking
+
+
+38
+	
+Security
+	
+XSS, CSRF, input sanitization, content security policy (CSP)
+
+
+39
+	
+Tooling
+	
+npm, yarn, linters (ESLint), formatters (Prettier), bundlers
+
+
+40
+	
+JavaScript in the Browser
+	
+DOM, Events, Rendering, Storage, History API, Media API
+
+
+41
+	
+JavaScript in Node.js
+	
+Modules, filesystem, HTTP, npm packages, process object
+
+
+42
+	
+WebSockets
+	
+Realtime communication, socket.io basics
+
+
+43
+	
+Service Workers & PWA
+	
+Offline caching, background sync, installable apps
+
+
+44
+	
+TypeScript Basics (optional)
+	
+Types, interfaces, type inference, decorators, generics
+
+
+45
+	
+Design Patterns
+	
+Singleton, Factory, Observer, Module, MVC, Strategy
+
+
+46
+	
+Code Organization
+	
+MVC, MVVM, folder structure, clean code practices
+
+
+47
+	
+Data Structures
+	
+Stack, Queue, LinkedList, Set, Map, Graph, Tree (in JS context)
+
+
+48
+	
+Algorithms
+	
+Sorting, searching, recursion, dynamic programming basics
+
+
+49
+	
+Project Building
+	
+Todo app, calculator, weather app, chat app, CRUD apps

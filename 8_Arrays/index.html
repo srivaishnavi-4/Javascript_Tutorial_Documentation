@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Arrays</title>
+    </head>
+    <body>
+        <script>
+            //Array declaration
+            let fruits = ["Apple", "Banana", "Mango", "Orange"];
+            console.log(fruits);
+            //Array indexing
+            let products = ["Laptop", "Mobile", "Tablet"];
+            console.log(products[0]);
+            console.log(products[1]);
+            console.log(products[2]);
+            //push
+            let cart = ["Laptop", "Mobile"];
+            cart.push("Headphones");
+            console.log(cart);
+            //pop
+            cart.pop();
+            console.log(cart);
+            //shift
+            let orders = ["Order101", "Order102", "Order103"];
+            let firstOrder = orders.shift();
+            console.log(firstOrder);
+            console.log(orders);
+            //unshift
+            let notifications = ["Message", "Friend Request"];
+            notifications.unshift("New Notification");
+            console.log(notifications);
+            //splice remove
+            let cart1 = ["Laptop", "Mobile", "Tablet"];
+            cart1.splice(1, 1);
+            console.log(cart1);
+            //splice add
+            let products1 = ["Laptop", "Tablet"];
+            products.splice(1, 0, "Mobile");
+            console.log(products1);
+            //slice
+            let product = [
+                "Laptop",
+                "Mobile",
+                "Tablet",
+                "Watch",
+                "Headphones"
+            ];
+            let featuredProducts = product.slice(0, 3);
+            console.log(featuredProducts);
+            //map
+            let prices = [100, 200, 300];
+            let pricesWithGST = prices.map(price => price * 1.18);
+            console.log(pricesWithGST);
+            //filter
+            let price = [500, 1200, 800, 2000, 300];
+            let affordable = price.filter(prices => prices <= 1000);
+            console.log(affordable);
+            //reduce
+            let pric = [500, 1000, 1500];
+            let total = pric.reduce((sum, price) => {
+                return sum + price;
+            }, 0);
+            console.log(total);
+          </script>
+    </body>
+</html>

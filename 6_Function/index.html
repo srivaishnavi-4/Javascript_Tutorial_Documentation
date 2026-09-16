@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Functions
+        </title>
+    </head>
+    <body>
+        <script>
+            //function declaration
+            function calculateTotal(price, quantity) {
+                return price * quantity;
+            }
+            let total = calculateTotal(500, 3);
+            console.log(total);
+
+            //function expression
+            const calculateDiscount = function(price, discount) {
+                return price - (price * discount / 100);
+            };
+            console.log(calculateDiscount(1000, 10));
+
+            //arrow function (renamed function to avoid identifier crash)
+            const calculateTotalArrow = (price, quantity) => {
+                return price * quantity;
+            };
+            console.log(calculateTotalArrow(500, 3));
+
+            //simpler arrow functions
+            const square = n => n * n;
+            console.log(square(5));
+
+            //function parameters
+            function greetUser(name) {
+                console.log("Welcome " + name);
+            }
+            greetUser("Arun");
+
+            //return statement
+            function validateLogin(username, password) {
+                if (username === "admin" && password === "1234") {
+                    return true;
+                }
+                return false;
+            }
+            let isValid = validateLogin("admin", "1234");
+            console.log(isValid);
+
+            //function Hoisting (renamed function to prevent duplicate identifier error)
+            calculateTotalHoisted();
+            function calculateTotalHoisted() {
+                console.log("Calculating total...");
+            }
+
+            //sample code
+            // Function declaration (renamed to avoid duplicate function name)
+            function calculateTotalBill(price, quantity) {
+                return price * quantity;
+            }
+
+            // Function expression (fixed parameter name to match 'tot')
+            const applyDiscount = function(tot, discount) {
+                return tot - (tot * discount / 100);
+            };
+
+            // Arrow function
+            const displayBill = tot => {
+                console.log("Final Amount: ₹" + tot);
+            };
+
+            // Parameters and return
+            let tot = calculateTotalBill(500, 3);
+            let finalAmount = applyDiscount(tot, 10);
+            displayBill(finalAmount);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Variables and Data types</title>
+    </head>
+    <body style="font-size:30px;">
+    <script>
+        //Number
+        let x=10.5;
+        document.write(x+"<br>");
+        console.log(typeof x);
+        //String
+        let z="Hello";
+        document.write(z+"<br>");
+        console.log(typeof z);
+        const name='Sri Vaish';
+        document.write(name+"<br>");
+        console.log(typeof "Sri");
+        //Concatenation
+        let y=5+"5";
+        document.write(y);
+        // BigInt
+        let x1 = 1234567890123456789012345n;
+        let y1 = BigInt(1234567890123456789012345)
+        document.write(x1+"<br>");
+        // Boolean
+        let x2 = true;
+        let y2 = false;
+        console.log(x2);
+        // Object
+        const person = {firstName:"John", lastName:"Doe"};
+        document.write(person.lastName+"<br>");
+        // Array object
+        const cars = ["Saab", "Volvo", "BMW"];
+        document.write(cars[2]+"<br>");
+        // Date object
+        const date = new Date("2022-03-25");
+        console.log(date);
+        // Undefined
+        let x3;
+        let y3;
+        document.write(x3+"<br>");
+        // Null
+        let x4 = null;
+        let y4 = null;
+        document.write(y4+"<br>");
+        // Symbol
+        const x5 = Symbol("apple");
+        const y5 = Symbol("apple");
+        console.log(y5);
+        console.log(x5==y5);
+        //exponential
+        let ex=1234e-5;
+        document.write(ex+"<br>");
+    </script>   
+    
+    </body>
+</html>

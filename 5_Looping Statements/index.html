@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Looping Statements
+        </title>
+
+    </head>
+    <body>
+        <script>
+            //for loop
+            for(let i=1;i<=5;i++){
+                console.log("Student"+i);
+            }
+            //while loop
+            let attempts=1
+            while(attempts<=3){
+                console.log("Login attempt: "+attempts);
+                attempts++;
+            }
+            //d0 while loop
+            let choice=1;
+            do{
+                console.log("1.View Profile");
+                console.log("2.Logout");
+                choice++;
+            }while(choice<=2);
+            //break(Loop Control)
+            let products=["Laptop","Phone","Tablet","Watch"];
+            for(let product of products){
+                if(product==="Tablet"){
+                    console.log("Product found");
+                    break;
+                }
+            }
+            //continue
+            let product=[
+                {name:"Laptop", available:true},
+                {name:"Phone",available:false},
+                {name:"Tablet",available:true}
+        ];
+        for(let prod of product){
+            if(!prod.available){
+                continue;
+            }
+            console.log(prod.name);
+        }
+        //for in
+        let user = {
+    name: "Arun",
+    age: 21,
+    city: "Chennai"
+};
+
+for (let key in user) {
+    console.log(key + ": " + user[key]);
+}
+//another for  in ex
+let fruits=["Apple","Banana","Mango"];
+for(let ind in fruits){
+    console.log(ind);
+}
+            //same by using for of for
+            for(let fruit of fruits){
+                console.log(fruit);
+            }
+            //for of
+for (let product of products) {
+    console.log(product);
+}
+
+        </script>
+    </body>
+</html>
