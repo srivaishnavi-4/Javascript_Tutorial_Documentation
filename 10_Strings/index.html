@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Strings</title>
+</head>
+<body>
+
+<script>
+
+    // String Creation
+    let name1 = "Vaish";
+    let name2 = 'Vaish';
+    let name3 = `Vaish`;
+
+    console.log(name1);
+    console.log(name2);
+    console.log(name3);
+
+
+    // String Length
+    let password = "hello123";
+
+    console.log(password.length);
+
+    if (password.length >= 8) {
+        console.log("Password length is valid");
+    }
+
+
+    // String Concatenation
+    let product = "Laptop";
+    let price = 50000;
+
+    let message = "Product: " + product + ", Price: ₹" + price;
+
+    console.log(message);
+
+
+    // Template Literals
+    let product1 = "Laptop";
+    let price1 = 50000;
+    let quantity = 2;
+
+    let bill = `
+Product: ${product1}
+Price: ₹${price1}
+Quantity: ${quantity}
+Total: ₹${price1 * quantity}
+`;
+
+    console.log(bill);
+
+
+    // Expressions inside Template Literals
+    let price2 = 1000;
+    let discount = 10;
+
+    console.log(
+        `Final price: ₹${price2 - (price2 * discount / 100)}`
+    );
+
+
+    // Escaping Characters
+    let message1 = "He said \"Hello\"";
+
+    console.log(message1);
+
+
+    // New Line
+    let message2 = "Hello\nWelcome to JavaScript";
+
+    console.log(message2);
+
+
+    // Tab
+    console.log("Name:\tVaish");
+
+
+    // toUpperCase()
+    let name = "vaish";
+
+    console.log(name.toUpperCase());
+
+
+    // toUpperCase() - search
+    let search = "laptop";
+
+    if (search.toUpperCase() === "LAPTOP") {
+        console.log("Product found");
+    }
+
+
+    // toLowerCase()
+    let email = "VAISH@GMAIL.COM";
+
+    console.log(email.toLowerCase());
+
+
+    // trim()
+    let username = "   Vaish   ";
+
+    username = username.trim();
+
+    console.log(username);
+
+    if (username !== "") {
+        console.log("Valid username");
+    }
+
+
+    // includes()
+    let email1 = "vaish@gmail.com";
+
+    console.log(email1.includes("@"));
+
+
+    // includes() - product search
+    let product2 = "Apple MacBook";
+
+    console.log(product2.includes("MacBook"));
+
+
+    // startsWith()
+    let url = "https://example.com";
+
+    console.log(url.startsWith("https"));
+
+
+    // endsWith()
+    let file = "profile.jpg";
+
+    console.log(file.endsWith(".jpg"));
+
+
+    // endsWith() - file validation
+    let fileName = "photo.png";
+
+    if (
+        fileName.endsWith(".png") ||
+        fileName.endsWith(".jpg")
+    ) {
+        console.log("Valid image file");
+    }
+
+
+    // charAt()
+    let name4 = "Vaish";
+
+    console.log(name4.charAt(0));
+
+
+    // String indexing
+    console.log(name4[0]);
+
+
+    // indexOf()
+    let email2 = "vaish@gmail.com";
+
+    console.log(email2.indexOf("@"));
+
+    console.log(email2.indexOf("#"));
+
+
+    // slice()
+    let text = "JavaScript";
+
+    let result = text.slice(0, 4);
+
+    console.log(result);
+
+
+    // substring()
+    let text1 = "JavaScript";
+
+    console.log(text1.substring(0, 4));
+
+
+    // replace()
+    let message3 = "Hello Sri";
+
+    let result1 = message3.replace("Sri", "Vaish");
+
+    console.log(result1);
+
+
+    // replaceAll()
+    let message4 =
+        "JavaScript is powerful. JavaScript is popular.";
+
+    let result2 =
+        message4.replaceAll("JavaScript", "JS");
+
+    console.log(result2);
+
+
+    // split()
+    let fruits = "Apple,Banana,Mango";
+
+    let result3 = fruits.split(",");
+
+    console.log(result3);
+
+
+    // concat()
+    let firstName = "Sri";
+    let lastName = "Vaishnavi";
+
+    let fullName = firstName.concat(" ", lastName);
+
+    console.log(fullName);
+
+</script>
+
+</body>
+</html>

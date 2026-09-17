@@ -1461,6 +1461,2754 @@ map       → Transform ALL
 filter    → Select SOME
 reduce    → Combine into ONE
 ```
+## 9_Objects
+In JavaScript, an object is a dynamic, non-primitive data structure used to store collections of related data and complex entities as key-value pairs. Unlike primitive data types (like strings or numbers) which hold a single value, an object acts like a container for multiple values
+The keys in an object are called properties (which are strings or symbols), and when a property's value is a function, it is called a method
+A **JavaScript object** is a collection of **key-value pairs** used to represent a real-world entity or a structured piece of data.
+
+* **Key** → property name
+* **Value** → data stored in that property
+
+For example, a student has a name, age, department, and marks. Instead of storing these separately, we can group them inside one object.
+```javascript
+let student = {
+    name: "Vaishu",
+    age: 21,
+    department: "CSE",
+    marks: 85
+};
+console.log(student.name);
+console.log(student.age);
+```
+**Output:**
+```text
+Vaishu
+21
+```
+### Why do we use objects?
+Objects are useful when multiple pieces of information belong to the **same entity**.
+### Realtime use cases
+Objects are heavily used in:
+* User profiles
+* Product information
+* Employee records
+* API responses
+* Shopping carts
+* Database records
+* Configuration settings
+* Form data
+* JSON data
+# 1. Object Properties
+### Explanation
+A **property** is a piece of information stored inside an object.
+In this object:
+```javascript
+let user = {
+    name: "Sri",
+    age: 25,
+    city: "Chennai"
+};
+```
+The properties are:
+```text
+name → "Sri"
+age  → 25
+city → "Chennai"
+```
+The property name is called the **key**, and the value stored against it is called the **value**.
+### Syntax
+```javascript
+let objectName = {
+    property1: value1,
+    property2: value2
+};
+```
+### Accessing properties
+There are two main ways.
+#### 1. Dot notation
+```javascript
+console.log(user.name);
+console.log(user.age);
+```
+#### 2. Bracket notation
+```javascript
+console.log(user["name"]);
+console.log(user["age"]);
+```
+Both produce the same result.
+### When is bracket notation useful?
+It is particularly useful when the property name is stored in a variable.
+```javascript
+let user = {
+    name: "Arun",
+    age: 25
+};
+let property = "name";
+console.log(user[property]);
+```
+**Output:**
+```text
+Arun
+```
+If you write:
+```javascript
+user.property
+```
+JavaScript looks for a property literally called `"property"`.
+### Adding a property
+You can add new properties after creating the object.
+```javascript
+let user = {
+    name: "Arun"
+};
+user.age = 25;
+user.city = "Chennai";
+console.log(user);
+```
+**Output:**
+```text
+{
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+}
+```
+### Updating a property
+```javascript
+let user = {
+    name: "Arun",
+    age: 25
+};
+user.age = 26;
+console.log(user.age);
+```
+**Output:**
+```text
+26
+```
+### Deleting a property
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+delete user.city;
+console.log(user);
+```
+**Output:**
+```text
+{
+    name: "Arun",
+    age: 25
+}
+```
+### Realtime use case
+Suppose an e-commerce application receives product information:
+```javascript
+let product = {
+    name: "Wireless Mouse",
+    price: 999,
+    stock: 20
+};
+product.stock = 19;
+console.log(product);
+```
+When a customer purchases one mouse, the application can update the `stock` property.
+# 2. Object Methods
+### Explanation
+A **method** is a function stored inside an object.
+Properties describe **what an object has**, while methods describe **what an object can do**.
+For example, a bank account can have:
+```text
+Properties:
+balance
+accountNumber
+owner
+Methods:
+deposit()
+withdraw()
+checkBalance()
+```
+### Syntax
+```javascript
+let object = {
+    property: value,
+    method: function() {
+        // code
+    }
+};
+```
+A shorter modern syntax is:
+```javascript
+let object = {
+    method() {
+        // code
+    }
+};
+```
+### Example
+```javascript
+let person = {
+    name: "Rahul",
+    greet() {
+        console.log("Hello " + this.name);
+    }
+};
+person.greet();
+```
+**Output:**
+```text
+Hello Rahul
+```
+### Understanding `this`
+Inside an object method, `this` generally refers to the **object that is calling the method**.
+### Realtime use case
+A shopping cart can be represented using an object:
+```javascript
+let cart = {
+    total: 0,
+    addProduct(price) {
+        this.total += price;
+    },
+    showTotal() {
+        console.log("Total: ₹" + this.total);
+    }
+};
+cart.addProduct(500);
+cart.addProduct(1000);
+cart.showTotal();
+```
+**Output:**
+```text
+Total: ₹1500
+```
+Here:
+```javascript
+this.total
+```
+means:
+```javascript
+cart.name
+```
+The object stores the **state** (`total`) and provides methods to **modify or use that state**.
+# 3. Nested Objects
+### Explanation
+An object can contain **another object as its property**.
+This is called a **nested object**.
+This is useful when information itself has multiple levels.
+For example, an employee may have:
+```text
+Employee
+ ├── name
+ ├── age
+ └── address
+      ├── city
+      ├── state
+      └── pincode
+```
+### Syntax
+```javascript
+let object = {
+    property: {
+        nestedProperty: value
+    }
+};
+```
+### Example
+```javascript
+let employee = {
+    name: "vais",
+    age: 24,
+    address: {
+        city: "Coimbatore",
+        state: "Tamil Nadu",
+        pincode: 641001
+    }
+};
+console.log(employee.name);
+console.log(employee.address.city);
+console.log(employee.address.pincode);
+```
+**Output:**
+```text
+Vais
+Coimbatore
+641001
+```
+### How does this work?
+This:
+```javascript
+employee.address
+```
+returns:
+```javascript
+{
+    city: "Coimbatore",
+    state: "Tamil Nadu",
+    pincode: 641001
+}
+```
+Then:
+```javascript
+employee.address.city
+```
+accesses the `city` inside the `address` object.
+### Realtime use case
+API responses commonly contain nested objects.
+```javascript
+let user = {
+    id: 101,
+    name: "Anu",
+    profile: {
+        email: "anu@gmail.com",
+        address: {
+            city: "Chennai",
+            country: "India"
+        }
+    }
+};
+console.log(user.profile.email);
+console.log(user.profile.address.city);
+```
+Nested objects are extremely common when working with **REST APIs and JSON**.
+# 4. Object Destructuring
+### Explanation
+**Destructuring** allows us to extract values from an object and store them in variables easily.
+Without destructuring:
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+let name = user.name;
+let age = user.age;
+let city = user.city;
+```
+With destructuring:
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+let { name, age, city } = user;
+console.log(name);
+console.log(age);
+console.log(city);
+```
+**Output:**
+```text
+Arun
+25
+Chennai
+```
+### Syntax
+```javascript
+let { property1, property2 } = object;
+```
+The variable names normally need to match the property names.
+```javascript
+let { name, age } = user;
+```
+is equivalent to:
+```javascript
+let name = user.name;
+let age = user.age;
+```
+### Renaming during destructuring
+Suppose:
+```javascript
+let user = {
+    name: "Arun",
+    age: 25
+};
+```
+You can give the extracted value a different variable name:
+```javascript
+let { name: userName, age: userAge } = user;
+console.log(userName);
+console.log(userAge);
+```
+**Output:**
+```text
+Arun
+25
+```
+Here:
+```javascript
+name: userName
+```
+means:
+> Take the `name` property and store its value in a variable called `userName`.
+### Default values
+If a property doesn't exist, you can provide a default value.
+```javascript
+let user = {
+    name: "Arun"
+};
+let { name, age = 18 } = user;
+console.log(name);
+console.log(age);
+```
+**Output:**
+```text
+Arun
+18
+```
+Since `age` doesn't exist, JavaScript uses `18`.
+### Nested destructuring
+```javascript
+let employee = {
+    name: "Priya",
+    address: {
+        city: "Coimbatore",
+        state: "Tamil Nadu"
+    }
+};
+let {
+    name,
+    address: { city, state }
+} = employee;
+console.log(name);
+console.log(city);
+console.log(state);
+```
+**Output:**
+```text
+Priya
+Coimbatore
+Tamil Nadu
+```
+### Realtime use case
+Destructuring is frequently used when receiving data from an API.
+```javascript
+let response = {
+    id: 101,
+    username: "vaishu",
+    email: "vaishu@gmail.com"
+};
+let { username, email } = response;
+console.log(username);
+console.log(email);
+```
+Instead of repeatedly writing:
+```javascript
+response.username
+response.email
+```
+you can directly use:
+```javascript
+username
+email
+```
+# 5. `Object.keys()`
+### Explanation
+`Object.keys()` returns an **array containing all the property names (keys)** of an object.
+For example:
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+console.log(Object.keys(user));
+```
+**Output:**
+```text
+["name", "age", "city"]
+```
+### Syntax
+```javascript
+Object.keys(object);
+```
+### Important point
+`Object.keys()` gives you the **keys**, not the values.
+```javascript
+Object.keys(user);
+```
+gives:
+```text
+["name", "age", "city"]
+```
+### Realtime use case
+Suppose you want to know how many fields an object contains:
+```javascript
+let product = {
+    name: "Laptop",
+    price: 55000,
+    brand: "Dell",
+    stock: 10
+};
+let properties = Object.keys(product);
+console.log(properties.length);
+```
+**Output:**
+```text
+4
+```
+You can also loop through them:
+```javascript
+let product = {
+    name: "Laptop",
+    price: 55000,
+    brand: "Dell"
+};
+Object.keys(product).forEach(key => {
+    console.log(key);
+});
+```
+**Output:**
+```text
+name
+price
+brand
+```
+# 6. `Object.values()`
+### Explanation
+`Object.values()` returns an **array containing all the values** of an object.
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+console.log(Object.values(user));
+```
+**Output:**
+```text
+["Arun", 25, "Chennai"]
+```
+### Syntax
+```javascript
+Object.values(object);
+```
+### Difference
+```javascript
+Object.keys(user);
+```
+→ property names
+```text
+["name", "age", "city"]
+```
+while:
+```javascript
+Object.values(user);
+```
+→ property values
+```text
+["Arun", 25, "Chennai"]
+```
+### Realtime use case
+Suppose you have student marks:
+```javascript
+let marks = {
+    maths: 90,
+    science: 85,
+    english: 80
+};
+let scores = Object.values(marks);
+console.log(scores);
+```
+**Output:**
+```text
+[90, 85, 80]
+```
+You can then perform operations on the values:
+```javascript
+let marks = {
+    maths: 90,
+    science: 85,
+    english: 80
+};
+let scores = Object.values(marks);
+let total = scores.reduce((sum, mark) => sum + mark, 0);
+console.log(total);
+```
+**Output:**
+```text
+255
+```
+# 7. `Object.entries()`
+### Explanation
+`Object.entries()` returns an array containing **key-value pairs**.
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+console.log(Object.entries(user));
+```
+**Output:**
+```text
+[
+    ["name", "Arun"],
+    ["age", 25],
+    ["city", "Chennai"]
+]
+```
+Each pair is represented as:
+```javascript
+[key, value]
+```
+So:
+```javascript
+["name", "Arun"]
+```
+means:
+```text
+key   → name
+value → Arun
+```
+### Syntax
+```javascript
+Object.entries(object);
+```
+### Using `for...of`
+This becomes particularly useful when you want both the key and value.
+```javascript
+let user = {
+    name: "Arun",
+    age: 25,
+    city: "Chennai"
+};
+for (let [key, value] of Object.entries(user)) {
+    console.log(key + ":", value);
+}
+```
+**Output:**
+```text
+name: Arun
+age: 25
+city: Chennai
+```
+### Realtime use case
+Suppose an application needs to display all user information dynamically:
+```javascript
+let user = {
+    username: "vaishu",
+    email: "vaishu@gmail.com",
+    role: "Developer"
+};
+for (let [key, value] of Object.entries(user)) {
+    console.log(`${key}: ${value}`);
+}
+```
+Instead of manually writing:
+```javascript
+console.log(user.username);
+console.log(user.email);
+console.log(user.role);
+```
+the application can process any number of properties dynamically.
 
 
+| Concept              | Purpose                       | Example             |
+| -------------------- | ----------------------------- | ------------------- |
+| **Property**         | Stores information            | `user.name`         |
+| **Method**           | Performs an action            | `user.login()`      |
+| **Nested object**    | Object inside another object  | `user.address.city` |
+| **Destructuring**    | Extract values into variables | `let {name} = user` |
+| **Object.keys()**    | Gets all keys                 | `["name", "age"]`   |
+| **Object.values()**  | Gets all values               | `["Arun", 25]`      |
+| **Object.entries()** | Gets key-value pairs          | `[["name","Arun"]]` |
+
+
+**remember:**
+
+```text
+Object
+│
+├── Properties → data
+│
+├── Methods → actions
+│
+├── Nested Objects → structured data
+│
+├── Destructuring → easily extract data
+│
+├── Object.keys() → get keys
+│
+├── Object.values() → get values
+│
+└── Object.entries() → get key + value pairs
+```
+These concepts become especially important when you start working with **JSON, APIs, React, Node.js, and real-world application data**.
+
+## 10_Strings
+A **string** is a sequence of characters used to represent text.
+Strings are commonly used for **user names, emails, messages, passwords, search queries, product names, API data, and form inputs**.
+```javascript
+let name = "Vaish";
+let email = "vaish@gmail.com";
+```
+
+# 1. String Creation
+Strings can be created using:
+* Double quotes `" "`
+* Single quotes `' '`
+* Backticks `` ` ` ``
+```javascript
+let name1 = "Vaish";
+let name2 = 'Vaish';
+let name3 = `Vaish`;
+```
+All three contain a string.
+
+# 2. String Length
+### Explanation
+The `length` property returns the **number of characters** in a string.
+### Technical use
+Very commonly used for **form validation**.
+For example, checking whether a password has at least 8 characters:
+```javascript
+let password = "hello123";
+if (password.length >= 8) {
+    console.log("Password length is valid");
+}
+```
+**Output:**
+```text
+Password length is valid
+```
+
+# 3. String Concatenation
+### Explanation
+**Concatenation** means joining two or more strings together.
+The `+` operator can be used for concatenation.
+
+### Technical use
+Used when creating **messages, labels, URLs, filenames, etc.**
+```javascript
+let product = "Laptop";
+let price = 50000;
+let message = "Product: " + product + ", Price: ₹" + price;
+console.log(message);
+```
+**Output:**
+```text
+Product: Laptop, Price: ₹50000
+```
+### Important
+When `+` is used with strings, JavaScript performs concatenation
+
+# 4. Template Literals
+### Explanation
+**Template literals** are strings created using backticks:
+```javascript
+``
+```
+Their biggest advantage is that you can directly insert variables and expressions using:
+```javascript
+${}
+```
+### Technical use
+Template literals are very useful when dynamically generating **UI messages, API request data, HTML content, logs, and notifications**.
+For example:
+```javascript
+let product = "Laptop";
+let price = 50000;
+let quantity = 2;
+let bill = `
+Product: ${product}
+Price: ₹${price}
+Quantity: ${quantity}
+Total: ₹${price * quantity}
+`;
+console.log(bill);
+```
+**Output:**
+```text
+Product: Laptop
+Price: ₹50000
+Quantity: 2
+Total: ₹100000
+```
+
+### Expressions inside `${}`
+You can perform calculations:
+```javascript
+let price = 1000;
+let discount = 10;
+console.log(`Final price: ₹${price - (price * discount / 100)}`);
+```
+Output
+```text
+Final price: ₹900
+```
+# 5. Escaping Characters
+### Explanation
+Sometimes you need to include special characters inside a string.
+For example, if you use double quotes inside a double-quoted string:
+```javascript
+let message = "He said "Hello"";
+```
+This causes an error because JavaScript thinks the string ends before `Hello`.
+We use a **backslash `\`** to escape the special character.
+```javascript
+let message = "He said \"Hello\"";
+console.log(message);
+```
+**Output:**
+```text
+He said "Hello"
+```
+
+## Common Escape Characters
+
+| Escape | Meaning      |
+| ------ | ------------ |
+| `\"`   | Double quote |
+| `\'`   | Single quote |
+| `\\`   | Backslash    |
+| `\n`   | New line     |
+| `\t`   | Tab          |
+
+### `\n` — New line
+```javascript
+let message = "Hello\nWelcome to JavaScript";
+console.log(message);
+```
+Output:
+```text
+Hello
+Welcome to JavaScript
+```
+### `\t` — Tab
+```javascript
+console.log("Name:\tVaish");
+```
+Output:
+```text
+Name:   Vaish
+```
+### Technical use
+Escaping is useful when processing **text containing quotes, formatted messages, file paths, JSON-like data, or user-generated text**.
+
+# 6. Important String Methods
+String methods are built-in functions that allow you to **search, modify, extract, and manipulate text**.
+
+## `toUpperCase()`
+Converts a string to uppercase.
+```javascript
+let name = "vaish";
+console.log(name.toUpperCase());
+```
+Output:
+```text
+VAISH
+```
+### Technical use
+Useful when normalizing user input.
+```javascript
+let search = "laptop";
+if (search.toUpperCase() === "LAPTOP") {
+    console.log("Product found");
+}
+```
+
+## `toLowerCase()`
+Converts a string to lowercase.
+```javascript
+let email = "VAISH@GMAIL.COM";
+console.log(email.toLowerCase());
+```
+Output:
+```text
+vaish@gmail.com
+```
+### Technical use
+Useful for **case-insensitive email/search comparisons**.
+
+# 7. `trim()`
+### Explanation
+Removes whitespace from the **beginning and end** of a string.
+### Technical use
+Very common in **form validation**.
+```javascript
+let username = "   Vaish   ";
+username = username.trim();
+if (username !== "") {
+    console.log("Valid username");
+}
+```
+# 8. `includes()`
+### Explanation
+Checks whether a string contains a particular substring.
+Returns `true` or `false`.
+```javascript
+let email = "vaish@gmail.com";
+console.log(email.includes("@"));
+```
+Output:
+```text
+true
+```
+### Technical use
+Checking whether an email contains `@`, or whether a search term exists in a product name.
+```javascript
+let product = "Apple MacBook";
+console.log(product.includes("MacBook"));
+```
+Output:
+```text
+true
+```
+
+# 9. `startsWith()`
+Checks whether a string starts with a particular value.
+```javascript
+let url = "https://example.com";
+console.log(url.startsWith("https"));
+```
+Output:
+```text
+true
+```
+### Technical use
+Can be used to check URL prefixes or file naming conventions.
+
+
+# 10. `endsWith()`
+Checks whether a string ends with a particular value.
+```javascript
+let file = "profile.jpg";
+console.log(file.endsWith(".jpg"));
+```
+Output:
+```text
+true
+```
+### Technical use
+Useful for **file-type validation**.
+
+```javascript
+let fileName = "photo.png";
+
+if (fileName.endsWith(".png") || fileName.endsWith(".jpg")) {
+    console.log("Valid image file");
+}
+```
+
+# 11. `charAt()`
+Returns the character at a particular index.
+```javascript
+let name = "Vaish";
+console.log(name.charAt(0));
+```
+Output:
+```text
+V
+```
+You can also use indexing:
+```javascript
+console.log(name[0]);
+```
+
+# 12. `indexOf()`
+Returns the index of the first occurrence of a value.
+```javascript
+let email = "vaish@gmail.com";
+console.log(email.indexOf("@"));
+```
+Output:
+```text
+5
+```
+If the value doesn't exist:
+```javascript
+console.log(email.indexOf("#"));
+```
+Output:
+```text
+-1
+```
+### Technical use
+Useful when you need to know **where a particular piece of text occurs**.
+
+# 13. `slice()`
+Extracts a portion of a string.
+```javascript
+let text = "JavaScript";
+let result = text.slice(0, 4);
+console.log(result);
+```
+Output:
+```text
+Java
+```
+The ending index is not included.
+```text
+J a v a S c r i p t
+0 1 2 3 4 5 6 7 8 9
+↑-------↑
+0       4
+```
+
+### Technical use
+Extracting parts of IDs, usernames, filenames, etc.
+
+# 14. `substring()`
+Similar to `slice()`, it extracts part of a string.
+```javascript
+let text = "JavaScript";
+console.log(text.substring(0, 4));
+```
+Output:
+```text
+Java
+```
+For modern JavaScript, `slice()` is generally more flexible, especially with negative indexes.
+
+# 15. `replace()`
+Replaces the **first matching occurrence**.
+```javascript
+let message = "Hello Sri";
+let result = message.replace("Sri", "Vaish");
+console.log(result);
+```
+Output:
+```text
+Hello Vaish
+```
+### Technical use
+Useful for replacing text in dynamically generated content.
+
+# 16. `replaceAll()`
+Replaces **all occurrences**.
+```javascript
+let message = "JavaScript is powerful. JavaScript is popular.";
+let result = message.replaceAll("JavaScript", "JS");
+console.log(result);
+```
+Output:
+```text
+JS is powerful. JS is popular.
+```
+
+# 17. `split()`
+### Explanation
+`split()` converts a string into an **array** based on a separator.
+```javascript
+let fruits = "Apple,Banana,Mango";
+let result = fruits.split(",");
+console.log(result);
+```
+Output:
+```text
+["Apple", "Banana", "Mango"]
+```
+### Technical use
+Very common when processing **CSV-like data, user input, or tags**.
+
+# 18. `concat()`
+Joins strings together.
+```javascript
+let firstName = "Sri";
+let lastName = "Vaishnavi";
+let fullName = firstName.concat(" ", lastName);
+console.log(fullName);
+```
+Output:
+
+```text
+Sri Vaishnavi
+```
+
+In modern JavaScript, `+` or template literals are generally more convenient.
+
+
+
+| Concept              | Purpose                       | Real-time use              |
+| -------------------- | ----------------------------- | -------------------------- |
+| **String**           | Store text                    | Name, email, message       |
+| `length`             | Count characters              | Password validation        |
+| `+`                  | Concatenate strings           | Build messages             |
+| **Template literal** | Insert variables into strings | Dynamic UI/messages        |
+| `\`                  | Escape special characters     | Quotes/new lines           |
+| `toUpperCase()`      | Convert to uppercase          | Search/input normalization |
+| `toLowerCase()`      | Convert to lowercase          | Email/search normalization |
+| `trim()`             | Remove outer whitespace       | Form validation            |
+| `includes()`         | Check substring               | Search/email validation    |
+| `startsWith()`       | Check beginning               | URL/prefix validation      |
+| `endsWith()`         | Check ending                  | File extension validation  |
+| `charAt()`           | Get character                 | Character processing       |
+| `indexOf()`          | Find position                 | Search text                |
+| `slice()`            | Extract part                  | Extract ID/year/name       |
+| `replace()`          | Replace text                  | Modify content             |
+| `replaceAll()`       | Replace all matches           | Text processing            |
+| `split()`            | String → Array                | CSV/tags/input processing  |
+| `concat()`           | Join strings                  | Combine text               |
+
+### Note
+
+```text
+length       → How many characters?
+includes()   → Does it contain this?
+indexOf()    → Where is it?
+slice()      → Give me a part
+split()      → String → Array
+replace()    → Change text
+trim()       → Remove outer spaces
+toUpperCase  → Uppercase
+toLowerCase  → Lowercase
+
++            → Concatenate
+`Hello ${x}` → Template literal
+\            → Escape character
+```
+## 11_Numbers and Math
+These methods are commonly used when working with **user input, prices, calculations, form data, APIs, and validation**.
+
+## 1. `parseInt()`
+### Explanation
+`parseInt()` converts a value into an **integer (whole number)**.
+It removes the decimal part.
+### Syntax
+```js
+parseInt(value)
+```
+### Example
+```js
+let age = "25";
+let result = parseInt(age);
+console.log(result);
+```
+**Output:**
+```text
+25
+```
+### Decimal example
+```js
+let price = "99.99";
+console.log(parseInt(price));
+```
+**Output:**
+```text
+99
+```
+### Technical real-time use
+When data comes from an HTML form, it usually comes as a **string**.
+```js
+let quantity = "5";
+let totalItems = parseInt(quantity);
+console.log(totalItems + 2);
+```
+Output:
+```text
+7
+```
+Without conversion:
+```js
+console.log(quantity + 2);
+```
+Output:
+```text
+52
+```
+Because `"5"` is a string.
+### Important
+You can also specify the number system:
+```js
+parseInt("101", 2);
+```
+Output:
+```text
+5
+```
+Here `101` is interpreted as a **binary number**.
+# 2. `parseFloat()`
+### Explanation
+`parseFloat()` converts a value into a **decimal number**.
+### Syntax
+```js
+parseFloat(value)
+```
+### Example
+```js
+let price = "99.99";
+let result = parseFloat(price);
+console.log(result);
+```
+Output:
+```text
+99.99
+```
+### Technical real-time use
+Suppose an e-commerce application receives product price from a form:
+```js
+let price = "249.50";
+let quantity = "3";
+let total = parseFloat(price) * parseInt(quantity);
+console.log(total);
+```
+Output:
+```text
+748.5
+```
+# 3. `toFixed()`
+### Explanation
+`toFixed()` is used to format a number with a specific number of **decimal places**.
+### Syntax
+```js
+number.toFixed(decimalPlaces)
+```
+### Example
+```js
+let price = 249.5678;
+console.log(price.toFixed(2));
+```
+Output:
+```text
+249.57
+```
+It rounds the value to **2 decimal places**.
+### Technical real-time use
+Very common in **billing, invoices, shopping carts, banking displays**, etc.
+```js
+let price = 499.99;
+let quantity = 3;
+let total = price * quantity;
+console.log(`Total: ₹${total.toFixed(2)}`);
+```
+Output:
+```text
+Total: ₹1499.97
+```
+### Important
+`toFixed()` returns a **string**, not a number.
+```js
+let value = 12.345;
+console.log(typeof value.toFixed(2));
+```
+Output:
+```text
+string
+```
+# 4. `isNaN()`
+### Explanation
+`isNaN()` checks whether a value is **Not a Number**.
+`NaN` means **Not-a-Number**.
+### Syntax
+```js
+isNaN(value)
+```
+It returns:
+* `true` → value cannot be treated as a valid number
+* `false` → value can be treated as a number
+### Example
+```js
+console.log(isNaN(100));
+console.log(isNaN("100"));
+console.log(isNaN("hello"));
+```
+Output:
+```text
+false
+false
+true
+```
+### Technical real-time use
+Suppose a user enters an age:
+```js
+let age = "twenty";
+if (isNaN(age)) {
+    console.log("Please enter a valid number");
+} else {
+    console.log("Valid age");
+}
+```
+Output:
+```text
+Please enter a valid number
+```
+### Better modern option: `Number.isNaN()`
+```js
+console.log(Number.isNaN(NaN));      // true
+console.log(Number.isNaN("hello"));  // false
+```
+`Number.isNaN()` performs a stricter check because it does **not automatically convert the value**.
+
+# 5. Math Methods
+JavaScript provides the built-in `Math` object for mathematical operations.
+Syntax:
+```js
+Math.method()
+```
+## `Math.round()`
+Rounds to the nearest integer.
+```js
+console.log(Math.round(4.4));
+console.log(Math.round(4.6));
+```
+Output:
+```text
+4
+5
+```
+### Real-time use
+Rounding a calculated rating:
+```js
+let rating = 4.6;
+
+console.log(Math.round(rating));
+```
+
+## `Math.floor()`
+Rounds **down**.
+```js
+console.log(Math.floor(4.9));
+```
+Output:
+```text
+4
+```
+### Real-time use
+Pagination:
+```js
+let products = 47;
+let productsPerPage = 10;
+let pages = Math.ceil(products / productsPerPage);
+console.log(pages);
+```
+Output:
+```text
+5
+```
+Here `Math.ceil()` is actually more appropriate because we need enough pages to contain all products.
+
+## `Math.ceil()`
+Rounds **up**.
+```js
+console.log(Math.ceil(4.1));
+```
+Output:
+```text
+5
+```
+### Technical use
+```js
+let totalItems = 101;
+let itemsPerPage = 10;
+let pages = Math.ceil(totalItems / itemsPerPage);
+console.log(pages);
+```
+Output:
+```text
+11
+```
+
+## `Math.trunc()`
+Removes the decimal part without rounding.
+```js
+console.log(Math.trunc(8.99));
+```
+Output:
+```text
+8
+```
+Difference:
+```js
+Math.round(8.99); // 9
+Math.floor(8.99); // 8
+Math.trunc(8.99); // 8
+```
+## `Math.max()`
+Returns the **largest value**.
+```js
+console.log(Math.max(10, 50, 30, 20));
+```
+Output:
+```text
+50
+```
+### Technical use
+Finding the highest score:
+```js
+let scores = [75, 92, 68, 88];
+console.log(Math.max(...scores));
+```
+Output:
+```text
+92
+```
+## `Math.min()`
+Returns the **smallest value**.
+```js
+console.log(Math.min(10, 50, 30, 20));
+```
+Output:
+```text
+10
+```
+
+## `Math.abs()`
+Returns the positive value of a number.
+```js
+console.log(Math.abs(-25));
+```
+Output:
+```text
+25
+```
+### Technical use
+Finding the difference between two values:
+```js
+let temperature1 = 35;
+let temperature2 = 28;
+let difference = Math.abs(temperature1 - temperature2);
+console.log(difference);
+```
+Output:
+```text
+7
+```
+## `Math.pow()`
+Calculates a number raised to a power.
+```js
+console.log(Math.pow(2, 3));
+```
+Output:
+```text
+8
+```
+Equivalent modern syntax:
+```js
+console.log(2 ** 3);
+```
+## `Math.sqrt()`
+Returns the square root.
+```js
+console.log(Math.sqrt(64));
+```
+Output:
+```text
+8
+```
+### Technical use
+Used in mathematical calculations such as distance calculations.
+
+## `Math.random()`
+Generates a random number between **0 and less than 1**.
+```js
+console.log(Math.random());
+```
+Possible output:
+```text
+0.726483
+```
+### Generate a random number from 1 to 10
+```js
+let number = Math.floor(Math.random() * 10) + 1;
+console.log(number);
+```
+Possible output:
+```text
+7
+```
+### Technical use
+Randomizing UI elements, games, simulations, test data, etc.
+**Important:** Don't use `Math.random()` for security-sensitive values such as OTPs, passwords, or authentication tokens. Use the Web Crypto API instead.
+
+## `Math.PI`
+Provides the value of π.
+```js
+console.log(Math.PI);
+```
+Output:
+```text
+3.141592653589793
+```
+### Technical use
+Circle calculation:
+```js
+let radius = 5;
+let area = Math.PI * radius * radius;
+console.log(area);
+```
+Output:
+```text
+78.53981633974483
+```
+# Note
+
+| Method          | Purpose                 | Example                         |
+| --------------- | ----------------------- | ------------------------------- |
+| `parseInt()`    | Convert to integer      | `parseInt("25.8") → 25`         |
+| `parseFloat()`  | Convert to decimal      | `parseFloat("25.8") → 25.8`     |
+| `toFixed()`     | Format decimal places   | `(25.678).toFixed(2) → "25.68"` |
+| `isNaN()`       | Check invalid number    | `isNaN("hello") → true`         |
+| `Math.round()`  | Nearest integer         | `4.6 → 5`                       |
+| `Math.floor()`  | Round down              | `4.9 → 4`                       |
+| `Math.ceil()`   | Round up                | `4.1 → 5`                       |
+| `Math.trunc()`  | Remove decimal          | `4.9 → 4`                       |
+| `Math.max()`    | Largest value           | `Math.max(2,8,5) → 8`           |
+| `Math.min()`    | Smallest value          | `Math.min(2,8,5) → 2`           |
+| `Math.abs()`    | Positive/absolute value | `Math.abs(-5) → 5`              |
+| `Math.pow()`    | Power                   | `Math.pow(2,3) → 8`             |
+| `Math.sqrt()`   | Square root             | `Math.sqrt(25) → 5`             |
+| `Math.random()` | Random number           | `0 ≤ x < 1`                     |
+| `Math.PI`       | π value                 | `3.14159...`                    |
+
+## 12_Date and Time
+The **Date object** is used to work with **dates and time** in JavaScript.
+It is commonly used in:
+* Login/session timestamps
+* Order dates
+* Appointment scheduling
+* Chat messages
+* Age calculation
+* File creation dates
+* API timestamps
+* Reports and dashboards
+
+# 1. Creating a Date Object
+### Explanation
+You can create a date using the `Date` constructor.
+### Syntax
+```js
+new Date()
+```
+### Example
+```js
+let currentDate = new Date();
+console.log(currentDate);
+```
+Output will contain the current date and time, for example:
+```text
+Thu Sep 17 2026 22:30:00 GMT+0530 (India Standard Time)
+```
+The exact output depends on the current time.
+### Technical real-time use
+When a user places an order:
+The application can store this date with the order record.
+
+# 2. Creating a Specific Date
+You can provide a date manually.
+```js
+let date = new Date("2026-09-17");
+console.log(date);
+```
+You can also specify date components:
+```js
+let date = new Date(2026, 8, 17);
+console.log(date);
+```
+### Important
+Months are **zero-indexed**:
+```text
+January   → 0
+February  → 1
+March     → 2
+...
+September → 8
+December  → 11
+```
+So:
+```js
+new Date(2026, 8, 17)
+```
+means:
+```text
+September 17, 2026
+```
+# 3. Date Formatting
+The default `Date` output isn't always suitable for displaying to users.
+JavaScript provides several formatting methods.
+## `toDateString()`
+Returns only the date portion in a readable format.
+```js
+let date = new Date();
+console.log(date.toDateString());
+```
+Example output:
+```text
+Thu Sep 17 2026
+```
+## `toTimeString()`
+Returns the time information.
+```js
+let date = new Date();
+console.log(date.toTimeString());
+```
+Example:
+```text
+22:30:15 GMT+0530 (India Standard Time)
+```
+## `toISOString()`
+Returns the date in **ISO 8601 format**.
+```js
+let date = new Date();
+console.log(date.toISOString());
+```
+Example:
+```text
+2026-09-17T17:00:15.000Z
+```
+### Technical real-time use
+`toISOString()` is very common when sending dates through **REST APIs** or storing timestamps in databases.
+
+# 4. Getting Individual Date Values
+JavaScript provides methods to extract individual parts.
+## `getFullYear()`
+Returns the year.
+```js
+let date = new Date();
+console.log(date.getFullYear());
+```
+Output:
+```text
+2026
+```
+## `getMonth()`
+Returns the month from `0` to `11`.
+```js
+let date = new Date();
+console.log(date.getMonth());
+```
+For September:
+```text
+8
+```
+To display a normal month number:
+```js
+console.log(date.getMonth() + 1);
+```
+Output:
+```text
+9
+```
+## `getDate()`
+Returns the day of the month.
+```js
+let date = new Date();
+console.log(date.getDate());
+```
+For September 17:
+```text
+17
+```
+## `getDay()`
+Returns the day of the week.
+Values:
+```text
+0 → Sunday
+1 → Monday
+2 → Tuesday
+3 → Wednesday
+4 → Thursday
+5 → Friday
+6 → Saturday
+```
+Example:
+```js
+let date = new Date();
+console.log(date.getDay());
+```
+For Thursday:
+```text
+4
+```
+### Important difference
+```text
+getDate() → day of the month
+getDay()  → day of the week
+```
+For example:
+```text
+September 17, Thursday
+getDate() → 17
+getDay()  → 4
+```
+## `getHours()`
+```js
+let date = new Date();
+console.log(date.getHours());
+```
+Returns hours from:
+```text
+0 - 23
+```
+## `getMinutes()`
+```js
+console.log(date.getMinutes());
+```
+Returns:
+```text
+0 - 59
+```
+## `getSeconds()`
+```js
+console.log(date.getSeconds());
+```
+Returns:
+```text
+0 - 59
+```
+## `getMilliseconds()`
+```js
+console.log(date.getMilliseconds());
+```
+Returns:
+```text
+0 - 999
+```
+# 5. Setting Date Values
+JavaScript also provides `set` methods.
+### `setFullYear()`
+```js
+let date = new Date();
+date.setFullYear(2030);
+console.log(date);
+```
+### `setMonth()`
+```js
+date.setMonth(5);
+```
+`5` means June.
+### `setDate()`
+```js
+date.setDate(25);
+```
+### `setHours()`
+```js
+date.setHours(10);
+```
+There are also:
+```js
+setMinutes()
+setSeconds()
+setMilliseconds()
+```
+# 6. Timestamps
+### Explanation
+A **timestamp** represents a date/time as the number of **milliseconds since January 1, 1970 UTC**.
+This is called the **Unix epoch** or **epoch time**.
+## `Date.now()`
+Returns the current timestamp.
+```js
+let timestamp = Date.now();
+console.log(timestamp);
+```
+Example:
+```text
+1789660815000
+```
+The exact value changes continuously.
+# 7. Getting Timestamp from a Date
+You can use `getTime()`.
+```js
+let date = new Date();
+console.log(date.getTime());
+```
+This gives the timestamp corresponding to that date.
+```js
+let date1 = new Date("2026-01-01");
+console.log(date1.getTime());
+```
+# 8. Timestamp → Date
+You can convert a timestamp back into a `Date`.
+```js
+let timestamp = Date.now();
+let date = new Date(timestamp);
+console.log(date);
+```
+### Technical real-time use
+APIs and databases often exchange timestamps.
+```text
+Backend
+   ↓
+1789660815000
+   ↓
+Frontend
+   ↓
+new Date(timestamp)
+   ↓
+Display readable date
+```
+For example:
+```js
+let timestamp = 1789660815000;
+let date = new Date(timestamp);
+console.log(date.toDateString());
+```
+# 9. Comparing Dates
+Since dates can be converted to timestamps, comparing dates is straightforward.
+```js
+let date1 = new Date("2026-09-10");
+let date2 = new Date("2026-09-17");
+if (date1 < date2) {
+    console.log("date1 is earlier");
+}
+```
+Output:
+```text
+date1 is earlier
+```
+### Technical use
+Checking whether a subscription has expired:
+```js
+let expiryDate = new Date("2026-09-20");
+let today = new Date();
+if (today > expiryDate) {
+    console.log("Subscription expired");
+} else {
+    console.log("Subscription is active");
+}
+```
+# 10. Finding Difference Between Dates
+Because timestamps are in milliseconds, we can subtract two dates.
+```js
+let start = new Date("2026-09-10");
+let end = new Date("2026-09-17");
+let difference = end - start;
+console.log(difference);
+```
+The result is milliseconds.
+To convert it into days:
+```js
+let millisecondsPerDay = 1000 * 60 * 60 * 24;
+let days = difference / millisecondsPerDay;
+console.log(days);
+```
+Output:
+```text
+7
+```
+### Technical use
+This can be used for:
+* Subscription duration
+* Delivery estimates
+* Booking duration
+* Attendance calculations
+* Days remaining until an event
+# 11. Custom Date Formatting
+Suppose you want:
+```text
+17/09/2026
+```
+You can construct it yourself.
+```js
+let date = new Date();
+let day = String(date.getDate()).padStart(2, "0");
+let month = String(date.getMonth() + 1).padStart(2, "0");
+let year = date.getFullYear();
+let formattedDate = `${day}/${month}/${year}`;
+console.log(formattedDate);
+```
+Example:
+```text
+17/09/2026
+```
+Here we are combining:
+* `getDate()`
+* `getMonth()`
+* `getFullYear()`
+* `padStart()`
+* Template literals
+# 12. `Intl.DateTimeFormat()`
+For more professional localization, JavaScript provides `Intl.DateTimeFormat`.
+```js
+let date = new Date();
+let formatted = new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+}).format(date);
+console.log(formatted);
+```
+Example:
+```text
+17 September 2026
+```
+You can also include time:
+```js
+let formatted = new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short"
+}).format(new Date());
+console.log(formatted);
+```
+Example:
+```text
+17 Sept 2026, 10:30 pm
+```
+This is useful for **localized UI, invoices, dashboards, bookings, and notifications**.
+# 13. UTC Methods
+JavaScript also provides UTC versions of date methods.
+For example:
+```js
+getFullYear()
+getMonth()
+getDate()
+getHours()
+```
+have corresponding UTC versions:
+```js
+getUTCFullYear()
+getUTCMonth()
+getUTCDate()
+getUTCHours()
+```
+Example:
+```js
+let date = new Date();
+console.log(date.getHours());
+console.log(date.getUTCHours());
+```
+The values can differ because local time and UTC are different.
+### Important
+For APIs and backend systems, timestamps are often stored/transmitted in **UTC**, then converted to the user's local timezone for display.
+
+# 14. Important Date Methods
+
+| Method                  | Purpose                    |
+| ----------------------- | -------------------------- |
+| `new Date()`            | Create current Date object |
+| `Date.now()`            | Current timestamp          |
+| `getTime()`             | Get timestamp              |
+| `getFullYear()`         | Get year                   |
+| `getMonth()`            | Get month `0–11`           |
+| `getDate()`             | Get day of month           |
+| `getDay()`              | Get day of week            |
+| `getHours()`            | Get hour                   |
+| `getMinutes()`          | Get minutes                |
+| `getSeconds()`          | Get seconds                |
+| `setFullYear()`         | Change year                |
+| `setMonth()`            | Change month               |
+| `setDate()`             | Change day                 |
+| `toDateString()`        | Readable date              |
+| `toTimeString()`        | Readable time              |
+| `toISOString()`         | ISO date/time              |
+| `Intl.DateTimeFormat()` | Localized formatting       |
+
+
+# Note
+
+```text
+Date
+ ↓
+new Date()             → Current date/time
+Date.now()             → Current timestamp
+getTime()              → Date → timestamp
+new Date(timestamp)    → Timestamp → date
+
+getFullYear()          → Year
+getMonth()             → Month (0–11)
+getDate()              → Day of month
+getDay()               → Day of week
+getHours()             → Hour
+getMinutes()           → Minutes
+getSeconds()           → Seconds
+
+toDateString()         → Readable date
+toTimeString()         → Readable time
+toISOString()          → API/database-friendly format
+Intl.DateTimeFormat()  → User-friendly localized format
+```
+**`getDate()` vs `getDay()`**
+```text
+getDate() → 17
+getDay()  → 4 (Thursday)
+```
+**`getMonth()`**
+```text
+January → 0
+September → 8
+December → 11
+```
+**Timestamp**
+```text
+Date → milliseconds since Jan 1, 1970 UTC
+```
+**API-friendly date**
+```js
+new Date().toISOString()
+```
+**Current timestamp**
+```js
+Date.now()
+```
+
+## 13_Error Handling
+JavaScript provides **error-handling mechanisms** to prevent an application from crashing when something unexpected happens.
+The main concepts are:
+* `try`
+* `catch`
+* `finally`
+* `throw`
+* Custom Errors
+# 1. `try`
+### Explanation
+The `try` block contains code that **might produce an error**.
+If an error occurs inside `try`, JavaScript stops executing that block and moves to `catch`.
+### Syntax
+
+```js
+try {
+    // code that may cause an error
+}
+```
+### Example
+```js
+try {
+    let result = 10 / 0;
+    console.log(result);
+}
+```
+Note that `10 / 0` does **not** throw a JavaScript exception; it produces `Infinity`.
+A better example:
+```js
+try {
+    let user = null;
+
+    console.log(user.name);
+}
+```
+This causes an error because `user` is `null`.
+# 2. `catch`
+### Explanation
+`catch` handles an error that occurs inside the `try` block.
+### Syntax
+```js
+try {
+    // risky code
+} catch (error) {
+    // handle error
+}
+```
+### Example
+```js
+try {
+    let user = null;
+    console.log(user.name);
+} catch (error) {
+    console.log("Something went wrong");
+}
+```
+**Output:**
+```text
+Something went wrong
+```
+You can also inspect the error:
+```js
+try {
+    let user = null;
+    console.log(user.name);
+} catch (error) {
+    console.log(error.message);
+}
+```
+Output will be similar to:
+```text
+Cannot read properties of null (reading 'name')
+```
+### Technical real-time use
+Suppose an application receives data from an API:
+```js
+try {
+    let data = JSON.parse('{"name":"Arun"}');
+
+    console.log(data.name);
+} catch (error) {
+    console.log("Invalid server response");
+}
+```
+If the server sends invalid JSON, the application can handle it instead of unexpectedly stopping that operation.
+# 3. `finally`
+### Explanation
+`finally` executes **whether an error occurs or not**.
+It is commonly used for **cleanup operations**.
+### Syntax
+```js
+try {
+    // risky code
+} catch (error) {
+    // error handling
+} finally {
+    // always executed
+}
+```
+### Example
+```js
+try {
+    console.log("Processing payment...");
+} catch (error) {
+    console.log("Payment failed");
+} finally {
+    console.log("Closing payment process");
+}
+```
+Output:
+```text
+Processing payment...
+Closing payment process
+```
+Even if an error occurs:
+```js
+try {
+    throw new Error("Payment failed");
+} catch (error) {
+    console.log(error.message);
+} finally {
+    console.log("Payment process completed");
+}
+```
+Output:
+```text
+Payment failed
+Payment process completed
+```
+### Technical real-time use
+`finally` is useful when you need to perform cleanup:
+In frontend applications, this pattern is commonly used to ensure a loading indicator is stopped after an API request.
+
+# 4. `throw`
+### Explanation
+`throw` allows you to **manually generate an error**.
+JavaScript normally generates errors when something invalid happens, but sometimes your application needs to detect a business rule violation and create the error itself.
+### Syntax
+```js
+throw new Error("Error message");
+```
+### Example
+```js
+let age = 16;
+
+if (age < 18) {
+    throw new Error("User must be 18 or older");
+}
+```
+The program generates an error because the condition is invalid.
+### Using `throw` with `try...catch`
+```js
+try {
+    let age = 16;
+    if (age < 18) {
+        throw new Error("User must be 18 or older");
+    }
+    console.log("Registration allowed");
+} catch (error) {
+    console.log(error.message);
+}
+```
+Output
+```text
+User must be 18 or older
+```
+### Technical real-time use
+Suppose an e-commerce application checks stock:
+```js
+try {
+    let stock = 0;
+    if (stock <= 0) {
+        throw new Error("Product is out of stock");
+    }
+    console.log("Product added to cart");
+} catch (error) {
+    console.log(error.message);
+}
+```
+Output:
+```text
+Product is out of stock
+```
+Here, **`throw` is used for application/business validation**, not just JavaScript syntax errors.
+# 5. `Error` Object
+JavaScript provides the built-in `Error` object.
+```js
+let error = new Error("Something went wrong");
+console.log(error.message);
+console.log(error.name);
+```
+Output:
+```text
+Something went wrong
+Error
+```
+The important properties are:
+
+| Property        | Meaning                   |
+| --------------- | ------------------------- |
+| `error.name`    | Type of error             |
+| `error.message` | Description of error      |
+| `error.stack`   | Error location/call stack |
+
+Example:
+```js
+try {
+    throw new Error("Database connection failed");
+} catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+}
+```
+Output:
+```text
+Error
+Database connection failed
+```
+# 6. Custom Errors
+### Explanation
+A **custom error** is an error class created by the developer for a specific application requirement.
+Instead of having generic:
+```text
+Error
+```
+you can create meaningful errors such as:
+```text
+ValidationError
+AuthenticationError
+PaymentError
+InsufficientBalanceError
+```
+This is especially useful in larger applications.
+## Creating a Custom Error
+Use `class` and extend the built-in `Error` class.
+### Syntax
+```js
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+```
+### Example
+```js
+class ValidationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+    }
+}
+try {
+    let email = "";
+    if (email === "") {
+        throw new ValidationError("Email is required");
+    }
+    console.log("Valid email");
+} catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+}
+```
+Output:
+```text
+ValidationError
+Email is required
+```
+# 7. Real-Time Example: Login System
+Custom errors become useful when different types of failures need different handling.
+```js
+class AuthenticationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "AuthenticationError";
+    }
+}
+function login(username, password) {
+    if (username === "") {
+        throw new AuthenticationError("Username is required");
+    }
+    if (password === "") {
+        throw new AuthenticationError("Password is required");
+    }
+    if (password !== "12345") {
+        throw new AuthenticationError("Invalid password");
+    }
+    return "Login successful";
+}
+try {
+    console.log(login("arun", "wrong"));
+} catch (error) {
+    console.log(`${error.name}: ${error.message}`);
+}
+```
+Output:
+```text
+AuthenticationError: Invalid password
+```
+### Why is this useful?
+In a real application, different errors can be handled differently:
+
+```js
+try {
+    login(username, password);
+} catch (error) {
+
+    if (error instanceof AuthenticationError) {
+        console.log("Show login error to user");
+    } else {
+        console.log("Unexpected system error");
+    }
+}
+```
+This makes error handling more structured.
+
+# 8. `instanceof` with Custom Errors
+`instanceof` checks whether an object belongs to a particular class.
+```js
+class PaymentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "PaymentError";
+    }
+}
+try {
+    throw new PaymentError("Payment declined");
+} catch (error) {
+    if (error instanceof PaymentError) {
+        console.log("Handle payment error");
+    }
+}
+```
+Output:
+```text
+Handle payment error
+```
+This is useful when an application has **multiple custom error types**.
+
+# Notes
+
+| Concept      | Purpose                                  |
+| ------------ | ---------------------------------------- |
+| `try`        | Put potentially problematic code here    |
+| `catch`      | Handle the error                         |
+| `finally`    | Execute cleanup code regardless of error |
+| `throw`      | Manually create/raise an error           |
+| `Error`      | Built-in error object                    |
+| Custom Error | Application-specific error type          |
+| `instanceof` | Check the type of an error               |
+
+```text
+try     → Try this code
+catch   → Catch the problem
+finally → Always do this
+throw   → Create an error yourself
+Custom Error → Give the error a meaningful type
+```
+
+### Typical application flow
+
+```text
+User Action
+    ↓
+try
+    ↓
+Execute operation
+    ↓
+ ┌───────────────┐
+ │ Error occurs? │
+ └───────────────┘
+    ↓ Yes
+  catch
+    ↓
+Handle error
+    ↓
+ finally
+    ↓
+Cleanup / finish
+```
+
+**Note:** `try...catch` handles runtime exceptions, while `throw` lets you create your own exceptions based on application/business rules.
+## 14_Events
+**Events** allow JavaScript to respond to actions happening in a web page.
+Examples:
+* User clicks a button
+* User types in an input
+* A form is submitted
+* Mouse moves over an element
+* Keyboard key is pressed
+* A page finishes loading
+The main concepts are:
+1. Event Listeners
+2. Event Object
+3. Event Bubbling
+4. Event Delegation
+
+# 1. Event Listeners
+### Explanation
+An **event listener** waits for a particular event and executes a function when that event happens.
+For example, when a user clicks a button, JavaScript can execute some code.
+### Syntax
+```js
+element.addEventListener("event", function);
+```
+### Simple Example
+```html
+<button id="btn">Click Me</button>
+<script>
+    let button = document.getElementById("btn");
+    button.addEventListener("click", function () {
+        console.log("Button clicked");
+    });
+</script>
+```
+When the button is clicked:
+```text
+Button clicked
+```
+
+### Common Events
+
+| Event       | When it occurs                |
+| ----------- | ----------------------------- |
+| `click`     | Element is clicked            |
+| `dblclick`  | Double click                  |
+| `mouseover` | Mouse enters element          |
+| `mouseout`  | Mouse leaves element          |
+| `keydown`   | Keyboard key is pressed       |
+| `keyup`     | Keyboard key is released      |
+| `input`     | Input value changes           |
+| `change`    | Input selection/value changes |
+| `submit`    | Form is submitted             |
+| `focus`     | Input receives focus          |
+| `blur`      | Input loses focus             |
+
+---
+### Technical Real-Time Example
+A search box can listen for user input:
+
+```html
+<input id="search" placeholder="Search products">
+
+<script>
+    let searchBox = document.getElementById("search");
+
+    searchBox.addEventListener("input", function () {
+        console.log(searchBox.value);
+    });
+</script>
+```
+If the user types:
+```text
+Laptop
+```
+The input event can be used to:
+```text
+User types
+    ↓
+input event
+    ↓
+Get search text
+    ↓
+Filter products / call API
+    ↓
+Display results
+```
+This pattern is commonly used in **search boxes, filters, form validation, autocomplete, and live UI updates**.
+
+# 2. Event Object
+### Explanation
+When an event occurs, JavaScript automatically provides an **event object** containing information about that event.
+Usually we receive it as:
+```js
+function(event) {
+}
+```
+or:
+```js
+function(e) {
+}
+```
+### Example
+```html
+<button id="btn">Click Me</button>
+<script>
+    let button = document.getElementById("btn");
+    button.addEventListener("click", function (event) {
+        console.log(event);
+    });
+</script>
+```
+The `event` object contains information such as:
+* Which element triggered the event
+* What type of event occurred
+* Mouse position
+* Keyboard key
+* Whether the default action was prevented
+* etc.
+## `event.target`
+`event.target` tells you the **actual element that triggered the event**.
+```html
+<button id="btn">Click Me</button>
+<script>
+    document.getElementById("btn").addEventListener("click", function (event) {
+        console.log(event.target);
+    });
+</script>
+```
+Output will refer to:
+```html
+<button id="btn">Click Me</button>
+```
+### Technical use
+This is especially important when handling events on many elements.
+
+## `event.type`
+Returns the type of event.
+```js
+button.addEventListener("click", function (event) {
+    console.log(event.type);
+});
+```
+Output:
+```text
+click
+```
+## `event.preventDefault()`
+Prevents the browser's default behavior.
+### Example
+Normally, clicking a link navigates to another page.
+```html
+<a href="https://example.com" id="link">Visit</a>
+<script>
+    document.getElementById("link").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        console.log("Navigation prevented");
+    });
+</script>
+```
+### Technical use
+Very common with forms
+This allows JavaScript to validate the form or send the data through an API before the browser performs its normal submission.
+
+# 3. Event Bubbling
+### Explanation
+**Event bubbling** means that an event triggered on a child element can propagate upward through its parent elements.
+For example:
+```html
+<div id="parent">
+    <button id="child">Click</button>
+</div>
+```
+When the button is clicked, the event can travel:
+```text
+button
+  ↓
+div
+  ↓
+body
+  ↓
+html
+  ↓
+document
+```
+### Example
+```html
+<div id="parent">
+    <button id="child">Click Me</button>
+</div>
+
+<script>
+    let parent = document.getElementById("parent");
+    let child = document.getElementById("child");
+
+    child.addEventListener("click", function () {
+        console.log("Button clicked");
+    });
+
+    parent.addEventListener("click", function () {
+        console.log("Parent clicked");
+    });
+</script>
+```
+Clicking the button produces:
+```text
+Button clicked
+Parent clicked
+```
+Why?
+Because the click happens on the button and then **bubbles up** to the parent.
+
+## `event.target` vs `event.currentTarget`
+This is an important interview concept.
+```js
+parent.addEventListener("click", function (event) {
+    console.log(event.target);
+    console.log(event.currentTarget);
+});
+```
+### `event.target`
+The element where the event **actually started**.
+### `event.currentTarget`
+The element whose event listener is **currently executing**.
+For the previous example:
+```text
+Clicked element:
+button
+event.target:
+button
+event.currentTarget:
+div
+```
+### Easy memory
+```text
+target         → Who actually triggered it?
+currentTarget  → Whose listener is running?
+```
+# 4. `stopPropagation()`
+### Explanation
+`event.stopPropagation()` prevents the event from continuing to propagate to parent elements.
+### Example
+```html
+<div id="parent">
+    <button id="child">Click</button>
+</div>
+<script>
+    document.getElementById("child").addEventListener("click", function (event) {
+        event.stopPropagation();
+        console.log("Button clicked");
+    });
+    document.getElementById("parent").addEventListener("click", function () {
+        console.log("Parent clicked");
+    });
+</script>
+```
+Output:
+```text
+Button clicked
+```
+The parent listener does not execute because propagation was stopped.
+
+# 5. Event Delegation
+### Explanation
+**Event delegation** means attaching **one event listener to a parent element** instead of attaching separate listeners to every child.
+It works because of **event bubbling**.
+This is extremely useful when dealing with lists containing many elements.
+## Without Event Delegation
+Suppose we have:
+```html
+<ul>
+    <li>Apple</li>
+    <li>Orange</li>
+    <li>Banana</li>
+</ul>
+```
+You could attach a listener to every `<li>`:
+```js
+let items = document.querySelectorAll("li");
+items.forEach(function (item) {
+    item.addEventListener("click", function () {
+        console.log(item.textContent);
+    });
+});
+```
+This works, but if there are hundreds or dynamically added items, managing individual listeners can become inconvenient.
+
+# Using Event Delegation
+Instead, attach one listener to the `<ul>`:
+```html
+<ul id="products">
+    <li>Apple</li>
+    <li>Orange</li>
+    <li>Banana</li>
+</ul>
+<script>
+    let products = document.getElementById("products");
+    products.addEventListener("click", function (event) {
+        if (event.target.tagName === "LI") {
+            console.log(event.target.textContent);
+        }
+    });
+</script>
+```
+If the user clicks:
+```text
+Orange
+```
+Output:
+```text
+Orange
+```
+### What happens?
+```text
+User clicks <li>
+      ↓
+click event occurs on <li>
+      ↓
+event bubbles
+      ↓
+<ul> listener receives it
+      ↓
+event.target identifies clicked <li>
+```
+# 6. Technical Real-Time Example — Shopping Cart
+Event delegation is very useful for dynamic interfaces such as shopping carts.
+### Why use delegation?
+Imagine the cart contains:
+```text
+100 products
+```
+Instead of:
+```text
+100 buttons
+↓
+100 event listeners
+```
+we can use:
+```text
+1 cart
+↓
+1 event listener
+↓
+event.target identifies clicked button
+```
+It is also useful when products/buttons are **added dynamically after the page has loaded**.
+
+# 7. `matches()` with Event Delegation
+A cleaner approach is to use `matches()`.
+```js
+cart.addEventListener("click", function (event) {
+    if (event.target.matches("button")) {
+        console.log("Product clicked");
+    }
+});
+```
+For a specific class:
+```js
+if (event.target.matches(".remove-btn")) {
+    // remove product
+}
+```
+This is common in larger frontend applications.
+
+# Event Listener vs Event Delegation
+
+| Concept               | Meaning                                 |
+| --------------------- | --------------------------------------- |
+| Event Listener        | Waits for an event on an element        |
+| Event Object          | Contains information about the event    |
+| Event Bubbling        | Event moves from child toward parent    |
+| Event Delegation      | Parent handles events from its children |
+| `event.target`        | Actual element that triggered event     |
+| `event.currentTarget` | Element whose listener is running       |
+| `preventDefault()`    | Stops browser's default action          |
+| `stopPropagation()`   | Stops event propagation                 |
+
+
+```text
+Event Listener
+    ↓
+"Listen for a click"
+
+Event Object
+    ↓
+"Give me information about the click"
+
+Event Bubbling
+    ↓
+"Child event travels upward"
+
+Event Delegation
+    ↓
+"Let the parent handle child events"
+```
+
+**Note:**
+**Event delegation depends on event bubbling.** Instead of attaching listeners to every child, attach one listener to a common parent and use `event.target`/`matches()` to determine which child triggered the event.
 

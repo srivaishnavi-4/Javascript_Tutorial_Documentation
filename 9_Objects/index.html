@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Objects</title>
+</head>
+<body>
+
+<script>
+
+    // Object declaration
+    let student = {
+        name: "Vaishu",
+        age: 21,
+        department: "CSE",
+        marks: 85
+    };
+
+    console.log(student.name);
+    console.log(student.age);
+
+
+    // Object Properties
+    let user = {
+        name: "Sri",
+        age: 25,
+        city: "Chennai"
+    };
+
+    // Dot notation
+    console.log(user.name);
+    console.log(user.age);
+
+    // Bracket notation
+    console.log(user["name"]);
+    console.log(user["age"]);
+
+    // Dynamic property access
+    let property = "name";
+    console.log(user[property]);
+
+    // Adding a property
+    user.age = 25;
+    user.city = "Chennai";
+    console.log(user);
+
+    // Updating a property
+    user.age = 26;
+    console.log(user.age);
+
+    // Deleting a property
+    delete user.city;
+    console.log(user);
+
+
+    // Object realtime example
+    let product = {
+        name: "Wireless Mouse",
+        price: 999,
+        stock: 20
+    };
+
+    product.stock = 19;
+    console.log(product);
+
+
+    // Object Methods
+    let person = {
+        name: "Rahul",
+
+        greet() {
+            console.log("Hello " + this.name);
+        }
+    };
+
+    person.greet();
+
+
+    // this keyword
+    let cart = {
+        total: 0,
+
+        addProduct(price) {
+            this.total += price;
+        },
+
+        showTotal() {
+            console.log("Total: ₹" + this.total);
+        }
+    };
+
+    cart.addProduct(500);
+    cart.addProduct(1000);
+    cart.showTotal();
+
+
+    // Nested Objects
+    let employee = {
+        name: "Vais",
+        age: 24,
+
+        address: {
+            city: "Coimbatore",
+            state: "Tamil Nadu",
+            pincode: 641001
+        }
+    };
+
+    console.log(employee.name);
+    console.log(employee.address.city);
+    console.log(employee.address.pincode);
+
+
+    // Nested object - API example
+    let apiUser = {
+        id: 101,
+        name: "Anu",
+
+        profile: {
+            email: "anu@gmail.com",
+
+            address: {
+                city: "Chennai",
+                country: "India"
+            }
+        }
+    };
+
+    console.log(apiUser.profile.email);
+    console.log(apiUser.profile.address.city);
+
+
+    // Object Destructuring
+    let user1 = {
+        name: "Arun",
+        age: 25,
+        city: "Chennai"
+    };
+
+    let { name, age, city } = user1;
+
+    console.log(name);
+    console.log(age);
+    console.log(city);
+
+
+    // Destructuring with renaming
+    let user2 = {
+        name: "Arun",
+        age: 25
+    };
+
+    let { name: userName, age: userAge } = user2;
+
+    console.log(userName);
+    console.log(userAge);
+
+
+    // Destructuring with default values
+    let user3 = {
+        name: "Arun"
+    };
+
+    let { name: personName, age: personAge = 18 } = user3;
+
+    console.log(personName);
+    console.log(personAge);
+
+
+    // Nested destructuring
+    let employee1 = {
+        name: "Priya",
+
+        address: {
+            city: "Coimbatore",
+            state: "Tamil Nadu"
+        }
+    };
+
+    let {
+        name: employeeName,
+        address: { city: employeeCity, state }
+    } = employee1;
+
+    console.log(employeeName);
+    console.log(employeeCity);
+    console.log(state);
+
+
+    // Object.keys()
+    let user4 = {
+        name: "Arun",
+        age: 25,
+        city: "Chennai"
+    };
+
+    console.log(Object.keys(user4));
+
+
+    // Object.keys() - count properties
+    let product1 = {
+        name: "Laptop",
+        price: 55000,
+        brand: "Dell",
+        stock: 10
+    };
+
+    let properties = Object.keys(product1);
+
+    console.log(properties.length);
+
+
+    // Object.keys() - loop
+    Object.keys(product1).forEach(key => {
+        console.log(key);
+    });
+
+
+    // Object.values()
+    let user5 = {
+        name: "Arun",
+        age: 25,
+        city: "Chennai"
+    };
+
+    console.log(Object.values(user5));
+
+
+    // Object.values() - marks
+    let marks = {
+        maths: 90,
+        science: 85,
+        english: 80
+    };
+
+    let scores = Object.values(marks);
+
+    console.log(scores);
+
+
+    // Object.values() - reduce
+    let totalMarks = scores.reduce((sum, mark) => {
+        return sum + mark;
+    }, 0);
+
+    console.log(totalMarks);
+
+
+    // Object.entries()
+    let user6 = {
+        name: "Arun",
+        age: 25,
+        city: "Chennai"
+    };
+
+    console.log(Object.entries(user6));
+
+
+    // Object.entries() - for...of
+    for (let [key, value] of Object.entries(user6)) {
+        console.log(key + ":", value);
+    }
+
+
+    // Object.entries() - realtime example
+    let user7 = {
+        username: "vaishu",
+        email: "vaishu@gmail.com",
+        role: "Developer"
+    };
+
+    for (let [key, value] of Object.entries(user7)) {
+        console.log(`${key}: ${value}`);
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error Handling</title>
+</head>
+<body>
+
+<script>
+
+    // try...catch
+    try {
+        let result = 10 / 0;
+
+        console.log(result);
+    } catch (error) {
+        console.log("Something went wrong");
+    }
+
+
+    // Catching an error
+    try {
+        let number = undefined;
+
+        console.log(number.name);
+    } catch (error) {
+        console.log("Error occurred");
+    }
+
+
+    // error.name
+    try {
+        throw new Error("Database connection failed");
+    } catch (error) {
+        console.log(error.name);
+        console.log(error.message);
+    }
+
+
+    // error.message
+    try {
+        throw new Error("Something went wrong");
+    } catch (error) {
+        console.log(error.message);
+    }
+
+
+    // finally
+    try {
+        console.log("Trying operation");
+    } catch (error) {
+        console.log("Error occurred");
+    } finally {
+        console.log("Operation completed");
+    }
+
+
+    // throw
+    let age = 15;
+
+    try {
+        if (age < 18) {
+            throw new Error("User must be 18 or older");
+        }
+
+        console.log("Allowed");
+    } catch (error) {
+        console.log(error.message);
+    }
+
+
+    // Custom Error
+    class ValidationError extends Error {
+
+        constructor(message) {
+            super(message);
+            this.name = "ValidationError";
+        }
+
+    }
+
+
+    // Using Custom Error
+    try {
+
+        let email = "";
+
+        if (email === "") {
+            throw new ValidationError("Email is required");
+        }
+
+        console.log("Valid email");
+
+    } catch (error) {
+
+        console.log(error.name);
+        console.log(error.message);
+
+    }
+
+
+    // AuthenticationError
+    class AuthenticationError extends Error {
+
+        constructor(message) {
+            super(message);
+            this.name = "AuthenticationError";
+        }
+
+    }
+
+
+    // Login example
+    function login(username, password) {
+
+        if (username === "") {
+            throw new AuthenticationError(
+                "Username is required"
+            );
+        }
+
+        if (password === "") {
+            throw new AuthenticationError(
+                "Password is required"
+            );
+        }
+
+        if (password !== "12345") {
+            throw new AuthenticationError(
+                "Invalid password"
+            );
+        }
+
+        return "Login successful";
+    }
+
+
+    // Handling AuthenticationError
+    try {
+
+        console.log(
+            login("arun", "wrong")
+        );
+
+    } catch (error) {
+
+        console.log(
+            `${error.name}: ${error.message}`
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

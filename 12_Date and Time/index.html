@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date and Time</title>
+</head>
+<body>
+
+<script>
+
+    // Creating a Date Object
+    let currentDate = new Date();
+
+    console.log(currentDate);
+
+
+    // Creating a Specific Date
+    let date = new Date("2026-09-17");
+
+    console.log(date);
+
+
+    // Date using components
+    let date1 = new Date(2026, 8, 17);
+
+    console.log(date1);
+
+
+    // Date Formatting - toDateString()
+    let date2 = new Date();
+
+    console.log(date2.toDateString());
+
+
+    // Date Formatting - toTimeString()
+    console.log(date2.toTimeString());
+
+
+    // Date Formatting - toISOString()
+    console.log(date2.toISOString());
+
+
+    // getFullYear()
+    console.log(date2.getFullYear());
+
+
+    // getMonth()
+    console.log(date2.getMonth());
+
+    // Normal month number
+    console.log(date2.getMonth() + 1);
+
+
+    // getDate()
+    console.log(date2.getDate());
+
+
+    // getDay()
+    console.log(date2.getDay());
+
+
+    // getHours()
+    console.log(date2.getHours());
+
+
+    // getMinutes()
+    console.log(date2.getMinutes());
+
+
+    // getSeconds()
+    console.log(date2.getSeconds());
+
+
+    // getMilliseconds()
+    console.log(date2.getMilliseconds());
+
+
+    // setFullYear()
+    let date3 = new Date();
+
+    date3.setFullYear(2030);
+
+    console.log(date3);
+
+
+    // setMonth()
+    date3.setMonth(5);
+
+    console.log(date3);
+
+
+    // setDate()
+    date3.setDate(25);
+
+    console.log(date3);
+
+
+    // setHours()
+    date3.setHours(10);
+
+    console.log(date3);
+
+
+    // setMinutes()
+    date3.setMinutes(30);
+
+    console.log(date3);
+
+
+    // setSeconds()
+    date3.setSeconds(45);
+
+    console.log(date3);
+
+
+    // setMilliseconds()
+    date3.setMilliseconds(500);
+
+    console.log(date3);
+
+
+    // Date.now()
+    let timestamp = Date.now();
+
+    console.log(timestamp);
+
+
+    // getTime()
+    let date4 = new Date();
+
+    console.log(date4.getTime());
+
+
+    // Timestamp from specific date
+    let date5 = new Date("2026-01-01");
+
+    console.log(date5.getTime());
+
+
+    // Timestamp to Date
+    let timestamp1 = Date.now();
+
+    let date6 = new Date(timestamp1);
+
+    console.log(date6);
+
+
+    // Timestamp to readable date
+    let timestamp2 = Date.now();
+
+    let date7 = new Date(timestamp2);
+
+    console.log(date7.toDateString());
+
+
+    // Comparing Dates
+    let date8 = new Date("2026-09-10");
+    let date9 = new Date("2026-09-17");
+
+    if (date8 < date9) {
+        console.log("date1 is earlier");
+    }
+
+
+    // Subscription expiry
+    let expiryDate = new Date("2026-09-20");
+    let today = new Date();
+
+    if (today > expiryDate) {
+        console.log("Subscription expired");
+    } else {
+        console.log("Subscription is active");
+    }
+
+
+    // Difference Between Dates
+    let start = new Date("2026-09-10");
+    let end = new Date("2026-09-17");
+
+    let difference = end - start;
+
+    console.log(difference);
+
+
+    // Difference in Days
+    let differenceInDays =
+        difference / (1000 * 60 * 60 * 24);
+
+    console.log(differenceInDays);
+
+</script>
+
+</body>
+</html>

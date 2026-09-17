@@ -58,42 +58,42 @@ Arrays
 Creation, indexing, push/pop/shift/unshift, splice, slice, map, filter, reduce
 
 
-9
+9-c
 	
 Objects
 	
 Properties, methods, nested objects, destructuring, Object.keys/values/entries
 
 
-10
+10-c
 	
 Strings
 	
 String methods, template literals, concatenation, escaping, length
 
 
-11
+11-c
 	
 Numbers & Math
 	
 parseInt, parseFloat, toFixed, isNaN, Math methods
 
 
-12
+12-c
 	
 Dates & Times
 	
 Date object, formatting, timestamps, date methods
 
 
-13
+13-c
 	
 Error Handling
 	
 try, catch, finally, throw, custom errors
 
 
-14
+14-c
 	
 Events
 	

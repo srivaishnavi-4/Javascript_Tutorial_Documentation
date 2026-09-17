@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+</head>
+
+<body>
+
+    <!-- Event Listener -->
+    <button id="btn">Click Me</button>
+
+    <!-- Event Object -->
+    <button id="btn2">Click for Event</button>
+
+    <!-- Event Bubbling -->
+    <div id="parent"
+         style="padding:20px; border:2px solid black;">
+
+        Parent
+
+        <button id="child">
+            Child
+        </button>
+
+    </div>
+
+
+    <!-- Event Delegation -->
+    <ul id="products">
+        <li>Apple</li>
+        <li>Banana</li>
+        <li>Orange</li>
+    </ul>
+
+
+    <!-- preventDefault() -->
+    <a id="link" href="https://example.com">
+        Visit Website
+    </a>
+
+
+    <script>
+
+        // Event Listener
+        let button = document.getElementById("btn");
+
+        button.addEventListener("click", function () {
+            console.log("Button clicked");
+        });
+
+
+        // Event Object
+        let button2 = document.getElementById("btn2");
+
+        button2.addEventListener("click", function (event) {
+
+            console.log(event);
+            console.log(event.type);
+            console.log(event.target);
+
+        });
+
+
+        // Event Bubbling
+        let parent = document.getElementById("parent");
+        let child = document.getElementById("child");
+
+        parent.addEventListener("click", function () {
+            console.log("Parent clicked");
+        });
+
+        child.addEventListener("click", function () {
+            console.log("Child clicked");
+        });
+
+
+        // event.target
+        child.addEventListener("click", function (event) {
+
+            console.log(event.target);
+
+        });
+
+
+        // event.currentTarget
+        parent.addEventListener("click", function (event) {
+
+            console.log(event.currentTarget);
+
+        });
+
+
+        // Event Delegation
+        let products = document.getElementById("products");
+
+        products.addEventListener("click", function (event) {
+
+            if (event.target.tagName === "LI") {
+
+                console.log(event.target.textContent);
+
+            }
+
+        });
+
+
+        // Event Delegation using matches()
+        products.addEventListener("click", function (event) {
+
+            if (event.target.matches("li")) {
+
+                console.log(
+                    "Selected: " +
+                    event.target.textContent
+                );
+
+            }
+
+        });
+
+
+        // Specific class with matches()
+        products.addEventListener("click", function (event) {
+
+            if (event.target.matches(".remove-btn")) {
+
+                console.log("Remove product");
+
+            }
+
+        });
+
+
+        // preventDefault()
+        let link = document.getElementById("link");
+
+        link.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+            console.log(
+                "Default navigation prevented"
+            );
+
+        });
+
+
+        // stopPropagation()
+        child.addEventListener("click", function (event) {
+            event.stopPropagation();
+            console.log(
+                "Propagation stopped"
+            );
+        });
+    </script>
+
+</body>
+</html>
