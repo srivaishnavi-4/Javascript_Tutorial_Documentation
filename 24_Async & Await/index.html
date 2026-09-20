@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Async Await</title>
+</head>
+<body>
+
+<script>
+
+    // async function
+    async function greet() {
+
+        return "Hello Vaishu";
+
+    }
+
+    greet().then(result => {
+        console.log(result);
+    });
+
+
+    // await
+    async function getData() {
+
+        const result =
+            await Promise.resolve("Data received");
+
+        console.log(result);
+
+    }
+
+    getData();
+
+
+    // async/await with fetch()
+    async function getUsers() {
+
+        try {
+
+            const response =
+                await fetch("/api/users");
+
+            const users =
+                await response.json();
+
+            console.log(users);
+
+        } catch (error) {
+
+            console.log(error.message);
+
+        }
+
+    }
+
+    getUsers();
+
+
+    // Error Handling
+    async function login() {
+
+        try {
+
+            const response =
+                await fetch("/api/login");
+
+            if (!response.ok) {
+                throw new Error("Login failed");
+            }
+
+            console.log("Login successful");
+
+        } catch (error) {
+
+            console.log(error.message);
+
+        }
+
+    }
+
+    login();
+
+
+    // finally
+    async function processData() {
+
+        try {
+
+            console.log("Processing");
+
+        } catch (error) {
+
+            console.log(error);
+
+        } finally {
+
+            console.log("Process completed");
+
+        }
+
+    }
+
+    processData();
+
+
+    // Sequential Execution
+    async function sequential() {
+
+        const user =
+            await fetch("/api/user");
+
+        const orders =
+            await fetch("/api/orders");
+
+        console.log(user);
+        console.log(orders);
+
+    }
+
+    sequential();
+
+
+    // Concurrent Execution
+    async function concurrent() {
+
+        const [
+            users,
+            products
+        ] = await Promise.all([
+
+            fetch("/api/users"),
+            fetch("/api/products")
+
+        ]);
+
+        console.log(users);
+        console.log(products);
+
+    }
+
+    concurrent();
+
+
+    // Individual Error Handling
+    async function safeRequest(url) {
+
+        try {
+
+            const response =
+                await fetch(url);
+
+            return await response.json();
+
+        } catch (error) {
+
+            return {
+                error: error.message
+            };
+
+        }
+
+    }
+
+
+    // Multiple Requests
+    async function loadData() {
+
+        const results = await Promise.all([
+            safeRequest("/api/users"),
+            safeRequest("/api/products")
+        ]);
+
+        console.log(results);
+
+    }
+
+    loadData();
+
+</script>
+
+</body>
+</html>

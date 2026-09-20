@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Higher Order Functions</title>
+</head>
+<body>
+
+<script>
+
+    // Callback Function
+    function greet(name) {
+
+        console.log(`Hello ${name}`);
+
+    }
+
+    function processUser(callback) {
+
+        callback("Vaishu");
+
+    }
+
+    processUser(greet);
+
+
+    // forEach()
+    const users = [
+        "Vaishu",
+        "Priya",
+        "Kumar"
+    ];
+
+    users.forEach(function(user) {
+
+        console.log(user);
+
+    });
+
+
+    // map()
+    const prices = [
+        100,
+        200,
+        300
+    ];
+
+    const updatedPrices =
+        prices.map(price => price * 1.18);
+
+    console.log(updatedPrices);
+
+
+    // filter()
+    const numbers = [
+        100,
+        500,
+        1200,
+        2000
+    ];
+
+    const affordable =
+        numbers.filter(
+            price => price <= 1000
+        );
+
+    console.log(affordable);
+
+
+    // reduce()
+    const values = [
+        500,
+        1000,
+        1500
+    ];
+
+    const total =
+        values.reduce(
+            (sum, value) => sum + value,
+            0
+        );
+
+    console.log(total);
+
+
+    // reduce() Real-Time Example
+    const cart = [
+        {
+            name: "Laptop",
+            price: 50000
+        },
+        {
+            name: "Mouse",
+            price: 1000
+        },
+        {
+            name: "Keyboard",
+            price: 2000
+        }
+    ];
+
+    const cartTotal =
+        cart.reduce(
+            (total, product) =>
+                total + product.price,
+            0
+        );
+
+    console.log(cartTotal);
+
+
+    // Chaining Array Methods
+    const result =
+        cart
+            .filter(product =>
+                product.price > 1000
+            )
+            .map(product =>
+                product.price * 0.9
+            )
+            .reduce(
+                (total, price) =>
+                    total + price,
+                0
+            );
+
+    console.log(result);
+
+
+    // Callback Parameters
+    const products = [
+        "Laptop",
+        "Mobile",
+        "Tablet"
+    ];
+
+    products.forEach(
+        (product, index, array) => {
+
+            console.log(product);
+            console.log(index);
+            console.log(array);
+
+        }
+    );
+
+
+    // Function Returning a Function
+    function createGreeting() {
+
+        return function(name) {
+
+            return `Hello ${name}`;
+
+        };
+
+    }
+
+    const greeting =
+        createGreeting();
+
+    console.log(
+        greeting("Vaishu")
+    );
+
+
+    // Function Returning a Function with Parameters
+    function multiplyBy(number) {
+
+        return function(value) {
+
+            return value * number;
+
+        };
+
+    }
+
+    const double =
+        multiplyBy(2);
+
+    console.log(
+        double(10)
+    );
+
+
+    // Function Factory
+    function createDiscount(discount) {
+
+        return function(price) {
+
+            return price - (
+                price * discount
+            );
+
+        };
+
+    }
+
+    const tenPercentOff =
+        createDiscount(0.10);
+
+    console.log(
+        tenPercentOff(1000)
+    );
+
+
+    // Callback + map()
+    function square(number) {
+
+        return number * number;
+
+    }
+
+    const numbers2 = [1, 2, 3, 4];
+
+    const squares =
+        numbers2.map(square);
+
+    console.log(squares);
+
+
+    // Callback + filter() + reduce()
+    const prices2 = [
+        500,
+        1200,
+        800,
+        2000
+    ];
+
+    const total2 =
+        prices2
+            .filter(price => price >= 1000)
+            .reduce(
+                (sum, price) =>
+                    sum + price,
+                0
+            );
+
+    console.log(total2);
+
+
+    // forEach() vs map()
+    const values2 = [1, 2, 3];
+
+    values2.forEach(value => {
+
+        console.log(value * 2);
+
+    });
+
+    const doubled =
+        values2.map(value => value * 2);
+
+    console.log(doubled);
+
+</script>
+
+</body>
+</html>

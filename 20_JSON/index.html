@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON and APIs</title>
+</head>
+<body>
+
+<script>
+
+    // JSON Parsing
+    const jsonData =
+        '{"name":"Vaishu","age":22}';
+
+    const user = JSON.parse(jsonData);
+
+    console.log(user);
+    console.log(user.name);
+
+
+    // Invalid JSON
+    try {
+
+        const data = '{"name":"Vaishu"';
+
+        const userData = JSON.parse(data);
+
+        console.log(userData);
+
+    } catch (error) {
+
+        console.log("Invalid JSON data");
+
+    }
+
+
+    // JSON Stringifying
+    const user2 = {
+        name: "Vaishu",
+        age: 22
+    };
+
+    const jsonUser =
+        JSON.stringify(user2);
+
+    console.log(jsonUser);
+
+    console.log(typeof jsonUser);
+
+
+    // fetch()
+    fetch("https://example.com/api/users")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log("Error:", error);
+        });
+
+
+    // async/await with API
+    async function getUsers() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://example.com/api/users"
+                );
+
+            const users =
+                await response.json();
+
+            console.log(users);
+
+        } catch (error) {
+
+            console.log("Failed to fetch users");
+
+        }
+
+    }
+
+    getUsers();
+
+
+    // Sending JSON
+    const newUser = {
+        name: "Vaishu",
+        email: "vaishu@gmail.com"
+    };
+
+    fetch("/api/users", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(newUser)
+
+    });
+
+
+    // Shallow Copy
+    const originalUser = {
+        name: "Vaishu",
+        address: {
+            city: "Coimbatore"
+        }
+    };
+
+    const shallowCopy = {
+        ...originalUser
+    };
+
+    shallowCopy.name = "Kumar";
+
+    console.log(originalUser.name);
+    console.log(shallowCopy.name);
+
+
+    // Shallow Copy with Nested Object
+    shallowCopy.address.city = "Chennai";
+
+    console.log(
+        originalUser.address.city
+    );
+
+
+    // Deep Copy using JSON
+    const deepCopy =
+        JSON.parse(
+            JSON.stringify(originalUser)
+        );
+
+    deepCopy.address.city = "Bangalore";
+
+    console.log(
+        originalUser.address.city
+    );
+
+    console.log(
+        deepCopy.address.city
+    );
+
+
+    // Deep Copy using structuredClone()
+    const copiedUser =
+        structuredClone(originalUser);
+
+    copiedUser.address.city = "Madurai";
+
+    console.log(
+        originalUser.address.city
+    );
+
+    console.log(
+        copiedUser.address.city
+    );
+
+
+    // Reference
+    const userA = {
+        name: "Vaishu"
+    };
+
+    const userB = userA;
+
+    userB.name = "Kumar";
+
+    console.log(userA.name);
+
+</script>
+
+</body>
+</html>

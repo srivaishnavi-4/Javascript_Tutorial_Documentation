@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Browser Objects</title>
+</head>
+<body>
+
+<script>
+
+    // window
+    console.log(window.innerWidth);
+    console.log(window.innerHeight);
+
+
+    // Responsive layout check
+    if (window.innerWidth < 768) {
+        console.log("Mobile layout");
+    } else {
+        console.log("Desktop layout");
+    }
+
+
+    // alert()
+    alert("Welcome to JavaScript");
+
+
+    // confirm()
+    let result = confirm("Do you want to continue?");
+
+    if (result) {
+        console.log("User clicked OK");
+    } else {
+        console.log("User clicked Cancel");
+    }
+
+
+    // prompt()
+    let name = prompt("Enter your name");
+
+    if (name !== null) {
+        console.log(`Hello ${name}`);
+    }
+
+
+    // prompt() with number
+    let age = parseInt(prompt("Enter your age"));
+
+    console.log(age);
+
+
+    // location.href
+    console.log(location.href);
+
+
+    // location.hostname
+    console.log(location.hostname);
+
+
+    // location.pathname
+    console.log(location.pathname);
+
+
+    // location.search
+    console.log(location.search);
+
+
+    // URLSearchParams
+    let params = new URLSearchParams(location.search);
+
+    let productId = params.get("id");
+
+    console.log(productId);
+
+
+    // location.assign()
+    // location.assign("https://example.com");
+
+
+    // location.reload()
+    // location.reload();
+
+
+    // navigator.language
+    console.log(navigator.language);
+
+
+    // navigator.onLine
+    if (navigator.onLine) {
+        console.log("Online");
+    } else {
+        console.log("Offline");
+    }
+
+
+    // navigator.geolocation
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+        console.log(position.coords.latitude);
+        console.log(position.coords.longitude);
+
+    });
+
+
+    // navigator.clipboard
+    navigator.clipboard.writeText("Hello JavaScript");
+
+
+    // screen.width
+    console.log(screen.width);
+
+
+    // screen.height
+    console.log(screen.height);
+
+
+    // screen.availWidth
+    console.log(screen.availWidth);
+
+
+    // screen.availHeight
+    console.log(screen.availHeight);
+
+
+    // window vs screen
+    console.log("Screen:", screen.width);
+    console.log("Viewport:", window.innerWidth);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Storage and Cookies</title>
+</head>
+<body>
+
+<script>
+
+    // localStorage
+    localStorage.setItem(
+        "username",
+        "Vaishu"
+    );
+
+
+    // Reading localStorage
+    let username =
+        localStorage.getItem("username");
+
+    console.log(username);
+
+
+    // Removing localStorage
+    localStorage.removeItem("username");
+
+
+    // Clearing localStorage
+    localStorage.clear();
+
+
+    // Storing Objects
+    const user = {
+        name: "Vaishu",
+        age: 22
+    };
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
+
+
+    // Reading Object
+    const storedUser =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    console.log(storedUser);
+
+
+    // sessionStorage
+    sessionStorage.setItem(
+        "username",
+        "Vaishu"
+    );
+
+
+    // Reading sessionStorage
+    console.log(
+        sessionStorage.getItem("username")
+    );
+
+
+    // Removing sessionStorage
+    sessionStorage.removeItem("username");
+
+
+    // Cookies
+    document.cookie =
+        "username=Vaishu";
+
+
+    // Reading Cookies
+    console.log(document.cookie);
+
+
+    // Cookie Expiration
+    document.cookie =
+        "theme=dark; max-age=3600";
+
+
+    // Cookie Security Attributes
+    document.cookie =
+        "token=12345; Secure; SameSite=Strict";
+
+</script>
+
+</body>
+</html>

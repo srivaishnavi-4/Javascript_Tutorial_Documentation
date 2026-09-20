@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Promises</title>
+</head>
+<body>
+
+<script>
+
+    // Promise
+    const promise = new Promise(
+        (resolve, reject) => {
+
+            let success = true;
+
+            if (success) {
+                resolve("Operation successful");
+            } else {
+                reject("Operation failed");
+            }
+
+        }
+    );
+
+
+    // then()
+    promise.then(result => {
+        console.log(result);
+    });
+
+
+    // catch()
+    promise.catch(error => {
+        console.log(error);
+    });
+
+
+    // finally()
+    promise.finally(() => {
+        console.log("Operation completed");
+    });
+
+
+    // Promise Chaining
+    Promise.resolve(10)
+        .then(value => {
+
+            return value * 2;
+
+        })
+        .then(value => {
+
+            return value + 5;
+
+        })
+        .then(result => {
+
+            console.log(result);
+
+        });
+
+
+    // Promise Chaining with API
+    fetch("/api/user/101")
+        .then(response => response.json())
+        .then(user => {
+
+            console.log(user);
+
+            return fetch(
+                `/api/orders/${user.id}`
+            );
+
+        })
+        .then(response => response.json())
+        .then(orders => {
+
+            console.log(orders);
+
+        })
+        .catch(error => {
+
+            console.log(error);
+
+        });
+
+
+    // Promise.all()
+    const p1 = Promise.resolve(10);
+    const p2 = Promise.resolve(20);
+    const p3 = Promise.resolve(30);
+
+    Promise.all([
+        p1,
+        p2,
+        p3
+    ])
+    .then(results => {
+
+        console.log(results);
+
+    });
+
+
+    // Promise.race()
+    const request1 = new Promise(resolve => {
+
+        setTimeout(
+            () => resolve("Server 1"),
+            2000
+        );
+
+    });
+
+    const request2 = new Promise(resolve => {
+
+        setTimeout(
+            () => resolve("Server 2"),
+            1000
+        );
+
+    });
+
+    Promise.race([
+        request1,
+        request2
+    ])
+    .then(result => {
+
+        console.log(result);
+
+    });
+
+</script>
+
+</body>
+</html>

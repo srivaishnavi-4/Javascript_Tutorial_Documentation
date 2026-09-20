@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch API and AJAX</title>
+</head>
+<body>
+
+<script>
+
+    // Asynchronous Request
+    console.log("Start");
+
+    setTimeout(() => {
+        console.log("Async operation");
+    }, 2000);
+
+    console.log("End");
+
+
+    // fetch()
+    fetch("/api/users")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+    // fetch() with async/await
+    async function getUsers() {
+
+        try {
+
+            const response =
+                await fetch("/api/users");
+
+            const users =
+                await response.json();
+
+            console.log(users);
+
+        } catch (error) {
+
+            console.log("Request failed");
+
+        }
+
+    }
+
+    getUsers();
+
+
+    // Checking HTTP Errors
+    async function loadUser() {
+
+        try {
+
+            const response =
+                await fetch("/api/user/101");
+
+            if (!response.ok) {
+                throw new Error(
+                    "Failed to fetch user"
+                );
+            }
+
+            const user =
+                await response.json();
+
+            console.log(user);
+
+        } catch (error) {
+
+            console.log(error.message);
+
+        }
+
+    }
+
+    loadUser();
+
+
+    // GET Request
+    fetch("/api/users")
+        .then(response => response.json())
+        .then(data => console.log(data));
+
+
+    // POST Request
+    const user = {
+        name: "Vaishu",
+        email: "vaishu@gmail.com"
+    };
+
+    fetch("/api/users", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(user)
+
+    });
+
+
+    // PUT Request
+    fetch("/api/users/101", {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            name: "Vaishu"
+        })
+
+    });
+
+
+    // DELETE Request
+    fetch("/api/users/101", {
+        method: "DELETE"
+    });
+
+
+    // XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+
+    xhr.open(
+        "GET",
+        "/api/users"
+    );
+
+    xhr.onload = function() {
+
+        console.log(xhr.responseText);
+
+    };
+
+    xhr.send();
+
+</script>
+
+</body>
+</html>

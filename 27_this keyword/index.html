@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>this call apply bind</title>
+</head>
+<body>
+
+<script>
+
+    // Global Context
+    console.log(this);
+
+
+    // Object Context
+    const user = {
+
+        name: "Vaishu",
+
+        greet() {
+
+            console.log(this.name);
+
+        }
+
+    };
+
+    user.greet();
+
+
+    // this depends on call site
+    const person = {
+
+        name: "Vaishu",
+
+        showName() {
+
+            console.log(this.name);
+
+        }
+
+    };
+
+    person.showName();
+
+
+    // Function Context
+    function showThis() {
+
+        console.log(this);
+
+    }
+
+    showThis();
+
+
+    // Function as Object Method
+    const employee = {
+
+        name: "Vaishu",
+
+        display() {
+
+            console.log(this.name);
+
+        }
+
+    };
+
+    employee.display();
+
+
+    // Function with new
+    function Student(name) {
+
+        this.name = name;
+
+    }
+
+    const student =
+        new Student("Vaishu");
+
+    console.log(student.name);
+
+
+    // Class Context
+    class User {
+
+        constructor(name) {
+
+            this.name = name;
+
+        }
+
+        greet() {
+
+            console.log(this.name);
+
+        }
+
+    }
+
+    const user1 =
+        new User("Vaishu");
+
+    user1.greet();
+
+
+    // Arrow Function and this
+    const person1 = {
+
+        name: "Vaishu",
+
+        greet() {
+
+            const show = () => {
+
+                console.log(this.name);
+
+            };
+
+            show();
+
+        }
+
+    };
+
+    person1.greet();
+
+
+    // call()
+    const user2 = {
+        name: "Vaishu"
+    };
+
+    function greet(message) {
+
+        console.log(
+            `${message} ${this.name}`
+        );
+
+    }
+
+    greet.call(
+        user2,
+        "Hello"
+    );
+
+
+    // apply()
+    function introduce(city, role) {
+
+        console.log(
+            `${this.name} - ${city} - ${role}`
+        );
+
+    }
+
+    introduce.apply(
+        user2,
+        ["Coimbatore", "Developer"]
+    );
+
+
+    // bind()
+    const boundFunction =
+        greet.bind(
+            user2,
+            "Hello"
+        );
+
+    boundFunction();
+
+
+    // bind() with Arguments
+    const boundIntroduce =
+        introduce.bind(
+            user2,
+            "Coimbatore",
+            "Developer"
+        );
+
+    boundIntroduce();
+
+
+    // call vs apply
+    introduce.call(
+        user2,
+        "Chennai",
+        "Developer"
+    );
+
+    introduce.apply(
+        user2,
+        ["Chennai", "Developer"]
+    );
+
+</script>
+
+</body>
+</html>

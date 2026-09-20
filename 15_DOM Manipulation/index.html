@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Manipulation</title>
+</head>
+<body>
+
+    <h2 id="title">Welcome</h2>
+
+    <div class="product">
+        <p class="price">₹50000</p>
+    </div>
+
+    <div id="container"></div>
+
+    <button id="btn" class="button">Login</button>
+
+    <img
+        id="profileImage"
+        src="profile.jpg"
+        alt="Profile"
+    >
+
+    <button data-product-id="101">
+        Add to Cart
+    </button>
+
+    <script>
+
+        // getElementById()
+        let heading = document.getElementById("title");
+
+        console.log(heading);
+
+        heading.textContent = "Hello JavaScript";
+
+
+        // querySelector()
+        let price = document.querySelector(".product .price");
+
+        console.log(price.textContent);
+
+        let button = document.querySelector("button");
+
+        console.log(button);
+
+
+        // createElement()
+        let newHeading = document.createElement("h2");
+
+        newHeading.textContent = "New Product";
+
+        document.body.appendChild(newHeading);
+
+
+        // Creating a Product Card
+        let card = document.createElement("div");
+
+        card.textContent = "Laptop - ₹65000";
+
+        document.body.appendChild(card);
+
+
+        // Creating multiple elements
+        let products = ["Laptop", "Mouse", "Keyboard"];
+
+        let productList = document.createElement("ul");
+
+        products.forEach(function(product) {
+
+            let item = document.createElement("li");
+
+            item.textContent = product;
+
+            productList.appendChild(item);
+
+        });
+
+        document.body.appendChild(productList);
+
+
+        // innerHTML
+        let container = document.getElementById("container");
+
+        container.innerHTML = "<h2>Hello</h2>";
+
+
+        // Adding multiple HTML elements
+        container.innerHTML = `
+            <h2>Laptop</h2>
+            <p>Price: ₹65000</p>
+            <button>Buy Now</button>
+        `;
+
+
+        // Reading innerHTML
+        console.log(container.innerHTML);
+
+
+        // innerHTML vs textContent
+        container.innerHTML = "<b>Hello</b>";
+
+        console.log(container.innerHTML);
+
+        container.textContent = "<b>Hello</b>";
+
+        console.log(container.textContent);
+
+
+        // classList.add()
+        let loginButton = document.getElementById("btn");
+
+        loginButton.classList.add("active");
+
+
+        // classList.remove()
+        loginButton.classList.remove("active");
+
+
+        // classList.toggle()
+        loginButton.classList.toggle("active");
+
+
+        // classList.contains()
+        if (loginButton.classList.contains("active")) {
+
+            console.log("Button is active");
+
+        }
+
+
+        // classList.replace()
+        loginButton.classList.add("inactive");
+
+        loginButton.classList.replace(
+            "inactive",
+            "active"
+        );
+
+
+        // getAttribute()
+        let image = document.getElementById("profileImage");
+
+        console.log(
+            image.getAttribute("src")
+        );
+
+
+        // setAttribute()
+        image.setAttribute(
+            "src",
+            "new-profile.jpg"
+        );
+
+
+        // removeAttribute()
+        image.removeAttribute("alt");
+
+
+        // hasAttribute()
+        if (image.hasAttribute("src")) {
+
+            console.log("Image source exists");
+
+        }
+
+
+        // data-* attributes
+        let productButton =
+            document.querySelector("[data-product-id]");
+
+        console.log(
+            productButton.dataset.productId
+        );
+
+
+        // Updating data-* attribute
+        productButton.setAttribute(
+            "data-product-id",
+            "102"
+        );
+
+        console.log(
+            productButton.dataset.productId
+        );
+
+
+        // Complete DOM Manipulation Example
+        let productContainer =
+            document.createElement("div");
+
+        productContainer.classList.add("card");
+
+        productContainer.innerHTML = `
+            <h2>Laptop</h2>
+            <p>Price: ₹65000</p>
+            <p id="status">In Stock</p>
+        `;
+
+        document.body.appendChild(productContainer);
+
+
+        // Find element inside created card
+        let status =
+            productContainer.querySelector("#status");
+
+
+        // Add class
+        status.classList.add("available");
+
+
+        // Add custom attribute
+        productContainer.setAttribute(
+            "data-product-id",
+            "101"
+        );
+
+
+        // Read custom attribute
+        console.log(
+            productContainer.getAttribute(
+                "data-product-id"
+            )
+        );
+
+    </script>
+
+</body>
+</html>

@@ -100,14 +100,14 @@ Events
 Event listeners, event object, bubbling, delegation
 
 
-15
+15-c
 	
 DOM Manipulation
 	
 getElementById, querySelector, createElement, innerHTML, classList, attributes
 
 
-16
+16-c
 	
 BOM (Browser Object Model)
 	

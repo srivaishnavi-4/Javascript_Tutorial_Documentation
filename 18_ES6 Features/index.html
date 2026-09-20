@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ES6 Features</title>
+</head>
+<body>
+
+<script>
+
+    // let
+    let age = 21;
+
+    age = 22;
+
+    console.log(age);
+
+
+    // const
+    const taxRate = 0.18;
+
+    console.log(taxRate);
+
+
+    // const object
+    const user = {
+        name: "Vaishu",
+        age: 22
+    };
+
+    user.name = "Vaishu";
+
+    console.log(user);
+
+
+    // Arrow Function
+    const add = (a, b) => {
+        return a + b;
+    };
+
+    console.log(add(10, 20));
+
+
+    // Short Arrow Function
+    const multiply = (a, b) => a * b;
+
+    console.log(multiply(5, 4));
+
+
+    // Arrow Function with map()
+    const prices = [100, 200, 300];
+
+    const discountedPrices =
+        prices.map(price => price * 0.9);
+
+    console.log(discountedPrices);
+
+
+    // Template Literals
+    let name = "Vaishu";
+    let userAge = 22;
+
+    console.log(
+        `My name is ${name} and I am ${userAge} years old.`
+    );
+
+
+    // Template Literal Expression
+    let price = 100;
+    let quantity = 3;
+
+    console.log(
+        `Total: ₹${price * quantity}`
+    );
+
+
+    // Spread Operator with Array
+    const numbers = [10, 20, 30];
+
+    const newNumbers = [
+        ...numbers,
+        40,
+        50
+    ];
+
+    console.log(newNumbers);
+
+
+    // Combining Arrays
+    const frontend = ["HTML", "CSS"];
+    const backend = ["Node.js", "Express"];
+
+    const technologies = [
+        ...frontend,
+        ...backend
+    ];
+
+    console.log(technologies);
+
+
+    // Spread Operator with Object
+    const user1 = {
+        name: "Vaishu",
+        age: 22
+    };
+
+    const updatedUser = {
+        ...user1,
+        role: "Developer"
+    };
+
+    console.log(updatedUser);
+
+
+    // Rest Operator
+    function addNumbers(...numbers) {
+
+        return numbers.reduce(
+            (total, number) => total + number,
+            0
+        );
+
+    }
+
+    console.log(
+        addNumbers(10, 20, 30, 40)
+    );
+
+
+    // Rest with Parameters
+    function showUser(name, ...skills) {
+
+        console.log(name);
+        console.log(skills);
+
+    }
+
+    showUser(
+        "Vaishu",
+        "JavaScript",
+        "React",
+        "Node.js"
+    );
+
+
+    // Array Destructuring
+    const colors = [
+        "red",
+        "green",
+        "blue"
+    ];
+
+    const [first, second, third] = colors;
+
+    console.log(first);
+    console.log(second);
+    console.log(third);
+
+
+    // Skipping Values
+    const numbers2 = [10, 20, 30];
+
+    const [firstNumber, , thirdNumber] =
+        numbers2;
+
+    console.log(firstNumber);
+    console.log(thirdNumber);
+
+
+    // Object Destructuring
+    const user2 = {
+        name: "Vaishu",
+        age: 22,
+        role: "Developer"
+    };
+
+    const {
+        name: userName,
+        age: userAge2,
+        role
+    } = user2;
+
+    console.log(userName);
+    console.log(userAge2);
+    console.log(role);
+
+</script>
+
+</body>
+</html>

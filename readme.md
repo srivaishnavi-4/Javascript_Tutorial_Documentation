@@ -4212,3 +4212,6447 @@ Event Delegation
 **Note:**
 **Event delegation depends on event bubbling.** Instead of attaching listeners to every child, attach one listener to a common parent and use `event.target`/`matches()` to determine which child triggered the event.
 
+## 15_DOM Manipulation
+**DOM (Document Object Model)** represents an HTML page as a tree of elements.
+
+JavaScript can use the DOM to:
+* Find HTML elements
+* Change text/content
+* Change styles/classes
+* Create new elements
+* Add/remove elements
+* Read and modify attributes
+* Dynamically update the UI
+
+The main concepts are:
+1. `getElementById()`
+2. `querySelector()`
+3. `createElement()`
+4. `innerHTML`
+5. `classList`
+6. Attributes
+
+# 1. `getElementById()`
+### Explanation
+`getElementById()` finds an HTML element using its `id`.
+### Syntax
+```js
+document.getElementById("id");
+```
+### Example
+```html
+<h2 id="title">Welcome</h2>
+<script>
+    let heading = document.getElementById("title");
+    console.log(heading);
+</script>
+```
+It returns the `<h2>` element.
+### Changing content
+```js
+heading.textContent = "Hello JavaScript";
+```
+The page becomes:
+```text
+Hello JavaScript
+```
+### Technical real-time use
+Suppose a dashboard has:
+```html
+<h2 id="username"></h2>
+```
+JavaScript can display the logged-in user's name:
+```js
+let username = document.getElementById("username");
+username.textContent = "Arun Kumar";
+```
+This is commonly used for **user dashboards, profile pages, counters, status messages, etc.**
+
+# 2. `querySelector()`
+### Explanation
+`querySelector()` finds the **first element** that matches a CSS selector.
+### Syntax
+```js
+document.querySelector("selector");
+```
+You can use:
+```js
+document.querySelector("#title");
+document.querySelector(".card");
+document.querySelector("button");
+```
+
+### Example
+```html
+<h2 class="title">Products</h2>
+<script>
+    let heading = document.querySelector(".title");
+
+    heading.textContent = "Available Products";
+</script>
+```
+
+## ID selector
+```js
+let element = document.querySelector("#title");
+```
+Equivalent to:
+```js
+document.getElementById("title");
+```
+
+## Class selector
+```js
+let card = document.querySelector(".product-card");
+```
+## Element selector
+```js
+let button = document.querySelector("button");
+```
+
+## Nested selector
+```js
+let price = document.querySelector(".product .price");
+```
+This finds `.price` inside `.product`.
+### Important
+`querySelector()` returns only the **first matching element**.
+If you have:
+```html
+<p class="item">Apple</p>
+<p class="item">Orange</p>
+<p class="item">Banana</p>
+```
+
+Then:
+```js
+let item = document.querySelector(".item");
+console.log(item.textContent);
+```
+Output:
+```text
+Apple
+```
+For multiple elements, you would use `querySelectorAll()`.
+
+# 3. `createElement()`
+### Explanation
+`createElement()` creates a **new HTML element using JavaScript**.
+### Syntax
+```js
+document.createElement("element");
+```
+### Example
+```js
+let heading = document.createElement("h2");
+heading.textContent = "New Product";
+document.body.appendChild(heading);
+```
+This dynamically creates:
+```html
+<h2>New Product</h2>
+```
+
+# Creating a Product Card
+This is a more realistic DOM manipulation example.
+```js
+let card = document.createElement("div");
+card.textContent = "Laptop - ₹65000";
+document.body.appendChild(card);
+```
+JavaScript has created the element and added it to the page.
+### Technical real-time use
+`createElement()` is useful when an application receives data from an API and needs to dynamically create:
+* Product cards
+* Chat messages
+* Notifications
+* Table rows
+* Comments
+* Search results
+
+For example:
+```js
+let products = ["Laptop", "Mouse", "Keyboard"];
+products.forEach(function(product) {
+    let item = document.createElement("li");
+    item.textContent = product;
+    document.getElementById("productList").appendChild(item);
+});
+```
+
+# 4. `innerHTML`
+### Explanation
+`innerHTML` gets or changes the **HTML content inside an element**.
+### Example
+```html
+<div id="container"></div>
+<script>
+    let container = document.getElementById("container");
+    container.innerHTML = "<h2>Hello</h2>";
+</script>
+```
+The browser creates:
+```html
+<div id="container">
+    <h2>Hello</h2>
+</div>
+```
+
+## Adding multiple HTML elements
+```js
+container.innerHTML = `
+    <h2>Laptop</h2>
+    <p>Price: ₹65000</p>
+    <button>Buy Now</button>
+`;
+```
+This is convenient when generating a small block of UI.
+
+## Reading `innerHTML`
+```html
+<div id="box">
+    <h2>Hello</h2>
+</div>
+<script>
+    let box = document.getElementById("box");
+    console.log(box.innerHTML);
+</script>
+```
+Output:
+```html
+<h2>Hello</h2>
+```
+
+## `innerHTML` vs `textContent`
+This is important.
+
+### `innerHTML`
+Interprets HTML:
+```js
+element.innerHTML = "<b>Hello</b>";
+```
+Result:
+**Hello**
+### `textContent`
+Treats it as plain text:
+```js
+element.textContent = "<b>Hello</b>";
+```
+Result displayed on the page:
+```text
+<b>Hello</b>
+```
+
+### Security warning
+Avoid putting untrusted user/API content directly into `innerHTML`.
+For example:
+```js
+element.innerHTML = userInput;
+```
+If `userInput` contains malicious HTML/script content, it can create an **XSS (Cross-Site Scripting)** vulnerability.
+For plain user-provided text, prefer:
+```js
+element.textContent = userInput;
+```
+
+# 5. `classList`
+### Explanation
+`classList` allows JavaScript to **add, remove, toggle, or check CSS classes**.
+Suppose:
+```html
+<button id="btn" class="button">Login</button>
+```
+JavaScript can manipulate the `class` attribute.
+
+## `classList.add()`
+Adds a class.
+```js
+let button = document.getElementById("btn");
+button.classList.add("active");
+```
+HTML becomes:
+```html
+<button id="btn" class="button active">
+    Login
+</button>
+```
+
+## `classList.remove()`
+Removes a class.
+```js
+button.classList.remove("active");
+```
+
+## `classList.toggle()`
+Adds the class if it doesn't exist and removes it if it does.
+```js
+button.classList.toggle("active");
+```
+
+### Technical real-time use
+A menu can be opened/closed:
+```js
+menu.classList.toggle("open");
+```
+CSS might contain:
+```css
+.menu.open {
+    display: block;
+}
+```
+So JavaScript controls the UI state by changing the class.
+
+## `classList.contains()`
+Checks whether a class exists.
+```js
+if (button.classList.contains("active")) {
+    console.log("Button is active");
+}
+```
+
+## `classList.replace()`
+Replaces one class with another.
+```js
+button.classList.replace("inactive", "active");
+```
+
+# 6. Attributes
+HTML elements contain **attributes**.
+Example:
+```html
+<img id="profileImage" src="profile.jpg" alt="Profile">
+```
+Here:
+```text
+id    → profileImage
+src   → profile.jpg
+alt   → Profile
+```
+JavaScript can read, add, change, and remove attributes.
+
+## `getAttribute()`
+Reads an attribute.
+```js
+let image = document.getElementById("profileImage");
+console.log(image.getAttribute("src"));
+```
+Output:
+```text
+profile.jpg
+```
+
+## `setAttribute()`
+Adds or changes an attribute.
+### Syntax
+```js
+element.setAttribute("attribute", "value");
+```
+Example:
+```js
+image.setAttribute("src", "new-profile.jpg");
+```
+The HTML becomes:
+```html
+<img src="new-profile.jpg">
+```
+### Technical real-time use
+After a user uploads a profile image, JavaScript can update the image:
+```js
+profileImage.setAttribute("src", uploadedImageUrl);
+```
+
+## `removeAttribute()`
+Removes an attribute.
+```js
+image.removeAttribute("alt");
+```
+
+## `hasAttribute()`
+Checks whether an attribute exists.
+```js
+if (image.hasAttribute("alt")) {
+    console.log("Alt text exists");
+}
+```
+# 7. `data-*` Attributes
+Custom data attributes are very useful in real applications.
+HTML:
+```html
+<button data-product-id="101">
+    Add to Cart
+</button>
+```
+JavaScript:
+```js
+let button = document.querySelector("button");
+console.log(button.dataset.productId);
+```
+Output:
+```text
+101
+```
+### Technical real-time use
+For an e-commerce product list:
+```html
+<button data-product-id="101">Add to Cart</button>
+<button data-product-id="102">Add to Cart</button>
+```
+JavaScript can identify which product was selected:
+```js
+button.addEventListener("click", function () {
+    let productId = button.dataset.productId;
+    console.log("Adding product:", productId);
+
+});
+```
+This works especially well with **event delegation**.
+
+### What happens?
+```text
+HTML
+ ↓
+getElementById()
+ ↓
+Find container
+ ↓
+createElement()
+ ↓
+Create product card
+ ↓
+classList.add()
+ ↓
+Add CSS class
+ ↓
+innerHTML
+ ↓
+Add product content
+ ↓
+setAttribute()
+ ↓
+Store product ID
+ ↓
+appendChild()
+ ↓
+Display card
+```
+
+
+| Method                 | Purpose                                  |
+| ---------------------- | ---------------------------------------- |
+| `getElementById()`     | Find element by ID                       |
+| `querySelector()`      | Find first element matching CSS selector |
+| `createElement()`      | Create new HTML element                  |
+| `innerHTML`            | Read/change HTML content                 |
+| `textContent`          | Read/change plain text                   |
+| `classList.add()`      | Add CSS class                            |
+| `classList.remove()`   | Remove CSS class                         |
+| `classList.toggle()`   | Add/remove class                         |
+| `classList.contains()` | Check class                              |
+| `classList.replace()`  | Replace class                            |
+| `getAttribute()`       | Read attribute                           |
+| `setAttribute()`       | Add/change attribute                     |
+| `removeAttribute()`    | Remove attribute                         |
+| `hasAttribute()`       | Check attribute                          |
+| `dataset`              | Work with `data-*` attributes            |
+
+
+```text
+Find
+ ↓
+getElementById()
+querySelector()
+Create
+ ↓
+createElement()
+Content
+ ↓
+innerHTML
+textContent
+Style/Class
+ ↓
+classList
+Attributes
+ ↓
+getAttribute()
+setAttribute()
+removeAttribute()
+Add to page
+ ↓
+appendChild()
+```
+**Note:** DOM manipulation is the process of using JavaScript to **find, create, modify, and remove HTML elements dynamically**. Event listeners + DOM manipulation together form the foundation of interactive frontend applications.
+
+# 16_JavaScript Browser Objects
+These objects are part of the **Browser Object Model (BOM)**. They allow JavaScript to interact with the browser and the user's browser environment.
+The important ones are:
+* `window`
+* `alert()`
+* `confirm()`
+* `prompt()`
+* `location`
+* `navigator`
+* `screen`
+# 1. `window`
+### Explanation
+`window` represents the **browser window/tab** in which your web page is running.
+Many browser APIs are actually properties or methods of `window`.
+```js
+window.alert("Hello");
+window.location;
+window.navigator;
+window.screen;
+```
+Because `window` is the global object in browser JavaScript, you can usually omit `window.`:
+```js
+alert("Hello");
+```
+is equivalent to:
+```js
+window.alert("Hello");
+```
+### Example
+```js
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+```
+This gives the current browser viewport dimensions.
+### Technical real-time use
+Responsive applications can check the viewport size:
+```js
+if (window.innerWidth < 768) {
+    console.log("Mobile layout");
+} else {
+    console.log("Desktop layout");
+}
+```
+# 2. `alert()`
+### Explanation
+`alert()` displays a simple message dialog to the user.
+### Syntax
+```js
+alert("message");
+```
+### Example
+```js
+alert("Login successful!");
+```
+The browser displays a dialog containing:
+```text
+Login successful!
+             [ OK ]
+```
+### Technical real-time use
+It can be used for simple notifications or validation messages:
+```js
+let username = "";
+if (username === "") {
+    alert("Username is required");
+}
+```
+### Important
+`alert()` blocks interaction with the page until the user clicks **OK**.
+For modern applications, custom HTML/CSS notification components or toast messages are often preferred for better UX.
+# 3. `confirm()`
+### Explanation
+`confirm()` displays a message with **OK and Cancel** buttons.
+It returns:
+* `true` → user clicks OK
+* `false` → user clicks Cancel
+### Syntax
+```js
+confirm("message");
+```
+### Example
+```js
+let result = confirm("Do you want to delete this item?");
+console.log(result);
+```
+If the user clicks **OK**:
+```text
+true
+```
+If the user clicks **Cancel**:
+```text
+false
+```
+### Technical real-time use
+A delete operation:
+```js
+let result = confirm("Are you sure you want to delete this account?");
+if (result) {
+    console.log("Account deleted");
+} else {
+    console.log("Deletion cancelled");
+}
+```
+The flow is:
+```text
+Delete button
+     ↓
+confirm()
+     ↓
+ ┌───────────────┐
+ │ OK     Cancel │
+ └───────────────┘
+   ↓         ↓
+ true      false
+   ↓         ↓
+Delete    Cancel
+```
+# 4. `prompt()`
+### Explanation
+`prompt()` asks the user to enter a value.
+### Syntax
+```js
+prompt("message");
+```
+### Example
+```js
+let name = prompt("Enter your name");
+console.log(name);
+```
+If the user enters:
+```text
+Arun
+```
+then:
+```js
+name
+```
+contains:
+```text
+Arun
+```
+### Technical real-time use
+For example, collecting a simple input:
+```js
+let quantity = prompt("Enter quantity");
+quantity = parseInt(quantity);
+console.log(`Quantity: ${quantity}`);
+```
+If the user enters `5`:
+```text
+Quantity: 5
+```
+### Important
+`prompt()` returns a **string**.
+So:
+```js
+let age = prompt("Enter age");
+console.log(typeof age);
+```
+Output:
+```text
+string
+```
+If you need a number:
+```js
+let age = parseInt(prompt("Enter age"));
+```
+### Cancel
+If the user presses **Cancel**, `prompt()` returns:
+```js
+null
+```
+So you can check:
+```js
+let name = prompt("Enter your name");
+if (name === null) {
+    console.log("User cancelled");
+}
+```
+# 5. `location`
+### Explanation
+`window.location` contains information about the **current URL** and provides methods for navigating to another URL.
+Example URL:
+```text
+https://example.com/products?id=101
+```
+The `location` object contains information about this URL.
+## `location.href`
+Returns the complete current URL.
+```js
+console.log(location.href);
+```
+Example:
+```text
+https://example.com/products?id=101
+```
+## `location.hostname`
+Returns the domain name.
+```js
+console.log(location.hostname);
+```
+Output:
+```text
+example.com
+```
+## `location.pathname`
+Returns the path.
+```js
+console.log(location.pathname);
+```
+Output:
+```text
+/products
+```
+## `location.search`
+Returns the query string.
+```js
+console.log(location.search);
+```
+For:
+```text
+https://example.com/products?id=101
+```
+Output:
+```text
+?id=101
+```
+### Technical real-time use
+Reading a product ID from the URL:
+```js
+let params = new URLSearchParams(location.search);
+let productId = params.get("id");
+console.log(productId);
+```
+For:
+```text
+/products?id=101
+```
+Output:
+```text
+101
+```
+This is commonly used in **product pages, search filters, pagination, and routing**.
+## `location.assign()`
+Navigates to another URL
+```js
+location.assign("https://example.com");
+```
+## `location.reload()`
+Reloads the current page.
+```js
+location.reload();
+```
+### `href` vs `assign()`
+Both can navigate:
+```js
+location.href = "/dashboard";
+```
+or:
+```js
+location.assign("/dashboard");
+```
+# 6. `navigator`
+### Explanation
+`navigator` provides information about the **browser and the user's environment**.
+For example:
+```js
+console.log(navigator.userAgent);
+```
+It can also expose APIs such as:
+* Online/offline status
+* Clipboard
+* Geolocation
+* Language preferences
+* Browser information
+* Media/device capabilities
+## `navigator.language`
+Returns the browser's preferred language.
+```js
+console.log(navigator.language);
+```
+Example:
+```text
+en-IN
+```
+### Technical use
+An application can use the browser's language preference to choose an initial UI language.
+## `navigator.onLine`
+Checks whether the browser currently reports an online connection.
+```js
+if (navigator.onLine) {
+    console.log("Online");
+} else {
+    console.log("Offline");
+}
+```
+### Technical use
+Useful for applications such as:
+* Offline-first web apps
+* Progressive Web Apps
+* Data synchronization
+* Showing online/offline indicators
+## `navigator.geolocation`
+Provides access to the browser's Geolocation API, subject to user permission.
+```js
+navigator.geolocation.getCurrentPosition(function(position) {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+});
+```
+The browser will normally ask the user for permission before providing location data.
+### Important
+A website **cannot silently obtain precise location just because it uses `navigator.geolocation`**. The browser controls permission.
+## `navigator.clipboard`
+Provides clipboard functionality in supported contexts.
+Example:
+```js
+navigator.clipboard.writeText("Hello JavaScript");
+```
+A web application can use this for a **Copy** button.
+# 7. `screen`
+### Explanation
+`screen` provides information about the user's **physical/display screen**.
+```js
+console.log(screen.width);
+console.log(screen.height);
+```
+Example output:
+```text
+1920
+1080
+```
+These values describe the screen, not necessarily the size of the browser viewport.
+## `screen.width`
+Returns screen width.
+```js
+console.log(screen.width);
+```
+## `screen.height`
+Returns screen height.
+```js
+console.log(screen.height);
+```
+## `screen.availWidth`
+Returns the available screen width.
+```js
+console.log(screen.availWidth);
+```
+This can exclude areas occupied by operating-system UI such as taskbars.
+## `screen.availHeight`
+```js
+console.log(screen.availHeight);
+```
+Returns the available screen height.
+### Technical use
+Screen information can sometimes be useful for display-related applications, kiosk applications, or analytics.
+However, for **responsive webpage layouts**, `window.innerWidth` is generally more relevant than `screen.width`, because `innerWidth` represents the browser's viewport.
+# 8. `window` vs `screen`
+This is an important distinction.
+```text
+screen
+ ↓
+Physical display
+window
+ ↓
+Browser window / viewport
+```
+For example:
+```js
+console.log(screen.width);
+console.log(window.innerWidth);
+```
+You might get:
+```text
+1920
+1365
+```
+The screen is 1920px wide, but the browser viewport may only be 1365px wide.
+
+# 9. Complete Technical Example
+
+Here's a small browser-information program:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Information</title>
+</head>
+
+<body>
+
+    <button id="infoBtn">Show Browser Info</button>
+
+    <script>
+
+        document.getElementById("infoBtn").addEventListener("click", function () {
+
+            console.log("Current URL:", window.location.href);
+
+            console.log("Language:", navigator.language);
+
+            console.log("Online:", navigator.onLine);
+
+            console.log("Screen Width:", screen.width);
+
+            console.log("Screen Height:", screen.height);
+
+            console.log("Viewport Width:", window.innerWidth);
+
+            console.log("Viewport Height:", window.innerHeight);
+
+        });
+
+    </script>
+
+</body>
+</html>
+```
+
+The application can use this information for things like:
+
+```text
+Browser
+   ↓
+navigator
+
+Current page
+   ↓
+location
+
+Browser viewport
+   ↓
+window
+
+Physical display
+   ↓
+screen
+```
+
+
+| Object / Method         | Purpose                                         |
+| ----------------------- | ----------------------------------------------- |
+| `window`                | Represents browser window/global browser object |
+| `alert()`               | Display a message                               |
+| `confirm()`             | Get OK/Cancel decision                          |
+| `prompt()`              | Get simple text input                           |
+| `location`              | Work with current URL/navigation                |
+| `location.href`         | Get current URL                                 |
+| `location.reload()`     | Reload page                                     |
+| `navigator`             | Browser/environment information and APIs        |
+| `navigator.language`    | Browser language                                |
+| `navigator.onLine`      | Online status                                   |
+| `navigator.geolocation` | Request location through browser permission     |
+| `navigator.clipboard`   | Clipboard operations                            |
+| `screen`                | Physical display information                    |
+| `screen.width`          | Screen width                                    |
+| `screen.height`         | Screen height                                   |
+| `window.innerWidth`     | Browser viewport width                          |
+
+
+
+```text
+window
+→ Browser window
+
+alert()
+→ Show message
+
+confirm()
+→ Ask OK / Cancel
+
+prompt()
+→ Ask for input
+
+location
+→ Where am I in the web?
+
+navigator
+→ What browser/device capabilities are available?
+
+screen
+→ What is the physical screen like?
+```
+
+**BOM vs DOM:**
+
+```text
+BOM
+├── window
+├── location
+├── navigator
+└── screen
+
+DOM
+├── document
+├── elements
+├── createElement()
+├── querySelector()
+└── classList
+```
+
+The **DOM** mainly lets JavaScript manipulate the webpage, while the **BOM** provides access to the browser environment around that webpage.
+
+## 17_Timers
+
+JavaScript provides timer functions to **execute code after a delay** or **repeatedly at a fixed interval**.
+The four important timer functions are:
+* `setTimeout()`
+* `setInterval()`
+* `clearTimeout()`
+* `clearInterval()`
+
+## 1. `setTimeout()`
+### Explanation
+`setTimeout()` executes a function **once after a specified amount of time**.
+The delay is given in **milliseconds**.
+* `1000 ms = 1 second`
+* Executes **only once**
+### Syntax
+```javascript
+setTimeout(function, delay);
+```
+### Simple Example
+```javascript
+setTimeout(() => {
+    console.log("Hello after 3 seconds");
+}, 3000);
+```
+### Output
+After 3 seconds:
+```text
+Hello after 3 seconds
+```
+### Technical Real-Time Use
+For example, showing a notification message and automatically hiding it after 3 seconds:
+```javascript
+function showNotification() {
+    console.log("Profile updated successfully");
+    setTimeout(() => {
+        console.log("Notification hidden");
+    }, 3000);
+}
+showNotification();
+```
+**Use cases:**
+* Hide notifications
+* Delay API-related UI actions
+* Show messages temporarily
+* Redirect after a delay
+* Debouncing user actions
+
+# 2. `setInterval()`
+### Explanation
+`setInterval()` repeatedly executes a function after every specified interval.
+Unlike `setTimeout()`, it keeps running until it is stopped.
+### Syntax
+```javascript
+setInterval(function, interval);
+```
+### Simple Example
+```javascript
+setInterval(() => {
+    console.log("Running...");
+}, 2000);
+```
+This prints:
+```text
+Running...
+Running...
+Running...
+Running...
+...
+```
+Every 2 seconds.
+### Technical Real-Time Use
+A digital clock can update every second:
+```javascript
+setInterval(() => {
+    let time = new Date();
+    console.log(time.toLocaleTimeString());
+}, 1000);
+```
+Example output:
+```text
+11:05:01 PM
+11:05:02 PM
+11:05:03 PM
+11:05:04 PM
+```
+**Use cases:**
+
+* Digital clocks
+* Countdown timers
+* Polling APIs
+* Auto-refreshing data
+* Live status updates
+
+# 3. `clearTimeout()`
+### Explanation
+`clearTimeout()` **cancels a `setTimeout()`** before it executes.
+To cancel it, we first store the timer ID returned by `setTimeout()`.
+### Syntax
+```javascript
+let timerId = setTimeout(function, delay);
+clearTimeout(timerId);
+```
+### Example
+```javascript
+let timer = setTimeout(() => {
+    console.log("This will not execute");
+}, 5000);
+clearTimeout(timer);
+```
+Since the timeout is cancelled, nothing is printed.
+### Technical Real-Time Use
+Suppose a user starts typing in a search box. You schedule a search after 2 seconds, but if they continue typing, you cancel the previous timer.
+```javascript
+let timer;
+function searchProduct() {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        console.log("Searching products...");
+    }, 2000);
+}
+searchProduct();
+```
+This technique is commonly used for **debouncing**.
+
+# 4. `clearInterval()`
+### Explanation
+`clearInterval()` stops an interval created using `setInterval()`.
+### Syntax
+```javascript
+let intervalId = setInterval(function, interval);
+clearInterval(intervalId);
+```
+### Example
+```javascript
+let count = 0;
+let timer = setInterval(() => {
+    count++;
+    console.log(count);
+    if (count === 5) {
+        clearInterval(timer);
+    }
+}, 1000);
+```
+### Output
+```text
+1
+2
+3
+4
+5
+```
+After `5`, the interval stops.
+### Technical Real-Time Use
+For example, a countdown:
+```javascript
+let seconds = 5;
+let countdown = setInterval(() => {
+    console.log(seconds);
+    seconds--;
+ if (seconds < 0) {
+        clearInterval(countdown);
+        console.log("Time's up!");
+    }
+}, 1000);
+```
+Output:
+```text
+5
+4
+3
+2
+1
+0
+Time's up!
+```
+# `setTimeout()` vs `setInterval()`
+
+| Feature             | `setTimeout()`           | `setInterval()`          |
+| ------------------- | ------------------------ | ------------------------ |
+| Execution           | Once                     | Repeatedly               |
+| Purpose             | Delay execution          | Repeat execution         |
+| Stops automatically | Yes                      | No                       |
+| Cancel method       | `clearTimeout()`         | `clearInterval()`        |
+| Example             | Show message after 3 sec | Update clock every 1 sec |
+
+```text
+setTimeout
+     ↓
+"Do it later, ONE time"
+
+setInterval
+     ↓
+"Do it again and again"
+
+clearTimeout
+     ↓
+"Cancel the delayed action"
+
+clearInterval
+     ↓
+"Stop the repeated action"
+```
+# Combined Real-Time Example
+A simple **session timeout**:
+```javascript
+let remainingTime = 10;
+let countdown = setInterval(() => {
+    console.log(`Session expires in ${remainingTime} seconds`);
+    remainingTime--;
+    if (remainingTime < 0) {
+        clearInterval(countdown);
+        setTimeout(() => {
+            console.log("Session expired. Please login again.");
+        }, 1000);
+    }
+}, 1000);
+```
+Here:
+```text
+setInterval()
+     ↓
+updates countdown every second
+     ↓
+clearInterval()
+     ↓
+stops countdown
+     ↓
+setTimeout()
+     ↓
+shows expiry message after 1 second
+```
+
+## Note
+1. Timer delays are specified in **milliseconds**.
+2. `setTimeout()` normally executes **once**.
+3. `setInterval()` executes **repeatedly**.
+4. `setTimeout()` returns a **timer ID**.
+5. `setInterval()` returns an **interval ID**.
+6. Use `clearTimeout()` to cancel a timeout.
+7. Use `clearInterval()` to stop an interval.
+8. A timer does **not guarantee exact execution time**. JavaScript schedules the callback when the event loop can run it.
+
+## 18_ ES6 Features
+
+These are some of the most important **ES6 (ECMAScript 2015)** features used in modern JavaScript:
+* `let` and `const`
+* Arrow functions
+* Template literals
+* Spread and Rest operators
+* Destructuring
+* Modules
+
+# 1. `let` and `const`
+### Explanation
+`let` and `const` are used to declare variables.
+They are preferred over the older `var`.
+* `let` → value can be reassigned
+* `const` → value cannot be reassigned
+* Both are **block-scoped**
+
+### Syntax
+```javascript
+let variableName = value;
+const variableName = value;
+```
+### Example
+```javascript
+let age = 21;
+age = 22;
+console.log(age);
+```
+Output:
+```text
+22
+```
+With `const`:
+```javascript
+const pi = 3.14;
+console.log(pi);
+```
+You cannot do:
+```javascript
+pi = 3.15; // Error
+```
+### Technical Real-Time Use
+```javascript
+let cartCount = 2;
+cartCount++;
+const taxRate = 0.18;
+console.log(cartCount);
+console.log(taxRate);
+```
+Here:
+* `cartCount` changes → `let`
+* `taxRate` remains fixed → `const`
+### Important
+`const` prevents **reassignment**, but objects and arrays can still be modified.
+```javascript
+const user = {
+    name: "Arun"
+};
+user.name = "Kumar"; // Allowed
+console.log(user.name);
+```
+But:
+```javascript
+user = {}; // Error
+```
+
+| `let`                | `const`              |                  |
+| -------------------- | -------------------- | ---------------- |
+| Can be reassigned    | Cannot be reassigned |                  |
+| Block scoped         | Block scoped         |                  |
+| Must be initialized? | No                   |                  |
+| Common use           | Changing values      | Fixed references |
+
+# 2. Arrow Functions
+### Explanation
+Arrow functions provide a **shorter syntax for writing functions**.
+### Normal Function
+```javascript
+function add(a, b) {
+    return a + b;
+}
+```
+### Arrow Function
+```javascript
+const add = (a, b) => {
+    return a + b;
+};
+```
+For a single expression, it can be shortened further:
+```javascript
+const add = (a, b) => a + b;
+```
+### Syntax
+```javascript
+const functionName = (parameters) => {
+    // code
+};
+```
+### Technical Real-Time Use
+Arrow functions are heavily used with array methods.
+```javascript
+const prices = [100, 200, 300];
+const discountedPrices = prices.map(price => price * 0.9);
+console.log(discountedPrices);
+```
+Output:
+```text
+[90, 180, 270]
+```
+### Important: `this`
+Arrow functions **do not have their own `this`**. They use `this` from their surrounding lexical scope.
+This is particularly useful in callbacks:
+```javascript
+class Counter {
+    constructor() {
+        this.count = 0;
+    }
+    start() {
+        setInterval(() => {
+            this.count++;
+            console.log(this.count);
+        }, 1000);
+    }
+}
+```
+# 3. Template Literals
+### Explanation
+Template literals allow you to create strings using **backticks** `` ` ``.
+They make it easy to insert variables and expressions using `${}`.
+### Syntax
+```javascript
+`Hello ${variable}`
+```
+### Example
+```javascript
+let name = "Arun";
+let age = 22;
+console.log(`My name is ${name} and I am ${age} years old.`);
+```
+Output:
+```text
+My name is Arun and I am 22 years old.
+```
+### Expressions
+You can also perform calculations:
+```javascript
+let price = 100;
+let quantity = 3;
+console.log(`Total: ₹${price * quantity}`);
+```
+Output:
+```text
+Total: ₹300
+```
+### Technical Real-Time Use
+Displaying product information:
+```javascript
+const product = "Laptop";
+const price = 55000;
+const message = `
+Product: ${product}
+Price: ₹${price}
+`;
+console.log(message);
+```
+Template literals are commonly used for:
+* Dynamic UI messages
+* HTML generation
+* API response display
+* Logging
+* Notifications
+# 4. Spread Operator `...`
+### Explanation
+The **spread operator** expands the elements of an array or properties of an object.
+Think:
+```text
+... = "spread these values out"
+```
+### Arrays
+```javascript
+const numbers = [10, 20, 30];
+const newNumbers = [...numbers, 40, 50];
+console.log(newNumbers);
+```
+Output:
+```text
+[10, 20, 30, 40, 50]
+```
+### Combining Arrays
+```javascript
+const frontend = ["HTML", "CSS"];
+const backend = ["Node.js", "Express"];
+const technologies = [...frontend, ...backend];
+console.log(technologies);
+```
+Output:
+```text
+["HTML", "CSS", "Node.js", "Express"]
+```
+### Objects
+```javascript
+const user = {
+    name: "Arun",
+    age: 22
+};
+const updatedUser = {
+    ...user,
+    role: "Developer"
+};
+console.log(updatedUser);
+```
+Output:
+```text
+{
+    name: "Arun",
+    age: 22,
+    role: "Developer"
+}
+```
+### Technical Real-Time Use
+Updating React state is a common example:
+```javascript
+const user = {
+    name: "Arun",
+    age: 22
+};
+const updatedUser = {
+    ...user,
+    age: 23
+};
+```
+The original object is not directly reassigned.
+
+# 5. Rest Operator `...`
+### Explanation
+The **rest operator** collects multiple values into a single array.
+The syntax is also `...`, but its purpose is different from spread.
+```text
+Spread → expands values
+Rest   → collects values
+```
+### Example
+```javascript
+function addNumbers(...numbers) {
+    return numbers.reduce((total, number) => total + number, 0);
+}
+console.log(addNumbers(10, 20, 30, 40));
+```
+Output:
+```text
+100
+```
+Here:
+```javascript
+...numbers
+```
+collects:
+```text
+10, 20, 30, 40
+```
+into:
+```javascript
+[10, 20, 30, 40]
+```
+### Rest with Parameters
+```javascript
+function showUser(name, ...skills) {
+    console.log(name);
+    console.log(skills);
+}
+showUser("Arun", "JavaScript", "React", "Node.js");
+```
+Output:
+```text
+Arun
+["JavaScript", "React", "Node.js"]
+```
+### Technical Real-Time Use
+Useful when a function can receive a **variable number of arguments**.
+```javascript
+function calculateTotal(...prices) {
+    return prices.reduce((total, price) => total + price, 0);
+}
+console.log(calculateTotal(500, 200, 300));
+```
+Output:
+```text
+1000
+```
+# 6. Destructuring
+### Explanation
+Destructuring allows you to **extract values from arrays or objects and store them in variables**.
+There are two main types:
+1. Array destructuring
+2. Object destructuring
+
+## Array Destructuring
+Normally:
+```javascript
+const colors = ["red", "green", "blue"];
+const first = colors[0];
+const second = colors[1];
+```
+With destructuring:
+```javascript
+const colors = ["red", "green", "blue"];
+const [first, second, third] = colors;
+console.log(first);
+console.log(second);
+console.log(third);
+```
+Output:
+```text
+red
+green
+blue
+```
+### Skip Values
+```javascript
+const numbers = [10, 20, 30];
+const [first, , third] = numbers;
+console.log(first);
+console.log(third);
+```
+Output:
+```text
+10
+30
+```
+# Object Destructuring
+Instead of:
+```javascript
+const user = {
+    name: "Arun",
+    age: 22,
+    role: "Developer"
+};
+console.log(user.name);
+console.log(user.age);
+```
+We can write:
+```javascript
+const user = {
+    name: "Arun",
+    age: 22,
+    role: "Developer"
+};
+const { name, age, role } = user;
+console.log(name);
+console.log(age);
+console.log(role);
+```
+### Technical Real-Time Use
+API responses are often objects:
+```javascript
+const response = {
+    id: 101,
+    name: "Arun",
+    email: "arun@gmail.com"
+};
+const { name, email } = response;
+console.log(`User: ${name}`);
+console.log(`Email: ${email}`);
+```
+This is extremely common in frontend development.
+# 7. Modules
+### Explanation
+Modules allow you to **split JavaScript code into separate files**.
+Instead of keeping everything in one huge file:
+```text
+app.js
+```
+you can organize code:
+```text
+project/
+│
+├── main.js
+├── calculator.js
+└── user.js
+```
+Modules use:
+* `export`
+* `import`
+
+## Export
+### `calculator.js`
+```javascript
+export function add(a, b) {
+    return a + b;
+}
+export function subtract(a, b) {
+    return a - b;
+}
+```
+## Import
+### `main.js`
+```javascript
+import { add, subtract } from "./calculator.js";
+console.log(add(10, 5));
+console.log(subtract(10, 5));
+```
+Output:
+```text
+15
+5
+```
+## Default Export
+You can also export one main value as default.
+### `user.js`
+```javascript
+export default function getUser() {
+    return {
+        name: "Arun",
+        role: "Developer"
+    };
+}
+```
+### `main.js`
+```javascript
+import getUser from "./user.js";
+console.log(getUser());
+```
+You don't need `{}` for a default import.
+
+# Technical Real-Time Module Structure
+A real application might be organized like:
+```text
+src/
+│
+├── main.js
+├── api.js
+├── auth.js
+├── utils.js
+└── validation.js
+```
+For example:
+### `api.js`
+```javascript
+export function getUsers() {
+    return ["Arun", "Priya", "Kumar"];
+}
+```
+### `main.js`
+```javascript
+import { getUsers } from "./api.js";
+const users = getUsers();
+console.log(users);
+```
+This makes the application:
+* easier to maintain
+* easier to test
+* easier to reuse
+* easier to organize
+
+
+| Feature          | Purpose                   | Example               |
+| ---------------- | ------------------------- | --------------------- |
+| `let`            | Changeable variable       | `let count = 0`       |
+| `const`          | Non-reassignable variable | `const tax = 0.18`    |
+| Arrow function   | Short function syntax     | `x => x * 2`          |
+| Template literal | Dynamic strings           | `` `Hello ${name}` `` |
+| Spread           | Expand values             | `[...arr]`            |
+| Rest             | Collect values            | `(...args)`           |
+| Destructuring    | Extract values            | `const {name} = user` |
+| Modules          | Split code into files     | `import` / `export`   |
+
+### Most Important Difference
+
+```text
+Spread
+...array
+   ↓
+Expands values
+Rest
+...values
+   ↓
+Collects values
+Destructuring
+const { name } = user
+          ↓
+Extracts values
+Modules
+export / import
+      ↓
+Shares code between files
+```
+These ES6 features are especially important because you'll encounter them constantly in **React, Node.js, Express, and modern frontend development**.
+
+ ## 19_Modules
+   
+Modern JavaScript applications use **modules** to divide code into multiple files and **bundlers** to prepare those files and dependencies for the browser.
+The main concepts are:
+1. `export`
+2. `import`
+3. Default exports
+4. Named vs default exports
+5. Module bundlers
+6. Webpack
+7. Vite
+# 1. `export`
+### Explanation
+`export` allows a JavaScript file to make variables, functions, classes, or objects available to other files.
+For example:
+```text
+project/
+│
+├── main.js
+└── math.js
+```
+### `math.js`
+```javascript
+export function add(a, b) {
+    return a + b;
+}
+export function multiply(a, b) {
+    return a * b;
+}
+```
+Here, `add()` and `multiply()` are available outside `math.js`.
+# 2. `import`
+### Explanation
+`import` allows another JavaScript file to use something that was exported.
+### `main.js`
+```javascript
+import { add, multiply } from "./math.js";
+console.log(add(10, 5));
+console.log(multiply(10, 5));
+```
+Output:
+```text
+15
+50
+```
+### Syntax
+```javascript
+import { functionName } from "./file.js";
+```
+For multiple exports:
+```javascript
+import { add, multiply } from "./math.js";
+```
+# 3. Named Exports
+The exports we saw above are called **named exports**.
+```javascript
+// math.js
+export function add(a, b) {
+    return a + b;
+}
+export function subtract(a, b) {
+    return a - b;
+}
+```
+Import using the same exported names:
+```javascript
+import { add, subtract } from "./math.js";
+```
+You can also rename them:
+```javascript
+import { add as addition } from "./math.js";
+console.log(addition(10, 20));
+```
+### Important
+Named exports require `{ }`:
+```javascript
+import { add } from "./math.js";
+```
+# 4. Default Export
+### Explanation
+A file can have **one default export**.
+It is useful when a module has one primary function, class, or component.
+### `user.js`
+```javascript
+export default function getUser() {
+    return {
+        name: "Arun",
+        role: "Developer"
+    };
+}
+```
+### Import
+```javascript
+import getUser from "./user.js";
+console.log(getUser());
+```
+Notice that there are **no `{ }`**.
+You can even give the imported function a different name:
+```javascript
+import fetchUser from "./user.js";
+console.log(fetchUser());
+```
+The exported function is still the same default export.
+
+# 5. Named Export vs Default Export
+
+| Feature         | Named Export            | Default Export                  |
+| --------------- | ----------------------- | ------------------------------- |
+| Number per file | Multiple                | One                             |
+| Import `{}`     | Required                | Not required                    |
+| Import name     | Usually same            | Can be changed                  |
+| Example         | `export function add()` | `export default function add()` |
+
+### Named
+```javascript
+export function add() {}
+export function subtract() {}
+```
+```javascript
+import { add, subtract } from "./math.js";
+```
+### Default
+```javascript
+export default function add() {}
+```
+```javascript
+import add from "./math.js";
+```
+# 6. Combining Named and Default Exports
+You can have one default export along with multiple named exports.
+### `user.js`
+```javascript
+export default function getUser() {
+    return "Arun";
+}
+export const role = "Developer";
+export function login() {
+    return "Login successful";
+}
+```
+### `main.js`
+```javascript
+import getUser, { role, login } from "./user.js";
+console.log(getUser());
+console.log(role);
+console.log(login());
+```
+Output:
+```text
+Arun
+Developer
+Login successful
+```
+# 7. Why Do We Need Modules?
+Imagine a large application:
+```text
+project/
+│
+├── main.js
+├── login.js
+├── register.js
+├── api.js
+├── validation.js
+├── cart.js
+├── payment.js
+└── utils.js
+```
+Instead of putting thousands of lines into one file, each file handles a specific responsibility.
+For example:
+```text
+login.js
+    ↓
+Authentication
+api.js
+    ↓
+API requests
+validation.js
+    ↓
+Form validation
+cart.js
+    ↓
+Shopping cart logic
+```
+This improves:
+* Code organization
+* Reusability
+* Maintainability
+* Testing
+* Team development
+
+# 8. What Is a Module Bundler?
+### Explanation
+A **module bundler** takes JavaScript modules and their dependencies and prepares them for the application.
+For example:
+```text
+main.js
+   │
+   ├── api.js
+   │
+   ├── user.js
+   │
+   └── utils.js
+        ↓
+   Bundler
+        ↓
+   Application build
+```
+Instead of manually managing all dependencies, the bundler analyzes:
+```javascript
+import { getUser } from "./user.js";
+```
+and determines that `user.js` is required by `main.js`.
+### Why is this useful?
+Modern applications may contain:
+
+* Hundreds of JavaScript files
+* CSS
+* Images
+* Fonts
+* Third-party libraries
+* npm packages
+A bundler manages these dependencies and creates optimized files for deployment.
+# 9. Webpack
+### Explanation
+**Webpack** is a popular JavaScript module bundler.
+It analyzes your application's dependency graph and creates bundles that can be served to the browser.
+Conceptually:
+```text
+                 main.js
+                    │
+          ┌─────────┼─────────┐
+          ↓         ↓         ↓
+       api.js    user.js   utils.js
+          │
+          ↓
+    npm libraries
+          │
+          ↓
+       Webpack
+          │
+          ↓
+    Production files
+```
+Webpack can handle more than JavaScript through loaders and plugins.
+### Example
+Suppose:
+```javascript
+// main.js
+import { calculateTotal } from "./cart.js";
+console.log(calculateTotal());
+```
+Webpack follows the dependency:
+```text
+main.js
+   ↓
+cart.js
+   ↓
+other dependencies
+```
+and builds the application.
+### Where Webpack is commonly seen
+Webpack has been widely used in:
+* React applications
+* Large enterprise applications
+* Complex frontend projects
+* Older versions of frameworks/toolchains
+
+# 10. Vite
+### Explanation
+**Vite** is a modern frontend development tool and build tool.
+It provides:
+* Fast development server
+* Very fast Hot Module Replacement (HMR)
+* Production builds
+* Modern JavaScript support
+* Easy project setup
+
+Vite is commonly used with:
+* React
+* Vue
+* Svelte
+* Vanilla JavaScript
+* Other frontend frameworks
+# 11. Vite Development Flow
+When you run:
+```bash
+npm run dev
+```
+Vite starts a development server.
+
+Conceptually:
+
+```text
+Your source code
+      ↓
+     Vite
+      ↓
+Development server
+      ↓
+   Browser
+```
+When you modify a file:
+
+```text
+Edit React/JS file
+       ↓
+Vite detects change
+       ↓
+Updates affected module
+       ↓
+Browser updates
+```
+This is called **Hot Module Replacement (HMR)**.
+It makes development much faster because you don't normally need to completely reload the application after every small change.
+
+# 12. Vite Project Example
+Create a Vite project:
+```bash
+npm create vite@latest my-app
+```
+Then:
+```bash
+cd my-app
+npm install
+npm run dev
+```
+A typical structure might look like:
+```text
+my-app/
+│
+├── src/
+│   ├── main.jsx
+│   ├── App.jsx
+│   └── utils.js
+│
+├── public/
+├── package.json
+└── vite.config.js
+```
+For example:
+### `utils.js`
+```javascript
+export function greet(name) {
+    return `Hello, ${name}!`;
+}
+```
+### `App.jsx`
+```javascript
+import { greet } from "./utils.js";
+console.log(greet("Arun"));
+```
+Vite handles the module dependency during development and builds the application for production.
+
+# 13. Webpack vs Vite
+
+| Feature             | Webpack                      | Vite                    |
+| ------------------- | ---------------------------- | ----------------------- |
+| Type                | Module bundler               | Dev server + build tool |
+| Development startup | Generally more bundling work | Very fast               |
+| HMR                 | Supported                    | Very fast HMR           |
+| Configuration       | Can become complex           | Usually simpler         |
+| Modern frontend     | Used widely                  | Very common             |
+| React support       | Yes                          | Yes                     |
+| Production build    | Yes                          | Yes                     |
+
+The important point is that **Vite is not simply "Webpack but faster."** Their development architectures differ.
+# 14. Simple Real-Time Example
+Imagine a shopping application:
+```text
+src/
+│
+├── main.js
+├── products.js
+├── cart.js
+├── payment.js
+└── utils.js
+```
+### `products.js`
+```javascript
+export function getProducts() {
+    return [
+        { name: "Laptop", price: 50000 },
+        { name: "Mouse", price: 1000 }
+    ];
+}
+```
+### `cart.js`
+```javascript
+export function calculateTotal(products) {
+    return products.reduce((total, product) => {
+        return total + product.price;
+    }, 0);
+}
+```
+### `main.js`
+```javascript
+import { getProducts } from "./products.js";
+import { calculateTotal } from "./cart.js";
+const products = getProducts();
+const total = calculateTotal(products);
+console.log(`Cart Total: ₹${total}`);
+```
+Output:
+```text
+Cart Total: ₹51000
+```
+A tool such as Vite can manage this application during development and create a production build.
+
+**Note:** remember the distinction clearly: **ES modules (`import`/`export`) are a JavaScript language feature, while Webpack and Vite are development/build tools that work with your modules and dependencies.**
+ 
+  ## 20_JSON
+
+These concepts are very important when working with **JSON data, REST APIs, frontend applications, and objects**.
+# 1. Parsing
+### Explanation
+**Parsing** means converting data from a string format into a JavaScript value/object that the program can work with.
+The most common example is:
+```javascript
+JSON.parse()
+```
+It converts a **JSON string → JavaScript object**.
+### Syntax
+```javascript
+JSON.parse(jsonString);
+```
+### Example
+```javascript
+const jsonData = '{"name":"Arun","age":22}';
+const user = JSON.parse(jsonData);
+console.log(user);
+console.log(user.name);
+```
+Output:
+```text
+{ name: "Arun", age: 22 }
+Arun
+```
+Before parsing:
+```text
+'{"name":"Arun","age":22}'
+```
+After parsing:
+```javascript
+{
+    name: "Arun",
+    age: 22
+}
+```
+### Technical Real-Time Use
+When an API returns JSON data:
+```javascript
+const response = '{"id":101,"name":"Arun","role":"Developer"}';
+const user = JSON.parse(response);
+console.log(user.name);
+```
+Now JavaScript can access:
+```javascript
+user.name
+user.role
+user.id
+```
+### Important
+Invalid JSON causes an error:
+```javascript
+const data = '{"name":"Arun"';
+const user = JSON.parse(data); // SyntaxError
+```
+You can handle it with `try...catch`:
+```javascript
+try {
+    const user = JSON.parse(data);
+    console.log(user);
+} catch (error) {
+    console.log("Invalid JSON data");
+}
+```
+# 2. Stringifying
+### Explanation
+**Stringifying** means converting a JavaScript object/value into a JSON string.
+The method is:
+```javascript
+JSON.stringify()
+```
+It performs:
+```text
+JavaScript Object → JSON String
+```
+
+### Syntax
+```javascript
+JSON.stringify(value);
+```
+
+### Example
+```javascript
+const user = {
+    name: "Arun",
+    age: 22
+};
+const jsonData = JSON.stringify(user);
+console.log(jsonData);
+```
+Output:
+```text
+{"name":"Arun","age":22}
+```
+Notice that `jsonData` is now a **string**.
+```javascript
+console.log(typeof jsonData);
+```
+Output:
+```text
+string
+```
+
+# 3. Parsing vs Stringifying
+
+| Operation    | Method             | Conversion              |
+| ------------ | ------------------ | ----------------------- |
+| Parsing      | `JSON.parse()`     | JSON string → JS object |
+| Stringifying | `JSON.stringify()` | JS object → JSON string |
+
+### Easy Memory Trick
+```text
+JSON.parse()
+     ↓
+String → Object
+
+JSON.stringify()
+     ↓
+Object → String
+```
+# 4. APIs
+### Explanation
+An **API (Application Programming Interface)** allows different software systems to communicate with each other.
+In frontend development, JavaScript commonly communicates with a backend through **HTTP APIs**.
+For example:
+```text
+Frontend
+   ↓
+HTTP Request
+   ↓
+Backend API
+   ↓
+Database
+   ↓
+Response
+   ↓
+Frontend
+```
+A typical API response may look like:
+```json
+{
+    "id": 101,
+    "name": "Arun",
+    "role": "Developer"
+}
+```
+
+# 5. Using `fetch()` with an API
+JavaScript provides `fetch()` for making HTTP requests.
+### Syntax
+```javascript
+fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        // use data
+    });
+```
+### Example
+```javascript
+fetch("https://example.com/api/users")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
+```
+Here:
+```javascript
+response.json()
+```
+converts the JSON response into a JavaScript object.
+# 6. API with `async/await`
+Modern JavaScript commonly uses `async/await`.
+```javascript
+async function getUsers() {
+    try {
+        const response = await fetch("https://example.com/api/users");
+        const users = await response.json();
+        console.log(users);
+    } catch (error) {
+        console.log("Failed to fetch users");
+    }
+}
+getUsers();
+```
+### Real-Time Example
+Imagine a dashboard displaying user information:
+```javascript
+async function loadUser() {
+    try {
+        const response = await fetch("/api/user/101");
+        if (!response.ok) {
+            throw new Error("Failed to fetch user");
+        }
+        const user = await response.json();
+        console.log(`Name: ${user.name}`);
+        console.log(`Role: ${user.role}`);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+loadUser();
+```
+Typical flow:
+```text
+fetch()
+   ↓
+HTTP Response
+   ↓
+response.json()
+   ↓
+JavaScript Object
+   ↓
+Display in DOM
+```
+# 7. Sending JSON to an API
+You can also send JavaScript objects to a backend.
+```javascript
+const user = {
+    name: "Arun",
+    email: "arun@gmail.com"
+};
+fetch("/api/users", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(user)
+});
+```
+Here:
+```javascript
+JSON.stringify(user)
+```
+converts:
+```javascript
+{
+    name: "Arun",
+    email: "arun@gmail.com"
+}
+```
+into:
+```text
+{"name":"Arun","email":"arun@gmail.com"}
+```
+which can be sent as the HTTP request body.
+
+# 8. Shallow Copy
+### Explanation
+A **shallow copy** creates a new outer object, but nested objects are still referenced by the original object.
+Common ways:
+```javascript
+{ ...object }
+```
+or:
+```javascript
+Object.assign({}, object)
+```
+### Example
+```javascript
+const user = {
+    name: "Arun",
+    address: {
+        city: "Coimbatore"
+    }
+};
+const copy = { ...user };
+copy.name = "Kumar";
+console.log(user.name);
+console.log(copy.name);
+```
+Output:
+```text
+Arun
+Kumar
+```
+The top-level `name` is independent.
+But look at the nested object:
+```javascript
+copy.address.city = "Chennai";
+console.log(user.address.city);
+```
+Output:
+```text
+Chennai
+```
+Why?
+Because both objects reference the **same nested `address` object**.
+```text
+user
+ │
+ ├── name ──────── "Arun"
+ │
+ └── address ─────┐
+                   ↓
+              { city: "Chennai" }
+                   ↑
+                   │
+copy ──────────────┘
+```
+# 9. Deep Copy
+### Explanation
+A **deep copy** creates an independent copy of the object, including nested objects.
+One common approach for JSON-compatible data is:
+```javascript
+JSON.parse(JSON.stringify(object))
+```
+### Example
+```javascript
+const user = {
+    name: "Arun",
+    address: {
+        city: "Coimbatore"
+    }
+};
+const copy = JSON.parse(JSON.stringify(user));
+copy.address.city = "Chennai";
+console.log(user.address.city);
+console.log(copy.address.city);
+```
+Output:
+```text
+Coimbatore
+Chennai
+```
+Now changing the nested object doesn't affect the original.
+
+# 10. Modern Deep Copy: `structuredClone()`
+Modern JavaScript provides:
+```javascript
+structuredClone()
+```
+for creating deep copies of many JavaScript values
+```javascript
+const user = {
+    name: "Arun",
+    address: {
+        city: "Coimbatore"
+    }
+};
+const copy = structuredClone(user);
+copy.address.city = "Chennai";
+console.log(user.address.city);
+console.log(copy.address.city);
+```
+Output:
+```text
+Coimbatore
+Chennai
+```
+For general JavaScript data, `structuredClone()` is usually preferable to the JSON trick because it supports more data types.
+
+# 11. Shallow vs Deep Copy
+
+| Feature                               | Shallow Copy      | Deep Copy                |
+| ------------------------------------- | ----------------- | ------------------------ |
+| Outer object                          | New copy          | New copy                 |
+| Nested objects                        | Shared references | Independently copied     |
+| Nested modification affects original? | Yes               | No                       |
+| Example                               | `{ ...user }`     | `structuredClone(user)`  |
+| Performance                           | Generally cheaper | Generally more expensive |
+
+### Visual Difference
+**Shallow copy:**
+```text
+Original ──┐
+           ├──→ Nested Object
+Copy ──────┘
+```
+**Deep copy:**
+```text
+Original ──→ Nested Object A
+Copy ──────→ Nested Object B
+```
+# 12. Important Difference: Reference
+Consider:
+```javascript
+const user1 = {
+    name: "Arun"
+};
+const user2 = user1;
+user2.name = "Kumar";
+console.log(user1.name);
+```
+Output:
+```text
+Kumar
+```
+This isn't a copy at all.
+Both variables point to the same object:
+```text
+user1 ──┐
+        ↓
+     Object
+        ↑
+user2 ──┘
+```
+Using:
+```javascript
+const user2 = { ...user1 };
+```
+creates a new outer object.
+# 13. Real-Time Example: API + Copy
+Suppose an application receives user data from an API:
+```javascript
+const apiUser = {
+    name: "Arun",
+    preferences: {
+        theme: "dark",
+        language: "English"
+    }
+};
+```
+You want to modify the data for a form without changing the original API response.
+A deep copy is appropriate:
+```javascript
+const formUser = structuredClone(apiUser);
+formUser.preferences.theme = "light";
+console.log(apiUser.preferences.theme);
+console.log(formUser.preferences.theme);
+```
+Output:
+```text
+dark
+light
+```
+The original API data remains unchanged.
+
+# Note
+```text
+JSON.parse()
+    ↓
+JSON String → JavaScript Object
+JSON.stringify()
+    ↓
+JavaScript Object → JSON String
+fetch()
+    ↓
+Communicate with APIs
+Shallow Copy
+    ↓
+New outer object
+Nested references remain shared
+Deep Copy
+    ↓
+Entire nested structure is copied
+```
+# 21_Session and cookies
+These three are used to **store data in the browser**, but they differ in **lifetime, storage capacity, and how data is sent to the server**.
+# 1. `localStorage`
+### Explanation
+`localStorage` stores data in the browser and keeps it **even after the browser is closed**.
+The data remains until it is explicitly removed.
+### Syntax
+```javascript
+localStorage.setItem("key", "value");
+localStorage.getItem("key");
+localStorage.removeItem("key");
+localStorage.clear();
+```
+### Simple Example
+```javascript
+localStorage.setItem("username", "Arun");
+const username = localStorage.getItem("username");
+console.log(username);
+```
+Output:
+```text
+Arun
+```
+Even if you close and reopen the browser, the data normally remains.
+## Storing Objects
+`localStorage` stores values as **strings**, so objects need `JSON.stringify()`.
+```javascript
+const user = {
+    name: "Arun",
+    role: "Developer"
+};
+localStorage.setItem("user", JSON.stringify(user));
+```
+To retrieve it:
+```javascript
+const data = localStorage.getItem("user");
+const user = JSON.parse(data);
+console.log(user.name);
+```
+Output:
+```text
+Arun
+```
+### Technical Real-Time Use
+Remembering a user's UI preference:
+```javascript
+localStorage.setItem("theme", "dark");
+const theme = localStorage.getItem("theme");
+if (theme === "dark") {
+    document.body.classList.add("dark");
+}
+```
+Common uses:
+* Theme preference
+* Language preference
+* Shopping cart data
+* Non-sensitive application settings
+* Recently selected UI options
+### Important Security Point
+Do **not** store sensitive authentication secrets such as passwords or long-lived authentication tokens in `localStorage` when a safer server-managed/session-cookie design is available. JavaScript-accessible storage can be exposed if your site suffers an XSS attack.
+# 2. `sessionStorage`
+### Explanation
+`sessionStorage` works similarly to `localStorage`, but the data is associated with the **current browser tab/session**.
+When that tab is closed, its `sessionStorage` data is normally removed.
+### Syntax
+```javascript
+sessionStorage.setItem("key", "value");
+sessionStorage.getItem("key");
+sessionStorage.removeItem("key");
+sessionStorage.clear();
+```
+### Example
+```javascript
+sessionStorage.setItem("username", "Arun");
+const username = sessionStorage.getItem("username");
+console.log(username);
+```
+Output:
+```text
+Arun
+```
+If the tab is closed, the stored data is normally removed.
+### Technical Real-Time Use
+Suppose a multi-step registration form has:
+```text
+Step 1 → Personal Details
+Step 2 → Address
+Step 3 → Confirmation
+```
+You can temporarily store progress:
+```javascript
+sessionStorage.setItem("currentStep", "2");
+```
+When the page is refreshed:
+```javascript
+const step = sessionStorage.getItem("currentStep");
+console.log(`Continue from step ${step}`);
+```
+This is useful for:
+* Temporary form data
+* Multi-step forms
+* Temporary UI state
+* Current page/step
+* Data needed only during a browser session
+# 3. Cookies
+### Explanation
+A **cookie** is a small piece of data associated with a website.
+Unlike `localStorage` and `sessionStorage`, cookies can be automatically included in HTTP requests to the relevant server.
+Cookies are therefore commonly used for **server-managed sessions and authentication state**.
+### Creating a Cookie
+```javascript
+document.cookie = "username=Arun";
+```
+Reading cookies:
+```javascript
+console.log(document.cookie);
+```
+Example:
+```text
+username=Arun
+```
+# 4. Cookie Expiration
+You can specify an expiration time:
+```javascript
+document.cookie = "username=Arun; max-age=3600";
+```
+`3600` seconds = 1 hour.
+You can delete it by setting its maximum age to zero:
+```javascript
+document.cookie = "username=Arun; max-age=0";
+```
+# 5. Important Cookie Security Attributes
+Cookies have security-related attributes that are especially important for authentication.
+### `HttpOnly`
+```text
+HttpOnly
+```
+Prevents JavaScript from reading the cookie through `document.cookie`.
+This is useful for server-managed authentication cookies because it reduces exposure to JavaScript-based theft.
+### `Secure`
+```text
+Secure
+```
+The browser sends the cookie only over HTTPS, except for special local-development considerations.
+### `SameSite`
+Controls when cookies are sent with cross-site requests.
+Common values:
+```text
+SameSite=Strict
+SameSite=Lax
+SameSite=None
+```
+For example:
+```http
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Lax
+```
+For authentication cookies, the exact settings should match your application's architecture and cross-site requirements.
+
+# 6. `localStorage` vs `sessionStorage` vs Cookies
+| Feature                                | `localStorage`         | `sessionStorage`               | Cookies                         |
+| -------------------------------------- | ---------------------- | ------------------------------ | ------------------------------- |
+| Lifetime                               | Until removed          | Usually until tab/session ends | Configurable                    |
+| Capacity                               | Larger                 | Larger                         | Small                           |
+| Sent automatically to server?          | No                     | No                             | Yes, when applicable            |
+| JavaScript access                      | Yes                    | Yes                            | Usually yes, unless `HttpOnly`  |
+| `JSON.stringify()` needed for objects? | Yes                    | Yes                            | Usually yes for structured data |
+| Typical use                            | Persistent preferences | Temporary session data         | Server sessions/auth state      |
+
+# 7. Real-Time Example
+Imagine an e-commerce application.
+### `localStorage`
+Store a theme:
+```javascript
+localStorage.setItem("theme", "dark");
+```
+The user expects the theme preference to remain after reopening the browser.
+### `sessionStorage`
+Store checkout progress:
+```javascript
+sessionStorage.setItem("checkoutStep", "2");
+```
+The information is useful while the current tab/session is active.
+### Cookie
+A server can issue a session cookie:
+```http
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Lax
+```
+The browser can then send the cookie with applicable requests to that site.
+# 8. Cookies vs Web Storage
+The biggest conceptual difference is:
+```text
+localStorage
+      ↓
+Browser storage
+      ↓
+JavaScript reads/writes it
+      ↓
+NOT automatically sent with HTTP requests
+sessionStorage
+      ↓
+Browser-tab/session storage
+      ↓
+JavaScript reads/writes it
+      ↓
+NOT automatically sent with HTTP requests
+
+Cookies
+      ↓
+Browser cookie storage
+      ↓
+Can be automatically sent with HTTP requests
+      ↓
+Can also be configured as HttpOnly/Secure/SameSite
+```
+# 9. Quick Revision
+### localStorage
+> **Persistent browser storage**
+```javascript
+localStorage.setItem("theme", "dark");
+```
+### sessionStorage
+> **Temporary storage associated with a browser tab/session**
+```javascript
+sessionStorage.setItem("step", "2");
+```
+### Cookies
+> **Small browser-stored values that can be automatically sent with HTTP requests**
+```text
+Set-Cookie: sessionId=abc123; HttpOnly; Secure; SameSite=Lax
+```
+```text
+localStorage
+→ Keep it for later
+sessionStorage
+→ Keep it for this session/tab
+cookies
+→ Small data that can travel with HTTP requests
+```
+**Note:** Don't simply say *"cookies are for authentication."* Cookies are a general mechanism; they're often used for **server-managed sessions and authentication**, while `localStorage`/`sessionStorage` are client-side Web Storage APIs.
+
+# 22_FETCH API & Ajax
+These concepts are the foundation of **frontend ↔ backend communication**.
+A typical flow is:
+```text
+Frontend
+   ↓
+fetch()
+   ↓
+HTTP Request
+   ↓
+Backend API
+   ↓
+HTTP Response
+   ↓
+JSON
+   ↓
+JavaScript Object
+   ↓
+Update UI
+```
+# 1. Asynchronous Requests
+### Explanation
+An **asynchronous request** allows JavaScript to send a request to a server without blocking the rest of the application while waiting for the response.
+For example, when a website requests user data:
+```text
+Send request
+     ↓
+Continue running JavaScript
+     ↓
+Server processes request
+     ↓
+Response arrives
+     ↓
+Handle response
+```
+This is important because network requests can take time.
+### Example
+```javascript
+console.log("Start");
+fetch("/api/users")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    });
+console.log("End");
+```
+Typically:
+```text
+Start
+End
+[user data]
+```
+The request happens asynchronously.
+
+# 2. Promises
+### Explanation
+A **Promise** represents the eventual result of an asynchronous operation.
+A Promise has three states:
+```text
+Pending
+   ↓
+Fulfilled
+```
+or
+```text
+Pending
+   ↓
+Rejected
+```
+### Example
+```javascript
+const promise = new Promise((resolve, reject) => {
+    let success = true;
+    if (success) {
+        resolve("Request successful");
+    } else {
+        reject("Request failed");
+    }
+});
+promise
+    .then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+```
+Output:
+```text
+Request successful
+```
+### Important Methods
+```javascript
+.then()
+```
+Runs when the Promise succeeds.
+```javascript
+.catch()
+```
+Runs when the Promise rejects.
+```javascript
+.finally()
+```
+Runs after completion regardless of success or failure.
+# 3. `fetch()`
+### Explanation
+`fetch()` is the modern JavaScript API for making HTTP requests.
+### Syntax
+```javascript
+fetch(url)
+    .then(response => {
+        // process response
+    })
+    .catch(error => {
+        // handle error
+    });
+```
+### GET Request
+```javascript
+fetch("/api/users")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
+```
+The important part is:
+```javascript
+response.json()
+```
+It reads the response body and parses JSON into a JavaScript value.
+
+# 4. `fetch()` with `async/await`
+`async/await` provides a cleaner way to work with Promises.
+### Example
+```javascript
+async function getUsers() {
+    try {
+        const response = await fetch("/api/users");
+        const users = await response.json();
+        console.log(users);
+    } catch (error) {
+        console.log("Request failed:", error);
+    }
+}
+getUsers();
+```
+### How it works
+```text
+fetch()
+   ↓
+Promise
+   ↓
+await
+   ↓
+Wait for response
+   ↓
+response.json()
+   ↓
+JavaScript data
+```
+# 5. Checking HTTP Errors
+One important interview point:
+`fetch()` does **not automatically reject the Promise for HTTP errors such as 404 or 500**.
+Therefore, check `response.ok` or `response.status`.
+```javascript
+async function getUser() {
+    try {
+        const response = await fetch("/api/users/101");
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        const user = await response.json();
+        console.log(user);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+```
+For example:
+```text
+200 → response.ok = true
+404 → response.ok = false
+500 → response.ok = false
+```
+# 6. GET Request
+A GET request retrieves data.
+```javascript
+async function getProducts() {
+    const response = await fetch("/api/products");
+    const products = await response.json();
+    console.log(products);
+}
+getProducts();
+```
+Conceptually:
+```text
+GET /api/products
+        ↓
+Backend
+        ↓
+JSON response
+```
+# 7. POST Request
+A POST request commonly sends data to the server.
+```javascript
+async function createUser() {
+    const user = {
+        name: "Arun",
+        email: "arun@gmail.com"
+    };
+    const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+    });
+    const result = await response.json();
+    console.log(result);
+}
+createUser();
+```
+The important part:
+```javascript
+body: JSON.stringify(user)
+```
+converts the JavaScript object into a JSON string for the request body.
+# 8. PUT and DELETE
+### PUT
+Used to update data:
+```javascript
+await fetch("/api/users/101", {
+    method: "PUT",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        name: "Kumar"
+    })
+});
+```
+### DELETE
+Used to delete data:
+```javascript
+await fetch("/api/users/101", {
+    method: "DELETE"
+});
+```
+Common HTTP methods:
+
+| Method | Purpose          |
+| ------ | ---------------- |
+| GET    | Retrieve         |
+| POST   | Create/send      |
+| PUT    | Replace/update   |
+| PATCH  | Partially update |
+| DELETE | Delete           |
+
+# 9. HTTP Headers
+### Explanation
+**Headers** provide additional information about an HTTP request or response.
+For example:
+```javascript
+headers: {
+    "Content-Type": "application/json"
+}
+```
+This tells the server:
+> The request body contains JSON.
+### Common Headers
+#### `Content-Type`
+Describes the format of the request body.
+```javascript
+"Content-Type": "application/json"
+```
+#### `Authorization`
+Used to send authentication credentials such as a bearer token when the API requires it.
+```javascript
+"Authorization": "Bearer YOUR_TOKEN"
+```
+#### `Accept`
+Tells the server what response format the client prefers.
+```javascript
+"Accept": "application/json"
+```
+### Example
+```javascript
+const response = await fetch("/api/profile", {
+    method: "GET",
+    headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer YOUR_TOKEN"
+    }
+});
+```
+# 10. JSON
+### Explanation
+**JSON (JavaScript Object Notation)** is a text-based data format commonly used for exchanging data between frontend and backend.
+Example:
+```json
+{
+    "id": 101,
+    "name": "Arun",
+    "role": "Developer"
+}
+```
+JSON supports values such as:
+```text
+String
+Number
+Boolean
+Array
+Object
+null
+```
+### JSON → JavaScript
+```javascript
+const jsonString = '{"name":"Arun","age":22}';
+const user = JSON.parse(jsonString);
+console.log(user.name);
+```
+Output:
+```text
+Arun
+```
+### JavaScript → JSON
+```javascript
+const user = {
+    name: "Arun",
+    age: 22
+};
+const jsonString = JSON.stringify(user);
+console.log(jsonString);
+```
+Output:
+```text
+{"name":"Arun","age":22}
+```
+# 11. XMLHttpRequest
+### Explanation
+`XMLHttpRequest` (**XHR**) is an older browser API for making HTTP requests.
+It existed before `fetch()` and is still found in older applications and some libraries.
+### Basic Example
+```javascript
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "/api/users");
+xhr.onload = function () {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        const users = JSON.parse(xhr.responseText);
+        console.log(users);
+    }
+};
+xhr.onerror = function () {
+    console.log("Network error");
+};
+xhr.send();
+```
+### Flow
+```text
+new XMLHttpRequest()
+        ↓
+xhr.open()
+        ↓
+xhr.send()
+        ↓
+Server
+        ↓
+xhr.onload
+        ↓
+JSON.parse()
+```
+# 12. XHR vs Fetch
+| Feature               | XMLHttpRequest          | Fetch             |
+| --------------------- | ----------------------- | ----------------- |
+| API style             | Older                   | Modern            |
+| Promise-based         | No                      | Yes               |
+| `async/await`         | Not directly            | Yes               |
+| Syntax                | More verbose            | Cleaner           |
+| JSON handling         | `JSON.parse()` manually | `response.json()` |
+| Common in modern code | Less common             | Very common       |
+### XHR
+```javascript
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "/api/users");
+xhr.onload = () => {
+    console.log(JSON.parse(xhr.responseText));
+};
+xhr.send();
+```
+### Fetch
+```javascript
+const response = await fetch("/api/users");
+const users = await response.json();
+console.log(users);
+```
+For new browser code, `fetch()` is generally the more convenient API.
+
+
+| Concept              | Meaning                                                     |
+| -------------------- | ----------------------------------------------------------- |
+| Asynchronous request | Request runs without blocking the application while waiting |
+| Promise              | Represents future success/failure of an async operation     |
+| `fetch()`            | Modern API for HTTP requests                                |
+| `async`              | Makes a function return a Promise                           |
+| `await`              | Waits for a Promise result inside an async function         |
+| Headers              | Metadata/instructions attached to HTTP requests/responses   |
+| JSON                 | Common text format for exchanging structured data           |
+| `JSON.parse()`       | JSON string → JavaScript value                              |
+| `JSON.stringify()`   | JavaScript value → JSON string                              |
+| `XMLHttpRequest`     | Older API for HTTP requests                                 |
+
+```text
+fetch()
+   ↓
+HTTP Request
+   ↓
+Promise
+   ↓
+await
+   ↓
+Response
+   ↓
+response.json()
+   ↓
+JavaScript Object
+```
+And when sending data:
+```text
+JavaScript Object
+       ↓
+JSON.stringify()
+       ↓
+HTTP Request Body
+       ↓
+Backend API
+```
+**Note:** `fetch()` is Promise-based, while `XMLHttpRequest` uses an event/callback-based API. `async/await` is syntax built around Promises, not a separate networking mechanism.
+
+# 23_Promises
+Promises are used to handle **asynchronous operations** such as API calls, database requests, file operations, and timers.
+A Promise has three states:
+```text
+Pending → Fulfilled
+        ↘ Rejected
+```
+## 1. `.then()`
+### Explanation
+`.then()` is executed when a Promise is **successfully fulfilled**.
+### Syntax
+```js
+promise.then(successFunction);
+```
+### Simple Example
+```js
+const promise = Promise.resolve("Login successful");
+promise.then(message => {
+    console.log(message);
+});
+```
+### Output
+```text
+Login successful
+```
+### Technical Real-Time Use
+After fetching user data from an API, `.then()` can process the successful response.
+```js
+fetch("/api/users")
+    .then(response => response.json())
+    .then(users => {
+        console.log(users);
+    });
+```
+Here:
+```text
+fetch()
+   ↓
+Promise
+   ↓
+.then()
+   ↓
+response.json()
+   ↓
+users
+```
+# 2. `.catch()`
+### Explanation
+`.catch()` handles a **rejected Promise or an error** that occurs in the Promise chain.
+### Syntax
+```js
+promise.catch(errorHandler);
+```
+### Example
+```js
+const promise = Promise.reject("Payment failed");
+promise
+    .then(message => {
+        console.log(message);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
+```
+### Output
+```text
+Error: Payment failed
+```
+### Technical Real-Time Use
+```js
+fetch("/api/payment")
+    .then(response => response.json())
+    .then(data => {
+        console.log("Payment successful:", data);
+    })
+    .catch(error => {
+        console.log("Payment failed:", error);
+    });
+```
+If the network request fails or an error is thrown in the chain, `.catch()` can handle it.
+### Important
+`fetch()` does **not** reject merely because the server returns `404` or `500`.
+So usually check:
+```js
+fetch("/api/payment")
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.log(error.message);
+    });
+```
+# 3. `.finally()`
+### Explanation
+`.finally()` runs **whether the Promise succeeds or fails**.
+It is mainly used for **cleanup operations**.
+### Syntax
+```js
+promise
+    .then(...)
+    .catch(...)
+    .finally(...);
+```
+### Example
+```js
+const login = Promise.resolve("Login successful");
+login
+    .then(message => {
+        console.log(message);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+    .finally(() => {
+        console.log("Login process completed");
+    });
+```
+### Output
+```text
+Login successful
+Login process completed
+```
+Even if the Promise fails:
+```js
+const login = Promise.reject("Invalid password");
+login
+    .then(message => {
+        console.log(message);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    })
+    .finally(() => {
+        console.log("Login process completed");
+    });
+```
+### Output
+```text
+Error: Invalid password
+Login process completed
+```
+### Technical Real-Time Use
+A very common use is hiding a loading spinner:
+```js
+showLoading();
+fetch("/api/users")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+    .finally(() => {
+        hideLoading();
+    });
+```
+Whether the request succeeds or fails, the loading indicator is removed.
+# 4. Promise Chaining
+### Explanation
+**Promise chaining** means executing multiple asynchronous operations one after another using multiple `.then()` calls.
+The important point is:
+> A `.then()` can return another value or another Promise, which can be handled by the next `.then()`.
+### Example
+```js
+Promise.resolve(10)
+    .then(number => {
+        return number * 2;
+    })
+    .then(number => {
+        return number + 5;
+    })
+    .then(result => {
+        console.log(result);
+    });
+```
+### Output
+```text
+25
+```
+Flow:
+```text
+10
+ ↓
+10 × 2
+ ↓
+20
+ ↓
+20 + 5
+ ↓
+25
+```
+## Chaining with API Calls
+Suppose we first get a user and then use that user's ID to get their orders.
+```js
+fetch("/api/user")
+    .then(response => response.json())
+    .then(user => {
+        return fetch(`/api/orders/${user.id}`);
+    })
+    .then(response => response.json())
+    .then(orders => {
+        console.log("Orders:", orders);
+    })
+    .catch(error => {
+        console.log("Error:", error);
+    });
+```
+Flow:
+```text
+Get User
+   ↓
+Convert response to JSON
+   ↓
+Get user.id
+   ↓
+Get Orders
+   ↓
+Convert response to JSON
+   ↓
+Display Orders
+```
+### Important Interview Point
+Always **return** the next Promise when chaining:
+```js
+.then(user => {
+    return fetch(`/api/orders/${user.id}`);
+})
+```
+This allows the next `.then()` to wait for that request.
+# 5. Returning Values in Promise Chaining
+A `.then()` can return a normal value:
+```js
+Promise.resolve(5)
+    .then(value => {
+        return value * 2;
+    })
+    .then(value => {
+        console.log(value);
+    });
+```
+Output:
+```text
+10
+```
+It can also return another Promise:
+```js
+Promise.resolve("Vaishu")
+    .then(name => {
+        return Promise.resolve(`Hello ${name}`);
+    })
+    .then(message => {
+        console.log(message);
+    });
+```
+Output:
+```text
+Hello Vaishu
+```
+The next `.then()` waits for the returned Promise.
+# 6. `Promise.all()`
+### Explanation
+`Promise.all()` is used when **multiple asynchronous operations need to complete successfully**.
+It runs Promises concurrently and waits for all of them.
+### Syntax
+```js
+Promise.all([promise1, promise2, promise3])
+    .then(results => {
+        console.log(results);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+```
+### Example
+```js
+const userPromise = Promise.resolve("User data");
+const orderPromise = Promise.resolve("Order data");
+const productPromise = Promise.resolve("Product data");
+Promise.all([
+    userPromise,
+    orderPromise,
+    productPromise
+])
+.then(results => {
+    console.log(results);
+})
+.catch(error => {
+    console.log(error);
+});
+```
+### Output
+```text
+[
+    "User data",
+    "Order data",
+    "Product data"
+]
+```
+### Important
+The results maintain the **same order as the input Promises**.
+```js
+Promise.all([
+    Promise.resolve("A"),
+    Promise.resolve("B"),
+    Promise.resolve("C")
+])
+.then(results => console.log(results));
+```
+Output:
+```text
+["A", "B", "C"]
+```
+Even if `B` actually finishes before `A`, the result array is still ordered according to the input.
+## Technical Real-Time Use
+Suppose a dashboard needs:
+* User profile
+* Orders
+* Notifications
+These requests are independent, so they can be requested concurrently.
+```js
+const profile = fetch("/api/profile").then(res => res.json());
+const orders = fetch("/api/orders").then(res => res.json());
+const notifications = fetch("/api/notifications")
+    .then(res => res.json());
+Promise.all([
+    profile,
+    orders,
+    notifications
+])
+.then(([profileData, orderData, notificationData]) => {
+    console.log(profileData);
+    console.log(orderData);
+    console.log(notificationData);
+
+})
+.catch(error => {
+    console.log("Failed:", error);
+});
+```
+### Flow
+```text
+        ┌── Profile
+        │
+Start ──┼── Orders ──→ Promise.all() → Continue
+        │
+        └── Notifications
+```
+### Important Rule
+If **one Promise rejects**, `Promise.all()` rejects.
+```js
+Promise.all([
+    Promise.resolve("A"),
+    Promise.reject("B failed"),
+    Promise.resolve("C")
+])
+.catch(error => {
+    console.log(error);
+});
+```
+Output:
+```text
+B failed
+```
+# 7. `Promise.race()`
+### Explanation
+`Promise.race()` waits for the **first Promise to settle**.
+"Settle" means either:
+* fulfilled
+* rejected
+Whichever Promise finishes first determines the result.
+### Syntax
+```js
+Promise.race([promise1, promise2])
+    .then(...)
+    .catch(...);
+```
+### Example
+```js
+const fast = new Promise(resolve => {
+    setTimeout(() => resolve("Fast request"), 1000);
+});
+const slow = new Promise(resolve => {
+    setTimeout(() => resolve("Slow request"), 3000);
+});
+Promise.race([fast, slow])
+    .then(result => {
+        console.log(result);
+    });
+```
+### Output
+```text
+Fast request
+```
+Because:
+```text
+Fast → 1 second
+Slow → 3 seconds
+Winner → Fast
+```
+# 8. Real-Time Use of `Promise.race()`
+A common use is implementing a **request timeout**.
+```js
+const apiRequest = fetch("/api/users");
+const timeout = new Promise((_, reject) => {
+    setTimeout(() => {
+        reject(new Error("Request timed out"));
+    }, 5000);
+});
+Promise.race([
+    apiRequest,
+    timeout
+])
+.then(response => {
+    console.log("Response received");
+})
+.catch(error => {
+    console.log(error.message);
+});
+```
+Here:
+```text
+API request ────────┐
+                    ├── Promise.race()
+5-second timeout ───┘
+```
+Whichever settles first determines the result.
+**Note:** `Promise.race()` does not automatically cancel the losing operation. For actually cancelling a `fetch`, use `AbortController`.
+
+# 9. `Promise.all()` vs `Promise.race()`
+| Feature    | `Promise.all()`                  | `Promise.race()`                      |
+| ---------- | -------------------------------- | ------------------------------------- |
+| Purpose    | Wait for all                     | Wait for first settled                |
+| Success    | All must fulfill                 | First settled determines result       |
+| Failure    | One rejection rejects the result | First rejection can reject the result |
+| Result     | Array of results                 | Single result/error                   |
+| Common use | Multiple API calls               | Timeout/fallback                      |
+| Waits for  | All Promises                     | First settled Promise                 |
+### note
+```text
+Promise.all()
+→ "Everyone must finish."
+
+Promise.race()
+→ "Whoever finishes first wins."
+```
+
+| Concept          | Meaning                               |
+| ---------------- | ------------------------------------- |
+| `.then()`        | Handle successful result              |
+| `.catch()`       | Handle error/rejection                |
+| `.finally()`     | Run cleanup regardless of result      |
+| Chaining         | Execute async operations sequentially |
+| `Promise.all()`  | Wait for all Promises                 |
+| `Promise.race()` | Take the first settled Promise        |
+
+### Note
+
+1. `.then()` handles fulfillment.
+2. `.catch()` handles rejection/errors.
+3. `.finally()` runs for both success and failure.
+4. Promise chaining works because `.then()` returns a **new Promise**.
+5. `Promise.all()` rejects if any input Promise rejects.
+6. `Promise.race()` settles when the first input Promise settles.
+7. `Promise.all()` preserves **input order** in its result array.
+8. `Promise.race()` does **not** cancel the losing Promises.
+
+# 24_Async &Await
+These concepts are used together to write **clean and readable asynchronous JavaScript**, especially for API calls.
+## 1. `async` Functions
+### Explanation
+An `async` function is a function that **always returns a Promise**.
+It allows us to use `await` inside the function.
+### Syntax
+```js
+async function functionName() {
+    // asynchronous code
+}
+```
+### Simple Example
+```js
+async function getMessage() {
+    return "Hello Vaishu";
+}
+getMessage().then(message => {
+    console.log(message);
+});
+```
+### Output
+```text
+Hello Vaishu
+```
+Even though we returned a normal string, an `async` function automatically wraps it in a Promise.
+Conceptually:
+```text
+"Hello Vaishu"
+      ↓
+   Promise
+```
+### Technical Real-Time Use
+API functions are commonly written as `async` functions:
+```js
+async function getUsers() {
+    const response = await fetch("/api/users");
+    const users = await response.json();
+    return users;
+}
+```
+# 2. `await`
+### Explanation
+`await` waits for a Promise to settle and gives you its fulfilled value.
+It can normally be used inside an `async` function.
+### Syntax
+```js
+const result = await promise;
+```
+### Example
+```js
+function getUser() {
+    return Promise.resolve({
+        name: "Vaishu",
+        role: "Developer"
+    });
+}
+async function displayUser() {
+    const user = await getUser();
+    console.log(user);
+}
+displayUser();
+```
+### Output
+```text
+{ name: "Vaishu", role: "Developer" }
+```
+Without `await`, you would receive the Promise itself:
+```js
+const user = getUser();
+console.log(user);
+```
+Instead of the actual user object, `user` is a Promise.
+# 3. `async` + `await` with `fetch()`
+A common API pattern is:
+```js
+async function getUsers() {
+    const response = await fetch("/api/users");
+    const users = await response.json();
+    console.log(users);
+}
+getUsers();
+```
+The flow is:
+```text
+fetch()
+   ↓
+Promise<Response>
+   ↓
+await
+   ↓
+Response
+   ↓
+response.json()
+   ↓
+Promise<Data>
+   ↓
+await
+   ↓
+JavaScript data
+```
+This is easier to read than a long `.then()` chain.
+### Promise version
+```js
+fetch("/api/users")
+    .then(response => response.json())
+    .then(users => {
+        console.log(users);
+    });
+```
+### `async/await` version
+```js
+async function getUsers() {
+    const response = await fetch("/api/users");
+    const users = await response.json();
+    console.log(users);
+}
+```
+Both can perform the same asynchronous operation.
+# 4. Error Handling with `try...catch`
+### Explanation
+When using `async/await`, the common way to handle rejected Promises is:
+```js
+try {
+    // asynchronous operation
+} catch (error) {
+    // handle error
+}
+```
+### Example
+```js
+async function getUsers() {
+    try {
+        const response = await fetch("/api/users");
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+        const users = await response.json();
+        console.log(users);
+    } catch (error) {
+        console.log("Error:", error.message);
+    }
+}
+getUsers();
+```
+If the API fails, the `catch` block handles the error.
+# 5. `finally` with `async/await`
+`finally` is useful for code that should execute **regardless of success or failure**.
+```js
+async function getUsers() {
+    try {
+        console.log("Loading...");
+        const response = await fetch("/api/users");
+        if (!response.ok) {
+            throw new Error("Failed to fetch users");
+        }
+        const users = await response.json();
+        console.log(users);
+    } catch (error) {
+        console.log("Error:", error.message);
+    } finally {
+        console.log("Request completed");
+    }
+}
+getUsers();
+```
+### Technical Real-Time Use
+For example, hiding a loading spinner:
+```js
+showLoading();
+try {
+    const response = await fetch("/api/products");
+    if (!response.ok) {
+        throw new Error("Failed to load products");
+    }
+    const products = await response.json();
+    displayProducts(products);
+} catch (error) {
+    showError(error.message);
+} finally {
+    hideLoading();
+}
+```
+# 6. `async/await` Error Flow
+Consider:
+```js
+async function login() {
+    try {
+        const response = await fetch("/api/login");
+        if (!response.ok) {
+            throw new Error("Login failed");
+        }
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.log("Something went wrong:", error.message);
+    }
+}
+```
+Flow:
+```text
+async function
+      ↓
+   await fetch()
+      ↓
+   Success?
+   /      \
+ Yes       No
+ ↓          ↓
+continue   catch
+            ↓
+        error handling
+```
+# 7. Important: `fetch()` and HTTP Errors
+One important interview point:
+`fetch()` rejects for **network-level failures**, but an HTTP `404` or `500` does not automatically cause rejection.
+Therefore:
+```js
+if (!response.ok) {
+    throw new Error(`HTTP Error: ${response.status}`);
+}
+```
+is often important.
+Example:
+```js
+async function getUser() {
+    try {
+        const response = await fetch("/api/users/101");
+        if (!response.ok) {
+            throw new Error(`Server returned ${response.status}`);
+        }
+        const user = await response.json();
+        console.log(user);
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+```
+# 8. Sequential Execution
+Consider:
+```js
+async function getData() {
+    const user = await fetch("/api/user");
+    const orders = await fetch("/api/orders");
+    console.log(user);
+    console.log(orders);
+}
+```
+The second request starts **after the first `await` completes**.
+```text
+Request 1
+   ↓
+wait
+   ↓
+Request 2
+   ↓
+wait
+   ↓
+Result
+```
+This is appropriate when the second operation **depends on the first**.
+### Example
+```js
+async function getUserOrders() {
+    const response = await fetch("/api/user");
+    const user = await response.json();
+    const orderResponse =
+        await fetch(`/api/orders/${user.id}`);
+    const orders = await orderResponse.json();
+    console.log(orders);
+}
+```
+Here we need `user.id` before requesting the orders.
+# 9. Concurrency
+### Explanation
+**Concurrency** means starting multiple independent asynchronous operations without unnecessarily waiting for one to finish before starting another.
+Suppose we need:
+* user profile
+* products
+* notifications
+These operations are independent.
+Instead of:
+```js
+const user = await fetch("/api/user");
+const products = await fetch("/api/products");
+const notifications =
+    await fetch("/api/notifications");
+```
+we can start them together.
+# 10. Concurrent Requests with `Promise.all()`
+```js
+async function loadDashboard() {
+    const userPromise = fetch("/api/user");
+    const productsPromise = fetch("/api/products");
+    const notificationsPromise =
+        fetch("/api/notifications");
+    const [
+        userResponse,
+        productsResponse,
+        notificationsResponse
+    ] = await Promise.all([
+        userPromise,
+        productsPromise,
+        notificationsPromise
+    ]);
+    const user = await userResponse.json();
+    const products = await productsResponse.json();
+    const notifications = await notificationsResponse.json();
+    console.log(user);
+    console.log(products);
+    console.log(notifications);
+}
+```
+The requests are started without waiting for one another.
+```text
+        ┌── User API ─────────┐
+        │                     │
+Start ──┼── Products API ─────┼──→ Promise.all()
+        │                     │
+        └── Notifications ────┘
+```
+### Why is this useful?
+If three independent APIs each take roughly 2 seconds:
+Sequential:
+```text
+2s + 2s + 2s ≈ 6s
+```
+Concurrent:
+```text
+max(2s, 2s, 2s) ≈ 2s
+```
+Actual timing depends on the network, server, browser, and other factors, but the principle is important.
+# 11. Better Concurrent API Pattern
+You can also create the Promises directly:
+```js
+async function loadDashboard() {
+    try {
+        const [
+            userResponse,
+            productsResponse,
+            notificationResponse
+        ] = await Promise.all([
+            fetch("/api/user"),
+            fetch("/api/products"),
+            fetch("/api/notifications")
+        ]);
+        const user = await userResponse.json();
+        const products = await productsResponse.json();
+        const notifications =
+            await notificationResponse.json();
+        console.log(user);
+        console.log(products);
+        console.log(notifications);
+    } catch (error) {
+        console.log("Dashboard error:", error.message);
+
+    }
+}
+```
+# 12. Sequential vs Concurrent
+### Sequential
+```js
+const user = await getUser();
+const products = await getProducts();
+const orders = await getOrders();
+```
+```text
+User
+ ↓
+Products
+ ↓
+Orders
+```
+Use when operations **depend on each other**.
+### Concurrent
+```js
+const [user, products, orders] =
+    await Promise.all([
+        getUser(),
+        getProducts(),
+        getOrders()
+    ]);
+```
+```text
+User      ──┐
+Products  ──┼──→ Promise.all()
+Orders    ──┘
+```
+Use when operations are **independent**.
+# 13. Concurrency with Different Functions
+You don't need to use `fetch()` only.
+```js
+function getUser() {
+    return Promise.resolve("Vaishu");
+}
+function getRole() {
+    return Promise.resolve("Developer");
+}
+function getSkills() {
+    return Promise.resolve(["JavaScript", "Python", "React"]);
+}
+async function getProfile() {
+    const [user, role, skills] =
+        await Promise.all([
+            getUser(),
+            getRole(),
+            getSkills()
+        ]);
+    console.log(user);
+    console.log(role);
+    console.log(skills);
+}
+getProfile();
+```
+### Output
+```text
+Vaishu
+Developer
+["JavaScript", "Python", "React"]
+```
+# 14. Handling Individual Errors in Concurrent Operations
+`Promise.all()` rejects if **one Promise rejects**.
+If you want each operation to complete independently and inspect individual results, `Promise.allSettled()` can be useful.
+```js
+async function loadData() {
+    const results = await Promise.allSettled([
+        fetch("/api/users"),
+        fetch("/api/products"),
+        fetch("/api/orders")
+    ]);
+    console.log(results);
+}
+```
+Possible result:
+```text
+[
+    { status: "fulfilled", value: ... },
+    { status: "rejected", reason: ... },
+    { status: "fulfilled", value: ... }
+]
+```
+This is useful for dashboards where one failed API shouldn't necessarily prevent you from displaying the other successful data.
+# 15. `await` Does Not Block the Entire JavaScript Program
+This is an important concept.
+```js
+async function test() {
+    console.log("A");
+    await Promise.resolve();
+    console.log("B");
+}
+console.log("Start");
+test();
+console.log("End");
+```
+Output:
+```text
+Start
+A
+End
+B
+```
+Why?
+`await` pauses the **async function's continuation**, not the entire JavaScript thread.
+Conceptually:
+```text
+Start
+ ↓
+test()
+ ↓
+A
+ ↓
+await
+ ↓
+control returns
+ ↓
+End
+ ↓
+B
+```
+This is why JavaScript can continue handling other work while an asynchronous operation is pending.
+# 16. `async/await` vs `.then()/.catch()`
+### Promise chaining
+```js
+fetch("/api/users")
+    .then(response => response.json())
+    .then(users => {
+        console.log(users);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+```
+### `async/await`
+```js
+async function getUsers() {
+    try {
+        const response = await fetch("/api/users");
+        if (!response.ok) {
+            throw new Error("Request failed");
+        }
+        const users = await response.json();
+        console.log(users);
+    } catch (error) {
+        console.log(error);
+    }
+}
+```
+
+| `.then()`                 | `async/await`              |
+| ------------------------- | -------------------------- |
+| Promise chaining          | Synchronous-looking syntax |
+| `.catch()` for errors     | `try...catch`              |
+| Good for chaining         | Often easier to read       |
+| Promise-based             | Still Promise-based        |
+| Does not replace Promises | Built on top of Promises   |
+
+**Important:** `async/await` does not eliminate Promises. It is a cleaner way to work with them.
+
+| Concept                | Meaning                                      |
+| ---------------------- | -------------------------------------------- |
+| `async`                | Makes a function return a Promise            |
+| `await`                | Waits for a Promise inside an async function |
+| `try`                  | Contains code that may fail                  |
+| `catch`                | Handles errors                               |
+| `finally`              | Runs whether success or failure              |
+| Sequential             | One async operation after another            |
+| Concurrent             | Independent operations started together      |
+| `Promise.all()`        | Wait for all concurrent operations           |
+| `Promise.allSettled()` | Get every operation's outcome                |
+| `Promise.race()`       | First settled Promise determines result      |
+
+```text
+async  → "This function works with Promises"
+await  → "Wait for this Promise"
+try    → "Try the operation"
+catch  → "Handle the error"
+finally → "Do this anyway"
+Promise.all()
+         → "Wait for everyone"
+Promise.race()
+         → "First one to finish/settle"
+```
+### note
+**When should you use sequential `await` vs `Promise.all()`?**
+```text
+If B depends on A:
+    await A
+    await B
+If A and B are independent:
+    await Promise.all([A, B])
+```
+That distinction is one of the most important practical concepts in JavaScript asynchronous programming.
+
+# 25_Classes 
+
+JavaScript classes provide a cleaner syntax for creating **objects and object-oriented programs**.
+They are especially useful when an application has multiple objects with similar properties and behavior, such as **users, employees, products, bank accounts, or vehicles**.
+# 1. Class Syntax
+### Explanation
+A **class** is a blueprint for creating objects.
+It defines:
+* properties/data
+* methods/behavior
+* constructors
+* inheritance relationships
+### Syntax
+```js
+class ClassName {
+    // properties
+    // methods
+}
+```
+### Example
+```js
+class User {
+    login() {
+        console.log("User logged in");
+    }
+}
+const user = new User();
+user.login();
+```
+## Output
+```text
+User logged in
+```
+Here:
+```text
+User
+ ↓
+Class / Blueprint
+ ↓
+new User()
+ ↓
+Object
+```
+### Technical Real-Time Use
+A web application may have different users:
+```js
+class User {
+    login() {
+        console.log("User logged in");
+    }
+    logout() {
+        console.log("User logged out");
+    }
+}
+const vaishu = new User();
+vaishu.login();
+vaishu.logout();
+```
+The class defines common behavior that every `User` object can use.
+# 2. Constructor
+### Explanation
+A **constructor** is a special method that runs automatically when an object is created using `new`.
+It is mainly used to initialize object properties.
+### Syntax
+```js
+class ClassName {
+    constructor(parameters) {
+        // initialize properties
+    }
+}
+```
+### Example
+```js
+class User {
+    constructor(name, email) {
+        this.name = name;
+        this.email = email;
+    }
+}
+const user = new User("Vaishu", "vaishu@gmail.com");
+console.log(user.name);
+console.log(user.email);
+```
+### Output
+```text
+Vaishu
+vaishu@gmail.com
+```
+### What happens?
+```js
+new User("Vaishu", "vaishu@gmail.com");
+```
+calls:
+```js
+constructor("Vaishu", "vaishu@gmail.com")
+```
+and:
+```js
+this.name = name;
+this.email = email;
+```
+creates properties on the object.
+### Technical Real-Time Use
+When registering a user:
+```js
+class User {
+    constructor(id, name, role) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+    }
+}
+const user = new User(
+    101,
+    "Vaishu",
+    "Developer"
+);
+console.log(user);
+```
+Output:
+```text
+{
+    id: 101,
+    name: "Vaishu",
+    role: "Developer"
+}
+```
+# 3. Methods
+### Explanation
+A **method** is a function defined inside a class.
+It represents the behavior of an object.
+### Syntax
+```js
+class ClassName {
+    methodName() {
+        // code
+    }
+}
+```
+### Example
+```js
+class BankAccount {
+    constructor(balance) {
+        this.balance = balance;
+    }
+    deposit(amount) {
+        this.balance += amount;
+    }
+    checkBalance() {
+        console.log(`Balance: ₹${this.balance}`);
+    }
+}
+const account = new BankAccount(5000);
+account.deposit(2000);
+account.checkBalance();
+```
+### Output
+```text
+Balance: ₹7000
+```
+### Technical Real-Time Use
+A banking application can keep account data and operations together:
+```text
+BankAccount
+├── balance
+├── deposit()
+├── withdraw()
+└── checkBalance()
+```
+This is one of the main ideas behind **encapsulation**.
+# 4. `this` in Classes
+### Explanation
+`this` refers to the **current object**.
+```js
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+    showName() {
+        console.log(this.name);
+    }
+}
+const user = new User("Vaishu");
+user.showName();
+```
+Output:
+```text
+Vaishu
+```
+Here:
+```js
+this.name
+```
+means:
+> the `name` property of the current object.
+# 5. Multiple Objects from One Class
+One class can create many independent objects.
+```js
+class Employee {
+    constructor(name, role) {
+        this.name = name;
+        this.role = role;
+    }
+    display() {
+        console.log(`${this.name} - ${this.role}`);
+    }
+}
+const employee1 = new Employee("Vaishu", "AI Engineer");
+const employee2 = new Employee("Priya", "Frontend Developer");
+employee1.display();
+employee2.display();
+```
+Output:
+```text
+Vaishu - AI Engineer
+Priya - Frontend Developer
+```
+The class is shared, but each object has its own data.
+# 6. Inheritance
+### Explanation
+**Inheritance** allows one class to reuse properties and methods from another class.
+The class being inherited from is called the **parent/base class**.
+The class that inherits is called the **child/derived class**.
+### Syntax
+```js
+class Child extends Parent {
+}
+```
+### Example
+```js
+class User {
+    login() {
+        console.log("User logged in");
+    }
+}
+class Admin extends User {
+    manageUsers() {
+        console.log("Managing users");
+    }
+}
+const admin = new Admin();
+admin.login();
+admin.manageUsers();
+```
+### Output
+```text
+User logged in
+Managing users
+```
+`Admin` automatically gets the `login()` method from `User`.
+```text
+User
+ │
+ │ extends
+ ↓
+Admin
+```
+### Technical Real-Time Example
+In an application:
+```text
+User
+ ├── login()
+ └── logout()
+Admin extends User
+ ├── login()
+ ├── logout()
+ └── manageUsers()
+```
+An admin is a user but has additional capabilities.
+# 7. Constructor with Inheritance
+When a child class has its own constructor, it must call `super()` **before using `this`**.
+### Example
+```js
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+}
+class Admin extends User {
+    constructor(name, permission) {
+        super(name);
+        this.permission = permission;
+    }
+}
+const admin = new Admin(
+    "Vaishu",
+    "Full Access"
+);
+console.log(admin.name);
+console.log(admin.permission);
+```
+### Output
+```text
+Vaishu
+Full Access
+```
+# 8. `super()`
+### Explanation
+`super()` calls the **parent class constructor**.
+It is mainly used inside a child constructor.
+```js
+class Parent {
+    constructor(name) {
+        this.name = name;
+    }
+}
+class Child extends Parent {
+    constructor(name, age) {
+        super(name);
+        this.age = age;
+    }
+}
+```
+Here:
+```js
+super(name);
+```
+calls:
+```js
+Parent constructor
+```
+### Important Rule
+If a derived class has a constructor, you cannot use `this` before calling `super()`.
+Incorrect:
+```js
+class Admin extends User {
+
+    constructor(name) {
+        this.name = name;
+        super(name);
+    }
+}
+```
+Correct
+```js
+class Admin extends User {
+    constructor(name) {
+        super(name);
+        this.name = name;
+    }
+}
+```
+Although in this example the second assignment is unnecessary.
+# 9. `super` for Parent Methods
+`super` is not only used for constructors.
+It can also call a method from the parent class.
+### Example
+```js
+class User {
+    login() {
+        console.log("User login");
+    }
+}
+class Admin extends User {
+    login() {
+        super.login();
+        console.log("Admin authentication");
+    }
+}
+const admin = new Admin();
+admin.login();
+```
+### Output
+```text
+User login
+Admin authentication
+```
+Here:
+```js
+super.login();
+```
+calls the parent's `login()` method.
+# 10. Method Overriding
+### Explanation
+A child class can provide its own implementation of a parent method.
+This is called **method overriding**.
+```js
+class User {
+    getRole() {
+        return "User";
+    }
+}
+class Admin extends User {
+    getRole() {
+        return "Admin";
+    }
+}
+const admin = new Admin();
+console.log(admin.getRole());
+```
+### Output
+```text
+Admin
+```
+The child version overrides the parent version.
+You can still access the parent implementation using `super`:
+```js
+class Admin extends User {
+    getRole() {
+        return `${super.getRole()} + Admin`;
+    }
+}
+```
+Output:
+```text
+User + Admin
+```
+# 11. `static`
+### Explanation
+A `static` method belongs to the **class itself**, not to individual objects.
+You call it using the class name.
+### Syntax
+```js
+class ClassName {
+    static methodName() {
+        // code
+    }
+}
+```
+### Example
+```js
+class MathUtils {
+    static add(a, b) {
+        return a + b;
+    }
+}
+console.log(MathUtils.add(10, 20));
+```
+### Output
+```text
+30
+```
+You don't create an object:
+```js
+MathUtils.add(10, 20);
+```
+This would not work:
+```js
+const math = new MathUtils();
+math.add(10, 20); // Error
+```
+because `add()` is static.
+# 12. Real-Time Use of `static`
+Static methods are useful for **utility operations** that don't depend on a particular object's data.
+```js
+class User {
+    constructor(name, email) {
+        this.name = name;
+        this.email = email;
+    }
+    static validateEmail(email) {
+        return email.includes("@");
+    }
+}
+console.log(
+    User.validateEmail("vaishu@gmail.com")
+);
+```
+### Output
+```text
+true
+```
+Why static?
+Email validation doesn't require a particular `User` object.
+# 13. Static Property
+A class can also have static properties.
+```js
+class Company {
+    static companyName = "Tech Solutions";
+}
+console.log(Company.companyName);
+```
+Output:
+```text
+Tech Solutions
+```
+It belongs to the class:
+```text
+Company
+   │
+   └── companyName
+```
+not to individual instances.
+# 14. Instance vs Static
+### Instance method
+```js
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+    displayName() {
+        console.log(this.name);
+    }
+}
+const user = new User("Vaishu");
+user.displayName();
+```
+Called using:
+```js
+user.displayName();
+```
+### Static method
+```js
+class User {
+    static createGuest() {
+        return new User("Guest");
+    }
+    constructor(name) {
+        this.name = name;
+    }
+}
+const guest = User.createGuest();
+console.log(guest.name);
+```
+Called using:
+```js
+User.createGuest();
+```
+### Key Difference
+| Instance                                | Static                           |
+| --------------------------------------- | -------------------------------- |
+| Belongs to object                       | Belongs to class                 |
+| Requires `new` object                   | No object required               |
+| Called using `object.method()`          | Called using `Class.method()`    |
+| Can access instance data through `this` | Does not have an instance `this` |
+
+# 15. Complete Example
+Here's a practical employee-management example combining everything:
+```js
+class Employee {
+    constructor(name, salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+    getDetails() {
+        return `${this.name} earns ₹${this.salary}`;
+    }
+    static companyPolicy() {
+        return "Employees must follow company policies";
+    }
+}
+class Developer extends Employee {
+    constructor(name, salary, language) {
+        super(name, salary);
+        this.language = language;
+    }
+    getDetails() {
+        return `${super.getDetails()} and works with ${this.language}`;
+    }
+    writeCode() {
+        console.log(`${this.name} is writing ${this.language} code`);
+    }
+}
+const developer = new Developer(
+    "Vaishu",
+    60000,
+    "JavaScript"
+);
+console.log(developer.getDetails());
+developer.writeCode();
+console.log(Employee.companyPolicy());
+```
+### Output
+```text
+Vaishu earns ₹60000 and works with JavaScript
+Vaishu is writing JavaScript code
+Employees must follow company policies
+```
+This example contains:
+```text
+class
+   ↓
+constructor
+   ↓
+methods
+   ↓
+extends
+   ↓
+super()
+   ↓
+method overriding
+   ↓
+static method
+```
+
+| Concept          | Meaning                                      |
+| ---------------- | -------------------------------------------- |
+| `class`          | Blueprint for creating objects               |
+| `constructor()`  | Initializes an object                        |
+| `this`           | Refers to the current object                 |
+| Method           | Function inside a class                      |
+| `extends`        | Creates inheritance                          |
+| `super()`        | Calls parent constructor                     |
+| `super.method()` | Calls parent method                          |
+| Overriding       | Child provides its own method implementation |
+| `static`         | Member belongs to the class, not instances   |
+
+### Easy Memory Trick
+```text
+class       → Blueprint
+
+constructor → Initialize object
+
+this        → Current object
+
+extends     → Inherit
+
+super()     → Parent constructor
+
+super.method()
+            → Parent method
+static      → Class-level member
+```
+# 26_Prototype and Inheritance
+JavaScript uses **prototypes** to implement inheritance.
+Classes are actually built on top of JavaScript's existing **prototype-based object system**.
+# 1. What is a Prototype?
+### Explanation
+A **prototype** is an object that another object can use to access properties and methods.
+If JavaScript cannot find a property/method directly on an object, it looks at its prototype.
+### Simple Example
+```js
+const user = {
+    name: "Vaishu"
+};
+console.log(user.toString());
+```
+We never defined `toString()` inside `user`.
+So where does it come from?
+```text 
+user
+ ↓
+Object.prototype
+ ↓
+null
+```
+`toString()` is available through `Object.prototype`.
+# 2. Prototype Chain
+### Explanation
+The **prototype chain** is the sequence JavaScript follows when looking for a property or method.
+Suppose:
+```js
+const user = {
+    name: "Vaishu"
+};
+console.log(user.toString());
+```
+JavaScript searches:
+```text
+user
+ ↓
+Object.prototype
+ ↓
+null
+```
+If `toString()` isn't found in `user`, JavaScript checks `Object.prototype`.
+If it isn't there either, it continues to `null`.
+Then JavaScript returns `undefined` or throws an error depending on how the property is used.
+### Example
+```js
+const user = {
+    name: "Vaishu"
+};
+console.log(user.name);
+console.log(user.toString);
+```
+* `name` → found directly in `user`
+* `toString` → found through the prototype chain
+# 3. Prototype Chain with Inheritance
+Consider:
+```js
+const animal = {
+    eat() {
+        console.log("Animal is eating");
+    }
+};
+const dog = Object.create(animal);
+dog.bark = function () {
+    console.log("Dog is barking");
+};
+dog.eat();
+dog.bark();
+```
+Output:
+```text id="8i8t3q"
+Animal is eating
+Dog is barking
+```
+The structure is:
+```text id="j3m5bp"
+dog
+ ├── bark()
+ │
+ ↓ prototype
+animal
+ └── eat()
+```
+When we call:
+```js id="yj4v9c"
+dog.eat();
+```
+JavaScript doesn't find `eat()` directly on `dog`.
+It searches the prototype:
+```text id="x3d6c9"
+dog
+ ↓
+animal
+ ↓
+Object.prototype
+ ↓
+null
+```
+It finds `eat()` in `animal`.
+# 4. `__proto__`
+### Explanation
+`__proto__` is an accessor that exposes an object's prototype.
+Example:
+```js 
+const animal = {
+    eat() {
+        console.log("Eating");
+    }
+};
+const dog = Object.create(animal);
+console.log(dog.__proto__ === animal);
+```
+Output:
+```text 
+true
+```
+So:
+```js 
+dog.__proto__
+```
+refers to the prototype object of `dog`.
+### Important
+`__proto__` is commonly seen when learning/debugging prototypes, but for modern code, prefer:
+```js 
+Object.getPrototypeOf(object);
+```
+and:
+```js 
+Object.setPrototypeOf(object, prototype);
+```
+when you actually need to inspect or change prototypes.
+# 5. `Object.getPrototypeOf()`
+This is the standard way to inspect an object's prototype.
+```js 
+const animal = {
+    eat() {
+        console.log("Eating");
+    }
+};
+const dog = Object.create(animal);
+console.log(Object.getPrototypeOf(dog) === animal);
+```
+Output:
+```text
+true
+```
+Compare:
+```js 
+dog.__proto__
+```
+with:
+```js
+Object.getPrototypeOf(dog)
+```
+Both can reveal the prototype, but `Object.getPrototypeOf()` is the standard API.
+# 6. `Object.create()`
+### Explanation
+`Object.create()` creates a new object with a specified object as its prototype.
+### Syntax
+```js
+Object.create(prototype);
+```
+### Example
+```js
+const userMethods = {
+    login() {
+        console.log(`${this.name} logged in`);
+    },
+    logout() {
+        console.log(`${this.name} logged out`);
+    }
+};
+const user = Object.create(userMethods);
+user.name = "Vaishu";
+user.login();
+user.logout();
+```
+### Output
+```text id="r5n6g7"
+Vaishu logged in
+Vaishu logged out
+```
+The structure is:
+```text 
+user
+ ├── name = "Vaishu"
+ │
+ ↓ prototype
+userMethods
+ ├── login()
+ └── logout()
+```
+# 7. Why Use `Object.create()`?
+It can be useful when you want to create objects that **share behavior through a prototype** without defining a class.
+For example:
+```js 
+const employeeMethods = {
+    work() {
+        console.log(`${this.name} is working`);
+    }
+};
+const employee1 = Object.create(employeeMethods);
+employee1.name = "Vaishu";
+const employee2 = Object.create(employeeMethods);
+employee2.name = "Priya";
+employee1.work();
+employee2.work();
+```
+Output:
+```text id="q4x7n2"
+Vaishu is working
+Priya is working
+```
+Both objects share the same `work()` method through the prototype.
+# 8. `Object.create(null)`
+You can also create an object with **no prototype**:
+```js 
+const data = Object.create(null);
+data.name = "Vaishu";
+console.log(data.name);
+```
+Here:
+```text 
+data
+ ↓
+null
+```
+There is no `Object.prototype`.
+Therefore, methods normally inherited from `Object.prototype` aren't available:
+```js 
+const data = Object.create(null);
+console.log(data.toString);
+```
+Output:
+```text 
+undefined
+```
+This can be useful for special dictionary-like objects where you don't want inherited properties.
+# 9. Constructor Functions
+Before ES6 classes became common, JavaScript frequently used **constructor functions** to create multiple similar objects.
+### Example
+```js
+function User(name, role) {
+    this.name = name;
+    this.role = role;
+}
+const user1 = new User("Vaishu", "Developer");
+const user2 = new User("Priya", "Tester");
+console.log(user1);
+console.log(user2);
+```
+Output:
+```text 
+User {
+    name: "Vaishu",
+    role: "Developer"
+}
+User {
+    name: "Priya",
+    role: "Tester"
+}
+```
+The `new` keyword is important here.
+# 10. How `new` Works
+When you write:
+```js 
+const user = new User("Vaishu", "Developer");
+```
+JavaScript conceptually performs several steps:
+### Step 1 — Create a new object
+```text 
+{}
+```
+### Step 2 — Connect its prototype
+The new object's prototype becomes:
+```js 
+User.prototype
+```
+### Step 3 — Execute the constructor
+```js 
+User("Vaishu", "Developer")
+```
+with `this` referring to the new object.
+### Step 4 — Return the object
+Conceptually:
+```text 
+new User()
+     ↓
+New Object
+     ↓
+[[Prototype]] → User.prototype
+     ↓
+constructor executes
+     ↓
+Object returned
+```
+# 11. Constructor Function + Prototype Methods
+A common pattern is to put shared methods on the constructor's `.prototype`.
+```js
+function User(name) {
+    this.name = name;
+}
+User.prototype.login = function () {
+    console.log(`${this.name} logged in`);
+};
+const user1 = new User("Vaishu");
+const user2 = new User("Priya");
+user1.login();
+user2.login();
+```
+Output:
+```text
+Vaishu logged in
+Priya logged in
+```
+The important part is:
+```js
+User.prototype.login
+```
+There is **one shared `login()` function** rather than creating a separate function for every object.
+# 12. Why Put Methods on the Prototype?
+Consider this:
+```js
+function User(name) {
+    this.name = name;
+    this.login = function () {
+        console.log("Login");
+    };
+}
+```
+Every object gets its own `login` function.
+Instead:
+```js 
+function User(name) {
+    this.name = name;
+}
+User.prototype.login = function () {
+    console.log("Login");
+};
+```
+Now objects can share the same method through the prototype.
+```text 
+user1 ──┐
+        ├──→ User.prototype.login()
+user2 ──┘
+```
+This avoids unnecessarily creating separate copies of the same method.
+# 13. `prototype` vs `__proto__`
+This is a **very common interview question**.
+### `prototype`
+`prototype` is mainly a property of **constructor functions/classes**.
+```js 
+function User() {}
+console.log(User.prototype);
+```
+### `__proto__`
+`__proto__` refers to the prototype of an **object**.
+```js 
+const user = new User();
+console.log(user.__proto__ === User.prototype);
+```
+Output:
+```text id="r8n2q5"
+true
+```
+```text 
+Constructor Function
+        ↓
+   .prototype
+        ↓
+ Prototype Object
+        ↑
+        │
+      __proto__
+        │
+        │
+     Instance
+```
+So:
+```text 
+User.prototype
+     ↑
+     │
+user.__proto__
+```
+They refer to the same prototype object in this example, but they are accessed from different sides.
+# 14. `constructor` Property
+Prototype objects have a `constructor` property that points back to the constructor function.
+```js
+function User(name) {
+    this.name = name;
+}
+const user = new User("Vaishu");
+console.log(user.constructor === User);
+```
+Output:
+```text 
+true
+```
+Relationship:
+```text 
+User
+ ↑
+ │ constructor
+ │
+User.prototype
+ ↑
+ │ [[Prototype]]
+ │
+user
+```
+# 15. Complete Prototype Chain
+Let's see the chain:
+```js 
+function User(name) {
+    this.name = name;
+}
+User.prototype.login = function () {
+    console.log("Login");
+};
+const user = new User("Vaishu");
+user.login();
+```
+The lookup roughly follows:
+```text
+user
+  ↓
+User.prototype
+  ↓
+Object.prototype
+  ↓
+null
+```
+When JavaScript sees:
+```js
+user.login();
+```
+it searches:
+1. Does `user` have `login`? → No
+2. Does `User.prototype` have `login`? → Yes
+3. Execute it.
+For:
+```js 
+user.toString();
+```
+it searches:
+1. `user` → No
+2. `User.prototype` → No
+3. `Object.prototype` → Yes
+4. Execute it.
+
+# 16. Classes and Prototypes
+This is an important connection with the previous topic.
+When you write:
+```js
+class User {
+    login() {
+        console.log("Login");
+    }
+}
+```
+the `login()` method is placed on:
+```js id="b9k4x1"
+User.prototype
+```
+Conceptually:
+```text 
+class User
+    │
+    └── User.prototype
+            │
+            └── login()
+```
+So:
+```js
+const user = new User();
+user.login();
+```
+works through the prototype chain.
+### Important
+**JavaScript classes do not replace prototypes.**
+Classes provide a cleaner syntax for working with JavaScript's prototype-based inheritance.
+# 17. Prototype Inheritance vs Class Inheritance
+### Prototype style
+```js
+const animal = {
+    eat() {
+        console.log("Eating");
+    }
+};
+const dog = Object.create(animal);
+dog.bark = function () {
+    console.log("Barking");
+};
+```
+### Class style
+```js 
+class Animal {
+    eat() {
+        console.log("Eating");
+    }
+}
+class Dog extends Animal {
+    bark() {
+        console.log("Barking");
+    }
+}
+```
+Both use JavaScript's prototype system underneath.
+The class syntax is generally easier to read when modeling traditional object-oriented relationships.
+
+| Concept                   | Meaning                                                   |
+| ------------------------- | --------------------------------------------------------- |
+| Prototype                 | Object used for shared properties/methods                 |
+| Prototype chain           | Chain JavaScript searches for properties                  |
+| `__proto__`               | Accessor for an object's prototype                        |
+| `Object.getPrototypeOf()` | Standard way to get prototype                             |
+| `Object.create()`         | Creates object with specified prototype                   |
+| Constructor function      | Older function-based object creation pattern              |
+| `prototype`               | Property on constructor functions/classes                 |
+| `new`                     | Creates object and connects it to constructor's prototype |
+| `User.prototype`          | Shared prototype object for `User` instances              |
+| `constructor`             | Reference back to the constructor                         |
+
+### Note
+```text 
+prototype
+→ property of constructor function/class
+__proto__
+→ prototype of an individual object
+```
+Example:
+```js
+function User() {}
+const user = new User();
+console.log(user.__proto__ === User.prototype);
+```
+Output:
+```text id="c6x9k2"
+true
+```
+ # 27_this keyword
+The `this` keyword is one of the most important JavaScript interview topics.
+The key idea is:
+> **`this` refers to a context determined by how a function is called, not simply where the function was defined.**
+
+# 1. Global Context
+### Explanation
+At the top level, `this` behaves differently depending on whether the code is running as a **script** or an **ES module**.
+In a browser script:
+```js 
+console.log(this);
+```
+It refers to the global `window` object.
+```text 
+this
+ ↓
+window
+```
+But in an ES module:
+```js 
+console.log(this);
+```
+top-level `this` is `undefined`.
+### Important
+Don't memorize:
+> "`this` always means window."
+That is only true for certain browser-script contexts.
+
+# 2. Object Context
+### Explanation
+When a function is called as an **object method**, `this` usually refers to the object before the dot.
+### Example
+```js 
+const user = {
+    name: "Vaishu",
+    showName() {
+        console.log(this.name);
+    }
+};
+user.showName();
+```
+### Output
+```text
+Vaishu
+```
+Here:
+```js 
+user.showName();
+```
+means:
+```text 
+this → user
+```
+So:
+```js
+this.name
+```
+is equivalent to:
+```js 
+user.name
+```
+# 3. `this` Depends on the Call Site
+Consider:
+```js 
+const user = {
+    name: "Vaishu",
+    showName() {
+        console.log(this.name);
+    }
+};
+user.showName();
+```
+`this` is `user`.
+But if we extract the method:
+```js 
+const show = user.showName;
+show();
+```
+it is no longer being called as:
+```js 
+user.showName();
+```
+Therefore, `this` changes.
+In strict mode, it becomes:
+```text
+undefined
+```
+This demonstrates the important rule:
+> **Look at how the function is called to determine `this`.**
+
+# 4. Function Context
+### Regular Function
+For a normal function, `this` depends on the calling context.
+```js 
+"use strict";
+function showThis() {
+    console.log(this);
+}
+showThis();
+```
+Output:
+```text
+undefined
+```
+Because the function is called without an object.
+### Non-Strict Function
+In non-strict browser code:
+```js 
+function showThis() {
+    console.log(this);
+}
+showThis();
+```
+`this` may refer to the global object.
+This is one reason modern JavaScript generally prefers strict mode/module code.
+# 5. Function Called as an Object Method
+```js 
+const employee = {
+    name: "Vaishu",
+    display() {
+        console.log(this.name);
+    }
+};
+employee.display();
+```
+Here:
+```text 
+this → employee
+```
+Output:
+```text
+Vaishu
+```
+# 6. Function Called with `new`
+When a function is used as a constructor with `new`, `this` refers to the newly created object.
+```js 
+function User(name) {
+    this.name = name;
+}
+const user = new User("Vaishu");
+console.log(user.name);
+```
+Output:
+```text
+Vaishu
+```
+Conceptually:
+```text
+new User("Vaishu")
+        ↓
+new object created
+        ↓
+this → new object
+        ↓
+this.name = "Vaishu"
+```
+# 7. Class Context
+Inside a class method, `this` normally refers to the **instance on which the method was called**.
+```js 
+class User {
+    constructor(name) {
+        this.name = name;
+    }
+    display() {
+        console.log(this.name);
+    }
+}
+const user = new User("Vaishu");
+user.display();
+```
+### Output
+```text 
+Vaishu
+```
+Here:
+```text
+user.display()
+      ↓
+this → user
+```
+# 8. `this` in a Class Constructor
+```js 
+class Employee {
+    constructor(name, role) {
+        this.name = name;
+        this.role = role;
+    }
+}
+const employee = new Employee(
+    "Vaishu",
+    "AI Engineer"
+);
+console.log(employee.name);
+console.log(employee.role);
+```
+Output:
+```text
+Vaishu
+AI Engineer
+```
+Here `this` refers to the newly created `employee` object.
+# 9. Arrow Functions and `this`
+Arrow functions are special.
+They **do not have their own `this`**.
+Instead, they inherit `this` from their surrounding lexical context.
+### Example
+```js 
+const user = {
+    name: "Vaishu",
+    showName() {
+        const printName = () => {
+            console.log(this.name);
+        };
+        printName();
+    }
+};
+user.showName();
+```
+### Output
+```text 
+Vaishu
+```
+The arrow function gets `this` from `showName()`.
+# 10. Regular Function vs Arrow Function
+Compare:
+### Regular function
+```js 
+const user = {
+    name: "Vaishu",
+    showName() {
+        function printName() {
+            console.log(this.name);
+        }
+        printName();
+    }
+};
+```
+The inner regular function gets its own `this` based on how it is called.
+### Arrow function
+```js
+const user = {
+    name: "Vaishu",
+    showName() {
+        const printName = () => {
+            console.log(this.name);
+        };
+        printName();
+    }
+};
+```
+The arrow function inherits `this` from `showName()`.
+### Easy Memory
+```text 
+Regular function
+→ gets its own `this`
+Arrow function
+→ does NOT create its own `this`
+→ inherits surrounding `this`
+```
+
+# 11. `call()`
+### Explanation
+`call()` allows you to **explicitly set `this`** when calling a function.
+### Syntax
+```js
+functionName.call(thisValue, arg1, arg2);
+```
+### Example
+```js 
+const user1 = {
+    name: "Vaishu"
+};
+const user2 = {
+    name: "Priya"
+};
+function greet(role) {
+    console.log(`${this.name} is a ${role}`);
+}
+greet.call(user1, "Developer");
+greet.call(user2, "Tester");
+```
+### Output
+```text 
+Vaishu is a Developer
+Priya is a Tester
+```
+`call()` executes the function **immediately**.
+# 12. `apply()`
+### Explanation
+`apply()` is almost the same as `call()`.
+The main difference is how arguments are passed.
+### `call()`
+Arguments are passed individually:
+```js
+greet.call(user1, "Developer");
+```
+### `apply()`
+Arguments are passed as an array:
+```js 
+greet.apply(user1, ["Developer"]);
+```
+### Example
+```js 
+const user = {
+    name: "Vaishu"
+};
+function introduce(role, company) {
+    console.log(
+        `${this.name} is a ${role} at ${company}`
+    );
+}
+introduce.apply(
+    user,
+    ["AI Engineer", "Tech Solutions"]
+);
+```
+### Output
+```text
+Vaishu is a AI Engineer at Tech Solutions
+```
+# 13. `call()` vs `apply()`
+
+| Feature              | `call()`          | `apply()`            |
+| -------------------- | ----------------- | -------------------- |
+| Sets `this`          | Yes               | Yes                  |
+| Executes immediately | Yes               | Yes                  |
+| Arguments            | Individual        | Array/array-like     |
+| Syntax               | `call(obj, a, b)` | `apply(obj, [a, b])` |
+
+```text 
+call  → comma-separated arguments
+apply → array of arguments
+```
+# 14. `bind()`
+### Explanation
+`bind()` creates a **new function** with `this` permanently bound to the specified object.
+Unlike `call()` and `apply()`, `bind()` does **not immediately execute** the function.
+### Syntax
+```js 
+const newFunction = functionName.bind(object);
+```
+### Example
+```js 
+const user = {
+    name: "Vaishu"
+};
+function greet() {
+    console.log(`Hello ${this.name}`);
+}
+const boundGreet = greet.bind(user);
+boundGreet();
+```
+### Output
+```text 
+Hello Vaishu
+```
+Flow:
+```text 
+greet
+ ↓
+bind(user)
+ ↓
+new function
+ ↓
+boundGreet()
+ ↓
+this → user
+```
+# 15. `bind()` with Arguments
+`bind()` can also pre-set arguments.
+```js
+function introduce(role, company) {
+    console.log(
+        `${this.name} is a ${role} at ${company}`
+    );
+}
+const user = {
+    name: "Vaishu"
+};
+const introduceVaishu =
+    introduce.bind(
+        user,
+        "AI Engineer"
+    );
+introduceVaishu("Tech Solutions");
+```
+Output:
+```text 
+Vaishu is a AI Engineer at Tech Solutions
+```
+Here:
+```js 
+"AI Engineer"
+```
+was pre-filled using `bind()`.
+
+# 16. `call`, `apply`, and `bind` Together
+```js
+const user = {
+    name: "Vaishu"
+};
+function greet(role, company) {
+    console.log(
+        `${this.name} - ${role} - ${company}`
+    );
+}
+```
+### `call()`
+```js 
+greet.call(
+    user,
+    "Developer",
+    "ABC"
+);
+```
+### `apply()`
+```js
+greet.apply(
+    user,
+    ["Developer", "ABC"]
+);
+```
+### `bind()`
+```js 
+const boundGreet =
+    greet.bind(
+        user,
+        "Developer",
+        "ABC"
+    );
+boundGreet();
+```
+All produce:
+```text 
+Vaishu - Developer - ABC
+```
+But their behavior differs:
+```text 
+call
+→ execute now
+→ arguments separately
+apply
+→ execute now
+→ arguments as array
+bind
+→ return new function
+→ execute later
+```
+Now the method's `this` is explicitly bound to the `Counter` instance.
+
+| Concept             | `this` behavior                                     |
+| ------------------- | --------------------------------------------------- |
+| Global script       | Usually global object (`window` in browser scripts) |
+| ES module top level | `undefined`                                         |
+| Object method       | Object before `.`                                   |
+| Regular function    | Depends on call; `undefined` in strict mode         |
+| `new`               | Newly created object                                |
+| Class method        | Instance when called as an instance method          |
+| Arrow function      | Inherits surrounding `this`                         |
+| `call()`            | Explicitly sets `this`, executes immediately        |
+| `apply()`           | Explicitly sets `this`, arguments as array          |
+| `bind()`            | Creates a new function with bound `this`            |
+
+```text 
+call()
+→ calls function now
+
+apply()
+→ calls function now
+
+bind()
+→ returns a new function
+→ call it later
+```
+# 28_Higher Order Functions
+These concepts are important because JavaScript heavily uses **functions as values**. They are commonly used with arrays, APIs, event handlers, and asynchronous operations.
+# 1. Callback Functions
+### Explanation
+A **callback function** is a function passed as an argument to another function, which can then execute it.
+### Syntax
+```js
+function mainFunction(callback) {
+    callback();
+}
+```
+### Simple Example
+```js
+function greet(name, callback) {
+    console.log(`Hello ${name}`);
+    callback();
+}
+function finished() {
+    console.log("Task completed");
+}
+greet("Vaishu", finished);
+```
+### Output
+```text
+Hello Vaishu
+Task completed
+```
+Here:
+```js
+finished
+```
+is the callback function.
+### Technical Real-Time Use
+Callbacks are commonly used for:
+* event handling
+* asynchronous operations
+* array methods
+* timers
+Example:
+```js
+setTimeout(() => {
+    console.log("Data loaded");
+}, 2000);
+```
+The arrow function passed to `setTimeout()` is a callback.
+# 2. `forEach()`
+### Explanation
+`forEach()` executes a callback function **once for every element** in an array.
+### Syntax
+
+```js
+array.forEach(function(element) {
+    // code
+});
+```
+### Example
+```js
+const users = ["Vaishu", "Priya", "Anu"];
+users.forEach(user => {
+    console.log(user);
+});
+```
+### Output
+```text
+Vaishu
+Priya
+Anu
+```
+### With Index
+```js
+const users = ["Vaishu", "Priya", "Anu"];
+users.forEach((user, index) => {
+    console.log(index, user);
+});
+```
+Output:
+```text
+0 Vaishu
+1 Priya
+2 Anu
+```
+### Technical Real-Time Use
+Display notifications:
+```js
+const notifications = [
+    "New message",
+    "Payment received",
+    "Order shipped"
+];
+notifications.forEach(notification => {
+    console.log(`Notification: ${notification}`);
+});
+```
+### Important
+`forEach()` is mainly used when you want to **perform an action for each element**.
+It does not create a new transformed array.
+# 3. `map()`
+### Explanation
+`map()` creates a **new array** by applying a function to every element.
+### Syntax
+```js
+const newArray = array.map(element => {
+    return transformedValue;
+});
+```
+### Example
+```js
+const prices = [100, 200, 300];
+const updatedPrices = prices.map(price => {
+    return price * 2;
+});
+console.log(updatedPrices);
+```
+### Output
+```text
+[200, 400, 600]
+```
+Original array:
+```text
+[100, 200, 300]
+```
+New array:
+```text
+[200, 400, 600]
+```
+### Technical Real-Time Use
+Suppose an API returns products and you want to extract their names:
+```js
+const products = [
+    { id: 1, name: "Laptop", price: 50000 },
+    { id: 2, name: "Phone", price: 30000 },
+    { id: 3, name: "Tablet", price: 20000 }
+];
+const productNames = products.map(product => {
+    return product.name;
+});
+console.log(productNames);
+```
+Output:
+```text
+["Laptop", "Phone", "Tablet"]
+```
+### Easy Memory
+```text
+map()
+→ transform every element
+→ returns a new array
+```
+# 4. `filter()`
+### Explanation
+`filter()` creates a **new array containing only the elements that satisfy a condition**.
+### Syntax
+```js
+const result = array.filter(element => {
+    return condition;
+});
+```
+### Example
+```js
+const prices = [500, 1500, 300, 2000, 800];
+const expensiveProducts = prices.filter(price => {
+    return price > 1000;
+});
+console.log(expensiveProducts);
+```
+### Output
+```text
+[1500, 2000]
+```
+### Technical Real-Time Use
+Filter active users:
+```js
+const users = [
+    { name: "Vaishu", active: true },
+    { name: "Priya", active: false },
+    { name: "Anu", active: true }
+];
+const activeUsers = users.filter(user => {
+    return user.active;
+});
+console.log(activeUsers);
+```
+Output:
+```text
+[
+    { name: "Vaishu", active: true },
+    { name: "Anu", active: true }
+]
+```
+### Easy Memory
+```text
+filter()
+→ select elements
+→ returns a new array
+```
+# 5. `reduce()`
+### Explanation
+`reduce()` processes all elements and produces **one final accumulated value**.
+That value can be:
+* number
+* string
+* object
+* array
+* any other JavaScript value
+### Syntax
+```js
+const result = array.reduce((accumulator, currentValue) => {
+    return updatedAccumulator;
+}, initialValue);
+```
+## Simple Example
+```js
+const numbers = [10, 20, 30, 40];
+const total = numbers.reduce((sum, number) => {
+    return sum + number;
+}, 0);
+console.log(total);
+```
+### Output
+```text
+100
+```
+Flow:
+```text
+sum = 0
+0 + 10 = 10
+10 + 20 = 30
+30 + 30 = 60
+60 + 40 = 100
+```
+# 6. `reduce()` Real-Time Example
+Calculate a shopping cart total:
+```js
+const cart = [
+    { name: "Laptop", price: 50000 },
+    { name: "Mouse", price: 1000 },
+    { name: "Keyboard", price: 2000 }
+];
+const total = cart.reduce((sum, product) => {
+    return sum + product.price;
+}, 0);
+console.log(`Total: ₹${total}`);
+```
+### Output
+```text
+Total: ₹53000
+```
+### Easy Memory
+```text
+reduce()
+→ combine all elements
+→ produce one result
+```
+# 7. `map()` vs `filter()` vs `reduce()`
+This is an important interview comparison.
+
+| Method      | Purpose                  | Returns                  |
+| ----------- | ------------------------ | ------------------------ |
+| `map()`     | Transform each element   | New array                |
+| `filter()`  | Select matching elements | New array                |
+| `reduce()`  | Combine elements         | Single accumulated value |
+| `forEach()` | Perform an action        | `undefined`              |
+
+### Example
+Given:
+```js
+const numbers = [1, 2, 3, 4, 5];
+```
+### `map()`
+```js
+numbers.map(n => n * 2);
+```
+Result:
+```text
+[2, 4, 6, 8, 10]
+```
+### `filter()`
+```js
+numbers.filter(n => n > 3);
+```
+Result:
+```text
+[4, 5]
+```
+### `reduce()`
+```js
+numbers.reduce((sum, n) => sum + n, 0);
+```
+Result:
+```text
+15
+```
+### `forEach()`
+```js
+numbers.forEach(n => console.log(n));
+```
+Prints each value but does not create a new array.
+# 8. Callback Parameters
+These methods can receive multiple callback parameters.
+```js
+const users = ["Vaishu", "Priya", "Anu"];
+users.map((user, index, array) => {
+    console.log(user);
+    console.log(index);
+    console.log(array);
+});
+```
+The callback can receive:
+```text
+element
+index
+array
+```
+For `reduce()`, the parameters are different:
+```js
+array.reduce((accumulator, currentValue, index, array) => {
+    // ...
+}, initialValue);
+```
+The most important ones are:
+```text
+accumulator
+currentValue
+```
+# 9. Chaining Array Methods
+You can combine these methods.
+### Example
+```js
+const prices = [500, 1200, 300, 2000, 800];
+const total = prices
+    .filter(price => price > 500)
+    .map(price => price * 2)
+    .reduce((sum, price) => sum + price, 0);
+console.log(total);
+```
+### Flow
+```text
+Original
+[500, 1200, 300, 2000, 800]
+
+       ↓ filter > 500
+
+[1200, 2000, 800]
+
+       ↓ map × 2
+
+[2400, 4000, 1600]
+
+       ↓ reduce
+8000
+```
+### Output
+```text
+8000
+```
+This pattern is very common when processing API data.
+# 10. Function Returning a Function
+### Explanation
+JavaScript functions can return other functions because **functions are first-class values**.
+### Example
+```js
+function createGreeting() {
+    return function () {
+        console.log("Hello Vaishu");
+    };
+}
+const greet = createGreeting();
+greet();
+```
+### Output
+```text
+Hello Vaishu
+```
+Flow:
+```text
+createGreeting()
+       ↓
+returns function
+       ↓
+greet
+       ↓
+greet()
+```
+# 11. Function Returning a Function with Parameters
+```js
+function createMultiplier(multiplier) {
+    return function (number) {
+        return number * multiplier;
+    };
+}
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+console.log(double(5));
+console.log(triple(5));
+```
+### Output
+```text
+10
+15
+```
+The returned function remembers the `multiplier`.
+This is an example of a **closure**.
+```text
+createMultiplier(2)
+        ↓
+ multiplier = 2
+        ↓
+returned function remembers 2
+```
+# 12. Real-Time Use: Function Factory
+Suppose an application needs different discount functions.
+```js
+function createDiscount(discount) {
+    return function (price) {
+        return price - (price * discount / 100);
+    };
+}
+const studentDiscount = createDiscount(10);
+const festivalDiscount = createDiscount(20);
+console.log(studentDiscount(1000));
+console.log(festivalDiscount(1000));
+```
+### Output
+```text
+900
+800
+```
+Instead of writing separate functions for every discount type, we create functions dynamically.
+# 13. Callback + `map()` Example
+```js
+const users = [
+    { name: "Vaishu", age: 22 },
+    { name: "Priya", age: 23 },
+    { name: "Anu", age: 21 }
+];
+const names = users.map(function(user) {
+    return user.name;
+});
+console.log(names);
+```
+Here:
+```js
+function(user) {
+    return user.name;
+}
+```
+is a **callback function** passed to `map()`.
+Output:
+```text
+["Vaishu", "Priya", "Anu"]
+```
+# 14. Callback + `filter()` + `reduce()`
+A practical example:
+```js
+const employees = [
+    { name: "Vaishu", salary: 60000, active: true },
+    { name: "Priya", salary: 50000, active: false },
+    { name: "Anu", salary: 70000, active: true }
+];
+const totalSalary = employees
+    .filter(employee => employee.active)
+    .reduce((total, employee) => {
+        return total + employee.salary;
+    }, 0);
+console.log(totalSalary);
+```
+### Output
+```text
+130000
+```
+Flow:
+```text
+Employees
+    ↓
+filter()
+    ↓
+Active employees
+    ↓
+reduce()
+    ↓
+Total salary
+```
+# 15. Important Difference: `forEach()` vs `map()`
+This is frequently asked in interviews.
+### `forEach()`
+```js
+const numbers = [1, 2, 3];
+const result = numbers.forEach(n => n * 2);
+console.log(result);
+```
+Output:
+```text
+undefined
+```
+`forEach()` does not create a transformed array.
+### `map()`
+```js
+const numbers = [1, 2, 3];
+const result = numbers.map(n => n * 2);
+console.log(result);
+```
+Output:
+```text
+[2, 4, 6]
+```
+```text
+forEach → "Do something"
+map     → "Transform"
+filter  → "Select"
+reduce  → "Combine"
+```
+
+| Concept                     | Main Purpose                        | Returns           |
+| --------------------------- | ----------------------------------- | ----------------- |
+| Callback                    | Function passed to another function | Depends on caller |
+| `forEach()`                 | Execute for every element           | `undefined`       |
+| `map()`                     | Transform elements                  | New array         |
+| `filter()`                  | Select elements                     | New array         |
+| `reduce()`                  | Accumulate/combine                  | Single value      |
+| Function returning function | Create specialized functions        | Function          |
+
+### Note
+```text
+forEach()
+→ perform an action
+
+map()
+→ transform every item
+
+filter()
+→ keep matching items
+
+reduce()
+→ combine into one result
+
+callback
+→ function passed to another function
+
+function returning function
+→ function factory / closure
+```

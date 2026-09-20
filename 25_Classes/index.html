@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Classes</title>
+</head>
+<body>
+
+<script>
+
+    // Class Syntax
+    class User {
+
+        greet() {
+            console.log("Hello Vaishu");
+        }
+
+    }
+
+    const user = new User();
+
+    user.greet();
+
+
+    // Constructor
+    class Person {
+
+        constructor(name, age) {
+
+            this.name = name;
+            this.age = age;
+
+        }
+
+    }
+
+    const person =
+        new Person("Vaishu", 22);
+
+    console.log(person.name);
+    console.log(person.age);
+
+
+    // Methods
+    class Calculator {
+
+        add(a, b) {
+            return a + b;
+        }
+
+        multiply(a, b) {
+            return a * b;
+        }
+
+    }
+
+    const calculator =
+        new Calculator();
+
+    console.log(
+        calculator.add(10, 20)
+    );
+
+    console.log(
+        calculator.multiply(5, 4)
+    );
+
+
+    // this in Classes
+    class Student {
+
+        constructor(name) {
+
+            this.name = name;
+
+        }
+
+        display() {
+
+            console.log(
+                `Student: ${this.name}`
+            );
+
+        }
+
+    }
+
+    const student =
+        new Student("Vaishu");
+
+    student.display();
+
+
+    // Multiple Objects
+    const student1 =
+        new Student("Vaishu");
+
+    const student2 =
+        new Student("Priya");
+
+    student1.display();
+    student2.display();
+
+
+    // Inheritance
+    class Animal {
+
+        eat() {
+            console.log("Animal is eating");
+        }
+
+    }
+
+
+    class Dog extends Animal {
+
+        bark() {
+            console.log("Dog is barking");
+        }
+
+    }
+
+    const dog = new Dog();
+
+    dog.eat();
+    dog.bark();
+
+
+    // Constructor with Inheritance
+    class Parent {
+
+        constructor(name) {
+            this.name = name;
+        }
+
+    }
+
+    class Child extends Parent {
+
+        constructor(name, age) {
+
+            super(name);
+
+            this.age = age;
+
+        }
+
+    }
+
+    const child =
+        new Child("Vaishu", 22);
+
+    console.log(child.name);
+    console.log(child.age);
+
+
+    // super()
+    class Employee {
+
+        constructor(name) {
+
+            this.name = name;
+
+        }
+
+    }
+
+    class Developer extends Employee {
+
+        constructor(name, language) {
+
+            super(name);
+
+            this.language = language;
+
+        }
+
+    }
+
+    const developer =
+        new Developer(
+            "Vaishu",
+            "JavaScript"
+        );
+
+    console.log(developer);
+
+
+    // Method Overriding
+    class Vehicle {
+
+        start() {
+            console.log("Vehicle started");
+        }
+
+    }
+
+    class Car extends Vehicle {
+
+        start() {
+            console.log("Car started");
+        }
+
+    }
+
+    const car = new Car();
+
+    car.start();
+
+
+    // static
+    class MathHelper {
+
+        static square(number) {
+            return number * number;
+        }
+
+    }
+
+    console.log(
+        MathHelper.square(5)
+    );
+
+
+    // Static Property
+    class App {
+
+        static version = "1.0";
+
+    }
+
+    console.log(App.version);
+
+
+    // Instance vs Static
+    class Counter {
+
+        static count = 0;
+
+        constructor() {
+
+            Counter.count++;
+
+        }
+
+    }
+
+    new Counter();
+    new Counter();
+    new Counter();
+
+    console.log(Counter.count);
+
+</script>
+
+</body>
+</html>

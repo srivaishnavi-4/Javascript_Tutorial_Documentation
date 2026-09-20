@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Timers</title>
+</head>
+<body>
+
+<script>
+
+    // setTimeout()
+    setTimeout(() => {
+        console.log("Hello after 3 seconds");
+    }, 3000);
+
+
+    // setInterval()
+    let interval = setInterval(() => {
+        console.log("Running...");
+    }, 2000);
+
+
+    // clearTimeout()
+    let timer = setTimeout(() => {
+        console.log("This will not execute");
+    }, 5000);
+
+    clearTimeout(timer);
+
+
+    // clearInterval()
+    let count = 0;
+
+    let counter = setInterval(() => {
+
+        count++;
+
+        console.log(count);
+
+        if (count === 5) {
+            clearInterval(counter);
+        }
+
+    }, 1000);
+
+
+    // Digital Clock
+    setInterval(() => {
+
+        let time = new Date();
+
+        console.log(
+            time.toLocaleTimeString()
+        );
+
+    }, 1000);
+
+
+    // Countdown
+    let seconds = 5;
+
+    let countdown = setInterval(() => {
+
+        console.log(seconds);
+
+        seconds--;
+
+        if (seconds < 0) {
+
+            clearInterval(countdown);
+
+            console.log("Time's up!");
+
+        }
+
+    }, 1000);
+
+</script>
+
+</body>
+</html>
