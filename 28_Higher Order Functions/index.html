@@ -9,33 +9,21 @@
 
     // Callback Function
     function greet(name) {
-
         console.log(`Hello ${name}`);
-
     }
-
     function processUser(callback) {
-
         callback("Vaishu");
-
     }
-
     processUser(greet);
-
-
     // forEach()
     const users = [
         "Vaishu",
         "Priya",
         "Kumar"
     ];
-
     users.forEach(function(user) {
-
         console.log(user);
-
     });
-
 
     // map()
     const prices = [
@@ -43,13 +31,9 @@
         200,
         300
     ];
-
     const updatedPrices =
         prices.map(price => price * 1.18);
-
     console.log(updatedPrices);
-
-
     // filter()
     const numbers = [
         100,
