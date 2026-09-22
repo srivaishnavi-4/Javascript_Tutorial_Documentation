@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>E-Commerce Total Calculation</title>
+</head>
+<body>
+
+<script>
+
+    // ==========================================
+    // 1. FUNCTION DECLARATION
+    // Main calculation model
+    // ==========================================
+
+    function calculateTotal(price, quantity, discount, taxRate) {
+
+        let subtotal = price * quantity;
+
+        let discountAmount = calculateDiscount(
+            subtotal,
+            discount
+        );
+
+        let amountAfterDiscount =
+            subtotal - discountAmount;
+
+        let taxAmount = calculateTax(
+            amountAfterDiscount,
+            taxRate
+        );
+
+        let finalTotal =
+            amountAfterDiscount + taxAmount;
+
+        return finalTotal;
+    }
+
+
+    // ==========================================
+    // 2. FUNCTION EXPRESSION
+    // Discount calculation
+    // ==========================================
+
+    const calculateDiscount = function (
+        amount,
+        discountPercentage
+    ) {
+
+        return amount *
+               discountPercentage / 100;
+
+    };
+
+
+    // ==========================================
+    // 3. FUNCTION EXPRESSION
+    // Tax calculation
+    // ==========================================
+
+    const calculateTax = function (
+        amount,
+        taxRate
+    ) {
+
+        return amount *
+               taxRate / 100;
+
+    };
+
+
+    // ==========================================
+    // 4. ARROW FUNCTION
+    // Format the final amount
+    // ==========================================
+
+    const formatAmount = amount =>
+        `₹${amount.toFixed(2)}`;
+
+
+    // ==========================================
+    // 5. PRODUCT BILL
+    // ==========================================
+
+    const productPrice = 2500;
+    const quantity = 2;
+    const discount = 10;
+    const taxRate = 18;
+
+
+    const total = calculateTotal(
+        productPrice,
+        quantity,
+        discount,
+        taxRate
+    );
+
+
+    // ==========================================
+    // 6. DISPLAY RESULT
+    // ==========================================
+
+    console.log("Product Price:", productPrice);
+    console.log("Quantity:", quantity);
+    console.log("Discount:", discount + "%");
+    console.log("Tax:", taxRate + "%");
+    console.log("Final Total:", formatAmount(total));
+
+</script>
+
+</body>
+</html>

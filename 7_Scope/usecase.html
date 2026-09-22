@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local and Lexical Scope</title>
+</head>
+<body>
+
+<script>
+
+    // ==========================================
+    // 1. LOGIN FUNCTION
+    // ==========================================
+
+    function loginUser(username, password) {
+
+        // ==========================================
+        // 2. LOCAL SCOPE
+        // These variables belong only to loginUser()
+        // ==========================================
+
+        const userToken =
+            "TOKEN_12345";
+
+
+        const loginTime =
+            new Date();
+
+
+        console.log(
+            "User:",
+            username
+        );
+
+
+        // ==========================================
+        // 3. LEXICAL SCOPE
+        // Inner function can access variables
+        // from its outer function
+        // ==========================================
+
+        function createSession() {
+
+            console.log(
+                "Username:",
+                username
+            );
+
+
+            console.log(
+                "Token:",
+                userToken
+            );
+
+
+            console.log(
+                "Login Time:",
+                loginTime
+            );
+
+        }
+
+
+        // Call inner function
+
+        createSession();
+
+    }
+
+
+    // ==========================================
+    // 4. CALL LOGIN
+    // ==========================================
+
+    loginUser(
+        "Vaishu",
+        "12345"
+    );
+
+
+    // ==========================================
+    // 5. LOCAL SCOPE TEST
+    // ==========================================
+
+    function processPayment() {
+
+        const paymentId =
+            "PAY_1001";
+
+
+        console.log(
+            "Payment ID:",
+            paymentId
+        );
+
+    }
+
+    processPayment();
+
+    // This would cause an error because
+    // paymentId exists only inside processPayment()
+
+    // console.log(paymentId);
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rest Parameter - Error Logger</title>
+</head>
+<body>
+
+<script>
+
+    // ==========================================
+    // 1. CUSTOM ERROR TYPES
+    // ==========================================
+
+    class ValidationError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "ValidationError";
+        }
+    }
+    class NetworkError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "NetworkError";
+        }
+    }
+    class DatabaseError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "DatabaseError";
+        }
+    }
+    // ==========================================
+    // 2. REST PARAMETER
+    // Collect multiple errors
+    // ==========================================
+
+    function logErrors(...errors) {
+
+        console.log(
+            "Total errors:",
+            errors.length
+        );
+
+
+        // ==========================================
+        // 3. PROCESS EACH ERROR
+        // ==========================================
+
+        errors.forEach(error => {
+
+            console.log(
+                `${error.name}: ${error.message}`
+            );
+
+        });
+
+    }
+
+
+    // ==========================================
+    // 4. CREATE DIFFERENT ERRORS
+    // ==========================================
+
+    const validationError =
+        new ValidationError(
+            "Email is required"
+        );
+
+
+    const networkError =
+        new NetworkError(
+            "Server is unreachable"
+        );
+
+
+    const databaseError =
+        new DatabaseError(
+            "Database connection failed"
+        );
+
+
+    // ==========================================
+    // 5. PASS MULTIPLE ERRORS
+    // ==========================================
+
+    logErrors(
+        validationError,
+        networkError,
+        databaseError
+    );
+
+
+    // ==========================================
+    // 6. REST PARAMETER CAN ALSO RECEIVE
+    // DIFFERENT VALUE TYPES
+    // ==========================================
+
+    function showValues(...values) {
+
+        values.forEach(value => {
+
+            console.log(
+                "Value:",
+                value
+            );
+
+        });
+
+    }
+    showValues(
+        "Validation Error",
+        404,
+        true,
+        new Error("Something failed")
+    );
+</script>
+
+</body>
+</html>
