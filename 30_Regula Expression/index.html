@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regular Expressions</title>
+</head>
+<body>
+
+<script>
+
+    // Regex Literal
+    const pattern1 = /hello/;
+
+    console.log(
+        pattern1.test("Hello hello")
+    );
+
+
+    // RegExp Constructor
+    const pattern2 = new RegExp("hello", "i");
+
+    console.log(
+        pattern2.test("HELLO")
+    );
+
+
+    // Simple Regex
+    const javascriptPattern = /javascript/;
+
+    console.log(
+        javascriptPattern.test(
+            "I am learning javascript"
+        )
+    );
+
+
+    // g - Global Flag
+    const globalPattern = /cat/g;
+
+    console.log(
+        "cat cat cat".match(globalPattern)
+    );
+
+
+    // i - Case Insensitive Flag
+    const casePattern = /hello/i;
+
+    console.log(
+        casePattern.test("HELLO")
+    );
+
+
+    // Combining Flags
+    const combinedPattern = /hello/gi;
+
+    console.log(
+        "Hello HELLO hello".match(combinedPattern)
+    );
+
+
+    // test()
+    const testPattern = /javascript/i;
+
+    console.log(
+        testPattern.test(
+            "I am learning JavaScript"
+        )
+    );
+
+
+    // Invalid test()
+    const invalidPattern = /python/i;
+
+    console.log(
+        invalidPattern.test(
+            "I am learning JavaScript"
+        )
+    );
+
+
+    // Real-Time test() - Username Validation
+    const usernamePattern = /^[A-Za-z]+$/;
+
+    console.log(
+        usernamePattern.test("Vaishu")
+    );
+
+    console.log(
+        usernamePattern.test("Vaishu123")
+    );
+
+
+    // match()
+    const text = "I like JavaScript";
+
+    const result = text.match(/JavaScript/);
+
+    console.log(result);
+
+
+    // match() with Global Flag
+    const languages =
+        "JavaScript is powerful. JavaScript is popular.";
+
+    const matches =
+        languages.match(/JavaScript/g);
+
+    console.log(matches);
+
+
+    // Extract Numbers using match()
+    const message =
+        "Order 101 contains 3 products costing 5000";
+
+    const numbers =
+        message.match(/\d+/g);
+
+    console.log(numbers);
+
+
+    // replace()
+    const greeting =
+        "Hello Vaishu";
+
+    const replaced =
+        greeting.replace(
+            /Vaishu/,
+            "Developer"
+        );
+
+    console.log(replaced);
+
+
+    // replace() without g
+    const animals =
+        "cat cat cat";
+
+    console.log(
+        animals.replace(
+            /cat/,
+            "dog"
+        )
+    );
+
+
+    // replace() with g
+    console.log(
+        animals.replace(
+            /cat/g,
+            "dog"
+        )
+    );
+
+
+    // Real-Time replace()
+    const usernameText =
+        "Vaishu     Sri";
+
+    const cleanUsername =
+        usernameText.replace(
+            /\s+/g,
+            " "
+        );
+
+    console.log(cleanUsername);
+
+
+    // exec()
+    const execPattern = /JavaScript/;
+
+    const execResult =
+        execPattern.exec(
+            "I am learning JavaScript"
+        );
+
+    console.log(execResult);
+
+
+    // exec() - Matched Text
+    console.log(
+        execResult[0]
+    );
+
+
+    // exec() - Match Position
+    console.log(
+        execResult.index
+    );
+
+
+    // exec() with Capturing Groups
+    const userPattern =
+        /Name: (\w+), Age: (\d+)/;
+
+    const userResult =
+        userPattern.exec(
+            "Name: Vaishu, Age: 22"
+        );
+
+    console.log(
+        userResult[1]
+    );
+
+    console.log(
+        userResult[2]
+    );
+
+
+    // Real-Time Form Validation
+    const username =
+        "Vaishu123";
+
+    const validUsernamePattern =
+        /^[A-Za-z]+$/;
+
+    if (
+        validUsernamePattern.test(username)
+    ) {
+
+        console.log("Valid username");
+
+    } else {
+
+        console.log(
+            "Username should contain only letters"
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

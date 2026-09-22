@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Functional Programming Concepts</title>
+</head>
+<body>
+
+<script>
+
+    // Pure Function
+    function add(a, b) {
+
+        return a + b;
+
+    }
+
+    console.log(add(10, 20));
+    console.log(add(10, 20));
+
+
+    // Impure Function
+    let total = 100;
+
+    function addAmount(amount) {
+
+        total += amount;
+
+        return total;
+
+    }
+
+    console.log(addAmount(50));
+
+
+    // Real-Time Pure Function
+    function calculateDiscount(price, discount) {
+
+        return price - (price * discount / 100);
+
+    }
+
+    console.log(calculateDiscount(1000, 10));
+
+
+    // Immutability - Object
+    const user = {
+
+        name: "Vaishu",
+        age: 22
+
+    };
+
+    const updatedUser = {
+
+        ...user,
+        age: 23
+
+    };
+
+    console.log(user);
+    console.log(updatedUser);
+
+
+    // Immutability - Array
+    const numbers = [10, 20, 30];
+
+    const updatedNumbers = [...numbers, 40];
+
+    console.log(numbers);
+    console.log(updatedNumbers);
+
+
+    // Function Composition
+    function double(number) {
+
+        return number * 2;
+
+    }
+
+    function addTen(number) {
+
+        return number + 10;
+
+    }
+
+    const result = addTen(double(5));
+
+    console.log(result);
+
+
+    // Creating a Composition Function
+    function compose(function1, function2) {
+
+        return function(value) {
+
+            return function1(function2(value));
+
+        };
+
+    }
+
+    function processDouble(number) {
+
+        return number * 2;
+
+    }
+
+    function processAddTen(number) {
+
+        return number + 10;
+
+    }
+
+    const process = compose(
+        processAddTen,
+        processDouble
+    );
+
+    console.log(process(5));
+
+
+    // Real-Time Function Composition
+    function trimName(name) {
+
+        return name.trim();
+
+    }
+
+    function convertToUpperCase(name) {
+
+        return name.toUpperCase();
+
+    }
+
+    function addWelcome(name) {
+
+        return `Welcome, ${name}!`;
+
+    }
+
+    const welcomeMessage = addWelcome(
+        convertToUpperCase(
+            trimName("   Vaishu   ")
+        )
+    );
+
+    console.log(welcomeMessage);
+
+
+    // Currying - Normal Function
+    function add(a, b) {
+
+        return a + b;
+
+    }
+
+    console.log(add(10, 20));
+
+
+    // Currying
+    function curriedAdd(a) {
+
+        return function(b) {
+
+            return a + b;
+
+        };
+
+    }
+
+    console.log(curriedAdd(10)(20));
+
+
+    // Currying - Arrow Function
+    const arrowAdd = a => b => a + b;
+
+    console.log(arrowAdd(10)(20));
+
+
+    // Real-Time Currying
+    function createDiscount(discount) {
+
+        return function(price) {
+
+            return price - (price * discount / 100);
+
+        };
+
+    }
+
+    const studentDiscount = createDiscount(10);
+
+    console.log(studentDiscount(1000));
+    console.log(studentDiscount(2000));
+
+
+    // Combined Functional Programming Example
+
+    const products = [
+
+        {
+            name: "Laptop",
+            price: 50000
+        },
+
+        {
+            name: "Phone",
+            price: 30000
+        }
+
+    ];
+
+
+    // Pure Function + Currying + Immutability
+    function applyDiscount(discount) {
+
+        return function(product) {
+
+            return {
+
+                ...product,
+
+                price:
+                    product.price -
+                    (product.price * discount / 100)
+
+            };
+
+        };
+
+    }
+
+
+    // Pure Function + Currying + Immutability
+    function addTax(tax) {
+
+        return function(product) {
+
+            return {
+
+                ...product,
+
+                price:
+                    product.price +
+                    (product.price * tax / 100)
+
+            };
+
+        };
+
+    }
+
+
+    const discount10 = applyDiscount(10);
+
+    const tax18 = addTax(18);
+
+
+    // Composition / Pipeline
+    const updatedProducts = products
+        .map(discount10)
+        .map(tax18);
+
+
+    console.log(updatedProducts);
+
+    // Original data remains unchanged
+    console.log(products);
+
+</script>
+
+</body>
+</html>

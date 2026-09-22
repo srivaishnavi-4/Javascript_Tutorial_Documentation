@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error Handling</title>
+</head>
+<body>
+
+<script>
+
+    // 1. Custom Errors
+    class InsufficientBalanceError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "InsufficientBalanceError";
+        }
+    }
+
+    function withdraw(balance, amount) {
+        if (amount > balance) {
+            throw new InsufficientBalanceError(
+                "Insufficient balance"
+            );
+        }
+        return balance - amount;
+    }
+    try {
+        console.log(withdraw(5000, 7000));
+    } catch (error) {
+        console.log(error.name);
+        console.log(error.message);
+    }
+    // Why super()
+    class PaymentError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "PaymentError";
+        }
+    }
+    function processPayment(amount) {
+        if (amount <= 0) {
+            throw new PaymentError(
+                "Invalid payment amount"
+            );
+        }
+        return "Payment successful";
+    }
+    try {
+        console.log(processPayment(-500));
+    } catch (error) {
+        console.log(error.name);
+        console.log(error.message);
+    }
+    // 2. Error Propagation
+    function functionC() {
+        throw new Error("Something went wrong");
+    }
+    function functionB() {
+        functionC();
+    }
+    function functionA() {
+        functionB();
+    }
+    try {
+        functionA();
+    } catch (error) {
+        console.log(
+            "Error handled:",
+            error.message
+        );
+    }
+    // Handling Error at Different Levels
+    function databaseOperation() {
+        try {
+            throw new Error("Database error");
+        } catch (error) {
+            console.log("Handled in database function");
+        }
+    }
+    databaseOperation();
+    // Error Propagation to Outer Function
+    function getData() {
+        throw new Error("Data not found");
+    }
+    function loadData() {
+        getData();
+    }
+    try {
+        loadData();
+    } catch (error) {
+        console.log("Handled outside");
+    }
+    // Technical Real-Time Example
+    async function getUser() {
+        throw new Error("User not found");
+    }
+    async function login() {
+        const user = await getUser();
+        return user;
+    }
+    async function handleLogin() {
+        try {
+            const user = await login();
+            console.log(user);
+        } catch (error) {
+            console.log(
+                "Login failed:",
+                error.message
+            );
+        }
+    }
+    handleLogin();
+    // 3. Stack Traces
+    function first() {
+        second();
+    }
+    function second() {
+        third();
+    }
+    function third() {
+        throw new Error("Something went wrong");
+    }
+    try {
+        first();
+    } catch (error) {
+        console.log(error.stack);
+    }
+
+    // Accessing .stack
+    try {
+        throw new Error("Payment failed");
+    } catch (error) {
+        console.log(error.stack);
+    }
+    // 4. Custom Error + Propagation + Stack Trace
+    class OrderPaymentError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "OrderPaymentError";
+        }
+    }
+    function validatePayment(amount) {
+        if (amount <= 0) {
+            throw new OrderPaymentError(
+                "Invalid payment amount"
+            );
+        }
+    }
+    function processOrder(amount) {
+        validatePayment(amount);
+        return "Order processed";
+    }
+    function placeOrder(amount) {
+        return processOrder(amount);
+    }
+    try {
+        placeOrder(-500);
+    } catch (error) {
+        console.log("Name:", error.name);
+        console.log("Message:", error.message);
+        console.log("Stack:", error.stack);
+    }
+
+    // 5. throw
+    let age = 15;
+    try {
+        if (age < 18) {
+            throw new Error(
+                "User must be 18 or older"
+            );
+        }
+        console.log("Allowed");
+    } catch (error) {
+        console.log(error.message);
+
+    }
+    // try...catch
+    try {
+        let number = undefined;
+        console.log(number.name);
+    } catch (error) {
+        console.log(
+            "Error occurred:",
+            error.message
+        );
+    }
+
+
+    // 6. instanceof with Custom Errors
+    class AuthenticationError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "AuthenticationError";
+        }
+    }
+
+    try {
+        throw new AuthenticationError(
+            "Invalid password"
+        );
+    } catch (error) {
+        if (error instanceof AuthenticationError) {
+            console.log(
+                "Handle authentication error"
+            );
+        } else {
+            console.log(
+                "Handle general error"
+            );
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

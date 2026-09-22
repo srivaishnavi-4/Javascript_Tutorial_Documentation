@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web APIs</title>
+</head>
+<body>
+
+    <!-- 1. DOM API -->
+
+    <h2 id="title">Welcome</h2>
+
+    <button id="btn">
+        Change Text
+    </button>
+
+
+    <!-- 2. Canvas API -->
+
+    <canvas
+        id="canvas"
+        width="400"
+        height="200">
+    </canvas>
+
+
+<script>
+
+    // 1. DOM API
+
+    const title =
+        document.getElementById("title");
+
+
+    const button =
+        document.getElementById("btn");
+
+
+    button.addEventListener("click", () => {
+
+        title.textContent =
+            "Welcome Vaishu!";
+
+    });
+
+
+    // Common DOM APIs
+
+    document.getElementById("title");
+
+    document.querySelector("#title");
+
+
+    const newElement =
+        document.createElement("div");
+
+
+    newElement.textContent =
+        "Hello Vaishu";
+
+
+    newElement.classList.add("active");
+
+
+    newElement.setAttribute(
+        "id",
+        "user"
+    );
+
+
+    document.body.appendChild(
+        newElement
+    );
+
+
+    // Technical Real-Time Use
+
+    const price =
+        document.createElement("p");
+
+
+    price.id = "price";
+
+    price.textContent = "₹50,000";
+
+
+    document.body.appendChild(price);
+
+
+    // 2. Canvas API
+
+    const canvas =
+        document.getElementById("canvas");
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    // Drawing a Rectangle
+
+    ctx.fillRect(
+        50,
+        50,
+        150,
+        80
+    );
+
+
+    // Drawing a Circle
+
+    ctx.beginPath();
+
+    ctx.arc(
+        250,
+        100,
+        50,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+
+    // Drawing Text
+
+    ctx.font =
+        "30px Arial";
+
+
+    ctx.fillText(
+        "Vaishu",
+        50,
+        40
+    );
+
+
+    // Game Loop
+
+    function gameLoop() {
+
+        // update game objects
+        // draw game objects
+
+        requestAnimationFrame(
+            gameLoop
+        );
+
+    }
+
+
+    // gameLoop();
+
+
+    // 3. Geolocation API
+
+    navigator.geolocation.getCurrentPosition(
+
+        position => {
+
+            const latitude =
+                position.coords.latitude;
+
+
+            const longitude =
+                position.coords.longitude;
+
+
+            console.log(
+                "Latitude:",
+                latitude
+            );
+
+
+            console.log(
+                "Longitude:",
+                longitude
+            );
+
+        },
+
+
+        error => {
+
+            console.log(
+                "Unable to get location:",
+                error.message
+            );
+
+        }
+
+    );
+
+
+    // Important Properties
+
+    // position.coords.latitude
+    // position.coords.longitude
+    // position.coords.accuracy
+
+
+    // Continuous Location
+
+    const watchId =
+        navigator.geolocation.watchPosition(
+
+            position => {
+
+                console.log(
+                    position.coords.latitude
+                );
+
+
+                console.log(
+                    position.coords.longitude
+                );
+
+            }
+
+        );
+
+
+    // Stop watching
+
+    navigator.geolocation.clearWatch(
+        watchId
+    );
+
+
+    // 4. Web Storage API
+
+    // localStorage
+
+    localStorage.setItem(
+        "username",
+        "Vaishu"
+    );
+
+
+    const username =
+        localStorage.getItem(
+            "username"
+        );
+
+
+    console.log(username);
+
+
+    // Remove Data
+
+    localStorage.removeItem(
+        "username"
+    );
+
+
+    // Store Object
+
+    const user = {
+
+        name: "Vaishu",
+        age: 22
+
+    };
+
+
+    localStorage.setItem(
+        "user",
+        JSON.stringify(user)
+    );
+
+
+    // Read Object
+
+    const storedUser =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+
+    console.log(
+        storedUser.name
+    );
+
+
+    // sessionStorage
+
+    sessionStorage.setItem(
+        "step",
+        "2"
+    );
+
+
+    console.log(
+        sessionStorage.getItem("step")
+    );
+
+
+    // 5. Notifications API
+
+    Notification.requestPermission()
+
+        .then(permission => {
+
+            console.log(permission);
+
+
+            if (
+                permission === "granted"
+            ) {
+
+                new Notification(
+                    "Hello Vaishu!"
+                );
+
+            }
+
+        });
+
+
+    // Technical Real-Time Example
+
+    if (
+        Notification.permission ===
+        "granted"
+    ) {
+
+        new Notification(
+            "Order Update",
+            {
+
+                body:
+                    "Your order has been shipped!"
+
+            }
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

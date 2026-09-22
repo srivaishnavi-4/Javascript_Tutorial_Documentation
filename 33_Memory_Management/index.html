@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memory Management</title>
+</head>
+<body>
+
+<script>
+
+    // 1. References
+
+    const user = {
+
+        name: "Vaishu",
+        age: 22
+
+    };
+
+
+    console.log(user);
+
+
+    // Two Variables Can Refer to the Same Object
+
+    const user1 = {
+
+        name: "Vaishu"
+
+    };
+
+
+    const user2 = user1;
+
+
+    user2.name = "Priya";
+
+
+    console.log(user1.name);
+
+
+    // 2. Reference vs Copy
+
+    // Primitive Values
+
+    let a = 10;
+
+    let b = a;
+
+    b = 20;
+
+
+    console.log(a);
+    console.log(b);
+
+
+    // Objects
+
+    let person1 = {
+
+        name: "Vaishu"
+
+    };
+
+
+    let person2 = person1;
+
+
+    person2.name = "Priya";
+
+
+    console.log(person1.name);
+
+
+    // 3. Garbage Collection
+
+    let customer = {
+
+        name: "Vaishu"
+
+    };
+
+
+    customer = null;
+
+
+    // 4. Reachability
+
+    let admin = {
+
+        name: "Vaishu"
+
+    };
+
+
+    let manager = admin;
+
+
+    admin = null;
+
+
+    console.log(manager.name);
+
+
+    manager = null;
+
+
+    // 5. Garbage Collection Example
+
+    function createUser() {
+
+        const newUser = {
+
+            name: "Vaishu"
+
+        };
+
+
+        console.log(newUser.name);
+
+    }
+
+
+    createUser();
+
+
+    // 6. Memory Leaks
+
+    // An object that is no longer needed
+    // but is still referenced cannot be garbage collected.
+
+
+    // 7. Common Cause: Unused Global Data
+
+    const users = [];
+
+
+    function addUser(user) {
+
+        users.push(user);
+
+    }
+
+
+    addUser({
+
+        name: "Vaishu"
+
+    });
+
+
+    console.log(users);
+
+
+    // Remove unused data
+
+    users.length = 0;
+
+
+    // 8. Event Listener Memory Leak
+
+    const button = document.createElement("button");
+
+    button.textContent = "Click";
+
+    document.body.appendChild(button);
+
+
+    function handleClick() {
+
+        console.log("Clicked");
+
+    }
+
+
+    button.addEventListener(
+        "click",
+        handleClick
+    );
+
+
+    // Cleanup
+
+    button.removeEventListener(
+        "click",
+        handleClick
+    );
+
+
+    // 9. Timer Memory Leak
+
+    const data = {
+
+        name: "Vaishu"
+
+    };
+
+
+    const intervalId = setInterval(() => {
+
+        console.log(data.name);
+
+    }, 1000);
+
+
+    // Cleanup
+
+    clearInterval(intervalId);
+
+
+    // 10. Closures and Memory
+
+    function createCounter() {
+
+        let count = 0;
+
+
+        return function () {
+
+            count++;
+
+            return count;
+
+        };
+
+    }
+
+
+    const counter = createCounter();
+
+
+    console.log(counter());
+    console.log(counter());
+
+
+    // 11. Detached DOM Elements
+
+    let element = document.createElement("div");
+
+    element.id = "profile";
+
+    document.body.appendChild(element);
+
+
+    element.remove();
+
+
+    console.log(element);
+
+
+    // Release the reference when no longer needed
+
+    element = null;
+
+
+    // 12. Shallow Copy and Shared References
+
+    const originalUser = {
+
+        name: "Vaishu",
+
+        address: {
+
+            city: "Tiruppur"
+
+        }
+
+    };
+
+
+    const copy = {
+
+        ...originalUser
+
+    };
+
+
+    copy.address.city = "Chennai";
+
+
+    console.log(
+        originalUser.address.city
+    );
+
+
+    // Deep Copy
+
+    const deepCopy =
+        structuredClone(originalUser);
+
+
+    deepCopy.address.city = "Coimbatore";
+
+
+    console.log(
+        originalUser.address.city
+    );
+
+
+    // 13. WeakMap and WeakSet
+
+    const cache = new WeakMap();
+
+
+    let weakUser = {
+
+        name: "Vaishu"
+
+    };
+
+
+    cache.set(
+        weakUser,
+        "User data"
+    );
+
+
+    console.log(
+        cache.get(weakUser)
+    );
+
+
+    weakUser = null;
+
+
+    // 14. Common Causes of Memory Leaks
+
+    // Global references
+    // Event listeners
+    // Timers
+    // Closures
+    // Detached DOM
+    // Growing caches
+
+
+    // 15. Garbage Collection vs Memory Leak
+
+    let temporaryUser = {
+
+        name: "Vaishu"
+
+    };
+
+
+    // Object is reachable
+
+    console.log(
+        temporaryUser.name
+    );
+
+
+    // Remove reference
+
+    temporaryUser = null;
+
+
+    // Now the object can become
+    // eligible for garbage collection
+    // if no other references exist.
+
+</script>
+
+</body>
+</html>

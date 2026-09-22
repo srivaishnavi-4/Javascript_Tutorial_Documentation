@@ -1011,7 +1011,7 @@ Lexical scope is fundamental to **nested functions, modules, callbacks, and clos
 ```javascript
 let company = "ABC Ltd";
 function employee() {
-    let name = "Arun";
+    let name = "Vaishu";
     function display() {
         console.log(name);
         console.log(company);
@@ -1102,7 +1102,7 @@ function createBankAccount() {
     return {
         getBalance: function() {
             return balance;
-        },
+        },p
         deposit: function(amount) {
             balance += amount;
         }
@@ -10656,3 +10656,2371 @@ callback
 function returning function
 → function factory / closure
 ```
+# 29_Functional Programming Concepts
+These are important **functional programming concepts** in JavaScript. They help make code predictable, reusable, testable, and easier to maintain.
+## 1. Pure Functions
+### Explanation
+A **pure function** is a function that:
+1. Gives the **same output for the same input**
+2. Does **not modify anything outside the function** (no side effects)
+### Syntax
+```js
+function functionName(input) {
+    return result;
+}
+```
+### Simple Example
+```js
+function add(a, b) {
+    return a + b;
+}
+console.log(add(10, 20));
+console.log(add(10, 20));
+```
+### Output
+```text
+30
+30
+```
+The same inputs always produce the same output.
+### Impure Function
+```js
+let total = 100;
+function addAmount(amount) {
+    total += amount;
+    return total;
+}
+```
+This is **impure** because it modifies the external variable `total`.
+### Technical Real-Time Use
+Suppose an e-commerce application calculates a discount.
+```js
+function calculateDiscount(price, discount) {
+    return price - (price * discount / 100);
+}
+console.log(calculateDiscount(1000, 10));
+```
+Output:
+```text
+900
+```
+The function doesn't modify external data.
+### Important
+```text
+Pure Function
+    ↓
+Same input
+    ↓
+Same output
+    ↓
+No side effects
+```
+Common side effects include:
+* modifying global variables
+* modifying input objects
+* changing the DOM
+* API calls
+* writing to files
+* `console.log()` in strict functional-programming definitions
+
+
+# 2. Immutability
+### Explanation
+**Immutability** means **not changing existing data after it has been created**.
+Instead of modifying the original data, create a **new value**.
+### Mutable Example
+```js
+const user = {
+    name: "Vaishu",
+    age: 22
+};
+user.age = 23;
+console.log(user);
+```
+The original object was modified.
+### Immutable Approach
+```js
+const user = {
+    name: "Vaishu",
+    age: 22
+};
+const updatedUser = {
+    ...user,
+    age: 23
+};
+console.log(user);
+console.log(updatedUser);
+```
+Output:
+```text
+{ name: "Vaishu", age: 22 }
+{ name: "Vaishu", age: 23 }
+```
+The original `user` remains unchanged.
+### Arrays
+Mutable:
+```js
+const numbers = [10, 20, 30];
+numbers.push(40);
+console.log(numbers);
+```
+Immutable:
+```js
+const numbers = [10, 20, 30];
+const updatedNumbers = [...numbers, 40];
+console.log(numbers);
+console.log(updatedNumbers);
+```
+Output:
+```text
+[10, 20, 30]
+[10, 20, 30, 40]
+```
+### Technical Real-Time Use
+In frontend applications, especially React, instead of modifying state directly:
+```js
+user.name = "Vaishu";
+```
+create updated state:
+```js
+const updatedUser = {
+    ...user,
+    name: "Vaishu"
+};
+```
+This makes changes easier to track.
+### Important
+`const` **does not mean immutable**.
+```js
+const user = {
+    name: "Vaishu"
+};
+user.name = "Priya"; // Allowed
+```
+`const` prevents reassignment of the variable, not modification of the object's contents.
+# 3. Function Composition
+### Explanation
+**Function composition** means combining multiple small functions so that the **output of one function becomes the input of another function**.
+For example:
+```text
+Input
+ ↓
+Function A
+ ↓
+Function B
+ ↓
+Function C
+ ↓
+Output
+```
+### Simple Example
+```js
+function double(number) {
+    return number * 2;
+}
+function addTen(number) {
+    return number + 10;
+}
+const result = addTen(double(5));
+console.log(result);
+```
+Output:
+```text
+20
+```
+Flow:
+```text
+5
+↓
+double(5)
+↓
+10
+↓
+addTen(10)
+↓
+20
+```
+### Creating a Composition Function
+```js
+function compose(function1, function2) {
+    return function(value) {
+        return function1(function2(value));
+    };
+}
+function double(number) {
+    return number * 2;
+}
+function addTen(number) {
+    return number + 10;
+}
+const process = compose(addTen, double);
+console.log(process(5));
+```
+Output:
+```text
+20
+```
+### Technical Real-Time Use
+Suppose we need to process a user's name:
+```js
+function trimName(name) {
+    return name.trim();
+}
+function convertToUpperCase(name) {
+    return name.toUpperCase();
+}
+function addWelcome(name) {
+    return `Welcome, ${name}!`;
+}
+const result = addWelcome(
+    convertToUpperCase(
+        trimName("   Vaishu   ")
+    )
+);
+console.log(result);
+```
+Output:
+```text
+Welcome, VAISHU!
+```
+The functions are combined into a processing pipeline.
+### Easy Memory
+```text
+Composition = Function + Function + Function
+```
+# 4. Currying
+### Explanation
+**Currying** means converting a function that takes **multiple arguments** into a sequence of functions that each take **one argument**.
+Normal function:
+```js
+function add(a, b) {
+    return a + b;
+}
+console.log(add(10, 20));
+```
+Curried version:
+```js
+function add(a) {
+    return function(b) {
+        return a + b;
+    };
+}
+console.log(add(10)(20));
+```
+Output:
+```text
+30
+```
+### Flow
+```text
+add(10)
+   ↓
+returns function
+   ↓
+(20)
+   ↓
+30
+```
+### Arrow Function Version
+```js
+const add = a => b => a + b;
+console.log(add(10)(20));
+```
+Output:
+```text
+30
+```
+## Technical Real-Time Use
+Suppose an application has different discount types.
+Instead of repeatedly passing the discount:
+```js
+function calculatePrice(discount, price) {
+    return price - (price * discount / 100);
+}
+console.log(calculatePrice(10, 1000));
+console.log(calculatePrice(10, 2000));
+```
+We can curry it:
+```js
+function createDiscount(discount) {
+    return function(price) {
+        return price - (price * discount / 100);
+    };
+}
+const studentDiscount = createDiscount(10);
+console.log(studentDiscount(1000));
+console.log(studentDiscount(2000));
+```
+Output:
+```text
+900
+1800
+```
+Here:
+```js
+const studentDiscount = createDiscount(10);
+```
+creates a reusable function that remembers the `10%` discount.
+This works using **closures**.
+
+# Pure Functions vs Immutability vs Composition vs Currying
+
+| Concept           | Meaning                                                | Main Purpose                   |
+| ----------------- | ------------------------------------------------------ | ------------------------------ |
+| **Pure Function** | Same input → same output, no side effects              | Predictable code               |
+| **Immutability**  | Don't modify existing data                             | Safe state/data handling       |
+| **Composition**   | Combine functions together                             | Build reusable pipelines       |
+| **Currying**      | Convert multi-argument function into chained functions | Reusability and specialization |
+
+# Combined Real-Time Example
+These concepts can work together:
+```js
+const products = [
+    { name: "Laptop", price: 50000 },
+    { name: "Phone", price: 30000 }
+];
+// Pure function
+function applyDiscount(discount) {
+    return function(product) {
+        return {
+            ...product,
+            price: product.price - (product.price * discount / 100)
+        };
+    };
+}
+// Pure function
+function addTax(tax) {
+    return function(product) {
+        return {
+            ...product,
+            price: product.price + (product.price * tax / 100)
+        };
+    };
+}
+const discount10 = applyDiscount(10);
+const tax18 = addTax(18);
+const updatedProducts = products
+    .map(discount10)
+    .map(tax18);
+console.log(updatedProducts);
+console.log(products);
+```
+Here:
+* `applyDiscount()` → **currying**
+* `addTax()` → **currying**
+* Functions don't modify the original product → **immutability**
+* Each function produces predictable results → **pure functions**
+* `.map(discount10).map(tax18)` → **composition/pipeline style**
+### Note
+```text
+Pure Function   → Don't cause side effects
+Immutability    → Don't change original data
+Composition     → Combine functions
+Currying        → One argument at a time
+```
+ # 30_Regular Expessions
+A **Regular Expression (Regex)** is a pattern used to **search, validate, extract, or replace text**.
+For example, regex can be used to check:
+
+* email format
+* phone numbers
+* passwords
+* usernames
+* specific words
+* numbers inside text
+## 1. Regex Syntax
+### Explanation
+There are two common ways to create a regular expression.
+### Syntax 1: Regex Literal
+```js
+/pattern/flags
+```
+Example:
+```js
+const pattern = /hello/;
+```
+This searches for the word `hello`.
+### Syntax 2: `RegExp` Constructor
+```js
+const pattern = new RegExp("pattern", "flags");
+```
+Example:
+```js
+const pattern = new RegExp("hello", "i");
+```
+### Simple Example
+```js
+const pattern = /javascript/;
+console.log(pattern.test("I am learning javascript"));
+```
+Output:
+```text
+true
+```
+# 2. Regex Flags
+Flags change how the regex behaves.
+### Common Flags
+
+| Flag | Meaning                   | Example  |
+| ---- | ------------------------- | -------- |
+| `g`  | Global — find all matches | `/cat/g` |
+| `i`  | Case-insensitive          | `/cat/i` |
+| `m`  | Multiline                 | `/cat/m` |
+| `s`  | Dot matches newline       | `/cat/s` |
+| `u`  | Unicode mode              | `/😊/u`  |
+| `y`  | Sticky matching           | `/cat/y` |
+
+### `g` — Global
+Without `g`:
+```js
+const pattern = /cat/;
+```
+It finds only the first occurrence for operations such as `match()` and `replace()`.
+With `g`:
+```js
+const pattern = /cat/g;
+```
+It finds all occurrences.
+### `i` — Case Insensitive
+```js
+const pattern = /hello/i;
+console.log(pattern.test("HELLO"));
+```
+Output:
+```text
+true
+```
+### Combining Flags
+Flags can be combined:
+```js
+const pattern = /hello/gi;
+```
+Meaning:
+```text
+g → find all
+i → ignore uppercase/lowercase
+```
+# 3. `test()`
+### Explanation
+`test()` checks whether a string contains a match for the regex.
+It returns:
+```text
+true
+```
+or
+```text
+false
+```
+### Syntax
+```js
+regex.test(string);
+```
+### Example
+```js
+const pattern = /javascript/i;
+console.log(pattern.test("I am learning JavaScript"));
+```
+Output:
+```text
+true
+```
+### Invalid Example
+```js
+const pattern = /python/i;
+console.log(pattern.test("I am learning JavaScript"));
+```
+Output:
+```text
+false
+```
+### Technical Real-Time Use
+Checking whether a username contains only letters:
+```js
+const usernamePattern = /^[A-Za-z]+$/;
+console.log(usernamePattern.test("Vaishu"));
+console.log(usernamePattern.test("Vaishu123"));
+```
+Output:
+```text
+true
+false
+```
+### Important
+`test()` is mainly useful when you only need:
+> **Does it match or not?**
+# 4. `match()`
+### Explanation
+`match()` searches a string using a regex and returns the matching results.
+It is a **String method**.
+### Syntax
+```js
+string.match(regex);
+```
+### Example
+```js
+const text = "I like JavaScript";
+const result = text.match(/JavaScript/);
+console.log(result);
+```
+The result contains information about the match.
+### Using `g`
+```js
+const text = "JavaScript is powerful. JavaScript is popular.";
+const result = text.match(/JavaScript/g);
+console.log(result);
+```
+Output:
+```text
+["JavaScript", "JavaScript"]
+```
+Without `g`, you get the first match plus match metadata.
+### Technical Real-Time Use
+Extract all numbers from a message:
+```js
+const message = "Order 101 contains 3 products costing 5000";
+const numbers = message.match(/\d+/g);
+console.log(numbers);
+```
+Output:
+```text
+["101", "3", "5000"]
+```
+Here:
+```regex
+\d+
+```
+means one or more digits.
+# 5. `replace()`
+### Explanation
+`replace()` finds matching text and replaces it with another value.
+It is a **String method**.
+### Syntax
+```js
+string.replace(regex, replacement);
+```
+### Simple Example
+```js
+const message = "Hello Vaishu";
+const result = message.replace(/Vaishu/, "Developer");
+console.log(result);
+```
+Output:
+```text
+Hello Developer
+```
+### Replacing All Matches
+Without `g`:
+```js
+const text = "cat cat cat";
+console.log(text.replace(/cat/, "dog"));
+```
+Output:
+```text
+dog cat cat
+```
+With `g`:
+```js
+const text = "cat cat cat";
+console.log(text.replace(/cat/g, "dog"));
+```
+Output:
+```text
+dog dog dog
+```
+### Technical Real-Time Use
+Remove unnecessary spaces:
+```js
+const username = "Vaishu    Sri";
+const result = username.replace(/\s+/g, " ");
+console.log(result);
+```
+Output:
+```text
+Vaishu Sri
+```
+Here:
+```regex
+\s+
+```
+means one or more whitespace characters.
+# 6. `exec()`
+### Explanation
+`exec()` searches for a match and returns a **match object** containing detailed information.
+It is a **RegExp method**.
+### Syntax
+```js
+regex.exec(string);
+```
+### Example
+```js
+const pattern = /JavaScript/;
+const result = pattern.exec("I am learning JavaScript");
+console.log(result);
+```
+The returned object contains information such as:
+```text
+match
+index
+input
+groups
+```
+For example, the matched text is:
+```js
+console.log(result[0]);
+```
+Output:
+```text
+JavaScript
+```
+### Getting Match Position
+```js
+const pattern = /JavaScript/;
+const result = pattern.exec("I am learning JavaScript");
+console.log(result[0]);
+console.log(result.index);
+```
+Output:
+```text
+JavaScript
+15
+```
+`index` tells us where the match starts.
+# 7. `exec()` with Capturing Groups
+One useful feature of `exec()` is extracting specific parts of a match.
+```js
+const pattern = /Name: (\w+), Age: (\d+)/;
+const result = pattern.exec("Name: Vaishu, Age: 22");
+console.log(result[1]);
+console.log(result[2]);
+```
+Output:
+```text
+Vaishu
+22
+```
+Here:
+```regex
+(\w+)
+```
+captures the name.
+```regex
+(\d+)
+```
+captures the age.
+# 8. `test()` vs `match()` vs `replace()` vs `exec()`
+
+| Method      | Belongs to | Purpose                      | Returns               |
+| ----------- | ---------- | ---------------------------- | --------------------- |
+| `test()`    | RegExp     | Check whether pattern exists | `true/false`          |
+| `match()`   | String     | Find matches                 | Array / `null`        |
+| `replace()` | String     | Replace matches              | New string            |
+| `exec()`    | RegExp     | Detailed match information   | Match object / `null` |
+
+```text
+test()     → Does it match?
+match()    → What matches?
+replace()  → Change the match
+exec()     → Give detailed match information
+```
+# 9. Real-Time Example — Form Validation
+Suppose a registration form asks for a username.
+```js
+const username = "Vaishu123";
+const usernamePattern = /^[A-Za-z]+$/;
+if (usernamePattern.test(username)) {
+    console.log("Valid username");
+} else {
+    console.log("Username should contain only letters");
+}
+```
+Output:
+```text
+Username should contain only letters
+```
+Here:
+```regex
+^
+```
+means start of string.
+```regex
+[A-Za-z]+
+```
+means one or more letters.
+```regex
+$
+```
+means end of string.
+So the **entire username** must contain only letters.
+```text
+Regex Syntax
+/pattern/flags
+Flags
+g → global
+i → case-insensitive
+m → multiline
+s → dot matches newline
+u → Unicode
+y → sticky
+Methods
+test()    → true / false
+match()   → find matches
+replace() → replace matches
+exec()    → detailed match information
+```
+**Note:** `test()` and `exec()` are methods of the **RegExp object**, while `match()` and `replace()` are methods of the **String object**.
+
+ # 31_Error Handling
+These concepts are useful when building real applications because they help you create **meaningful errors, pass errors through functions, and identify where an error happened**.
+## 1. Custom Errors
+### Explanation
+A **custom error** is an error that you create for a specific situation in your application.
+JavaScript already provides errors such as:
+```text
+Error
+TypeError
+ReferenceError
+SyntaxError
+RangeError
+```
+But in real applications, you may want errors such as:
+```text
+InsufficientBalanceError
+InvalidUserError
+PaymentError
+AuthenticationError
+```
+### Syntax
+```js
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+```
+### Simple Example
+```js
+class InsufficientBalanceError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "InsufficientBalanceError";
+    }
+}
+function withdraw(balance, amount) {
+    if (amount > balance) {
+        throw new InsufficientBalanceError(
+            "Insufficient balance"
+        );
+    }
+
+    return balance - amount;
+}
+try {
+    console.log(withdraw(5000, 7000));
+} catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+}
+```
+### Output
+```text
+InsufficientBalanceError
+Insufficient balance
+```
+### Why `super()`?
+```js
+super(message);
+```
+calls the parent `Error` constructor and sets the error message.
+Since our class extends `Error`:
+```js
+class InsufficientBalanceError extends Error
+```
+we use `super()` to initialize the parent `Error`.
+### Technical Real-Time Use
+In an online shopping application:
+```js
+class PaymentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "PaymentError";
+    }
+}
+function processPayment(amount) {
+    if (amount <= 0) {
+        throw new PaymentError("Invalid payment amount");
+    }
+
+    return "Payment successful";
+}
+try {
+    console.log(processPayment(-500));
+} catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+}
+```
+Output:
+```text
+PaymentError
+Invalid payment amount
+```
+This makes it easier for the application to distinguish payment errors from other errors.
+# 2. Error Propagation
+### Explanation
+**Error propagation** means an error moves from the function where it occurs to the **calling function** until something handles it.
+Consider:
+```text
+Function A
+   ↓ calls
+Function B
+   ↓ calls
+Function C
+   ↓
+Error occurs
+   ↓
+C cannot handle
+   ↓
+B cannot handle
+   ↓
+A handles error
+```
+### Example
+```js
+function functionC() {
+    throw new Error("Something went wrong");
+}
+function functionB() {
+    functionC();
+}
+function functionA() {
+    functionB();
+}
+try {
+    functionA();
+} catch (error) {
+    console.log("Error handled:", error.message);
+}
+```
+Output:
+```text
+Error handled: Something went wrong
+```
+### What happened?
+```text
+functionA()
+    ↓
+functionB()
+    ↓
+functionC()
+    ↓
+throw Error
+    ↓
+functionC doesn't catch
+    ↓
+functionB doesn't catch
+    ↓
+functionA doesn't catch
+    ↓
+try...catch handles it
+```
+This movement of the error is called **error propagation**.
+## Handling Error at Different Levels
+An error can be caught inside the function where it happens:
+```js
+function functionC() {
+    try {
+        throw new Error("Database error");
+    } catch (error) {
+        console.log("Handled in C");
+    }
+}
+```
+Or it can propagate upward:
+```js
+function functionC() {
+    throw new Error("Database error");
+}
+function functionB() {
+    functionC();
+}
+try {
+    functionB();
+} catch (error) {
+    console.log("Handled outside");
+}
+```
+### Technical Real-Time Example
+Imagine:
+```text
+UI
+ ↓
+Login function
+ ↓
+API function
+ ↓
+Database
+```
+If the API function encounters an error:
+```js
+async function getUser() {
+    throw new Error("User not found");
+}
+async function login() {
+    const user = await getUser();
+    return user;
+}
+async function handleLogin() {
+    try {
+        const user = await login();
+        console.log(user);
+    } catch (error) {
+        console.log("Login failed:", error.message);
+    }
+}
+handleLogin();
+```
+Output:
+```text
+Login failed: User not found
+```
+The error propagated from:
+```text
+getUser()
+    ↓
+login()
+    ↓
+handleLogin()
+    ↓
+catch
+```
+# 3. Stack Traces
+### Explanation
+A **stack trace** shows the sequence of function calls that led to an error.
+It helps developers answer:
+> **Where did the error happen, and which functions called it?**
+### Example
+```js
+function first() {
+    second();
+}
+function second() {
+    third();
+}
+function third() {
+    throw new Error("Something went wrong");
+}
+first();
+```
+The console may show something similar to:
+```text
+Error: Something went wrong
+    at third (...)
+    at second (...)
+    at first (...)
+```
+The exact file names and line numbers depend on where the code runs.
+### Reading the Stack
+```text
+Error: Something went wrong
+    at third()
+    at second()
+    at first()
+```
+Means:
+```text
+first()
+  ↓
+second()
+  ↓
+third()
+  ↓
+ERROR
+```
+So the stack trace tells you the **call path**.
+## Accessing `.stack`
+```js
+try {
+    throw new Error("Payment failed");
+} catch (error) {
+    console.log(error.stack);
+}
+```
+Output will contain something similar to:
+```text
+Error: Payment failed
+    at ...
+    at ...
+```
+The stack usually contains:
+* error type
+* error message
+* function names
+* file/location information
+* line/column information where supported
+# 4. Custom Error + Propagation + Stack Trace
+These concepts can be combined.
+```js
+class PaymentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "PaymentError";
+    }
+}
+function validatePayment(amount) {
+    if (amount <= 0) {
+        throw new PaymentError("Invalid payment amount");
+    }
+}
+function processOrder(amount) {
+    validatePayment(amount);
+    return "Order processed";
+}
+function placeOrder(amount) {
+    return processOrder(amount);
+}
+try {
+    placeOrder(-500);
+} catch (error) {
+    console.log("Name:", error.name);
+    console.log("Message:", error.message);
+    console.log("Stack:", error.stack);
+}
+```
+### Flow
+```text
+placeOrder()
+      ↓
+processOrder()
+      ↓
+validatePayment()
+      ↓
+PaymentError
+      ↓
+propagates upward
+      ↓
+catch
+      ↓
+name + message + stack
+```
+# 5. `throw` vs `try...catch`
+### `throw`
+Used to **create/raise an error**.
+```js
+throw new Error("Invalid data");
+```
+### `try...catch`
+Used to **handle an error**.
+```js
+try {
+    riskyOperation();
+} catch (error) {
+    console.log(error.message);
+}
+```
+So:
+```text
+throw      → raises error
+catch      → handles error
+propagation → moves error upward
+stack      → shows where it came from
+```
+# 6. `instanceof` with Custom Errors
+You can check what type of error occurred.
+```js
+class PaymentError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "PaymentError";
+    }
+}
+try {
+    throw new PaymentError("Payment declined");
+} catch (error) {
+
+    if (error instanceof PaymentError) {
+        console.log("Handle payment error");
+    } else {
+        console.log("Handle general error");
+    }
+}
+```
+Output:
+```text
+Handle payment error
+```
+This is useful when an application has different error types.
+
+| Concept               | Meaning                                   |
+| --------------------- | ----------------------------------------- |
+| **Custom Error**      | Application-specific error type           |
+| **`throw`**           | Raises an error                           |
+| **Error Propagation** | Error moves up through calling functions  |
+| **`catch`**           | Handles propagated error                  |
+| **Stack Trace**       | Shows the call path that led to the error |
+| **`instanceof`**      | Checks the error's type                   |
+
+```text
+Custom Error
+    ↓
+What type of problem?
+throw
+    ↓
+Raise the problem
+Propagation
+    ↓
+Move the problem upward
+catch
+    ↓
+Handle the problem
+stack
+    ↓
+Where did the problem happen?
+```
+**Note:** A stack trace is especially valuable in debugging because it preserves the chain of function calls leading to the error, not just the error message.
+
+# 32_Event Loop and Concurrency
+These concepts explain **how JavaScript handles asynchronous operations** even though JavaScript execution is generally single-threaded.
+The main idea is the **Event Loop**.
+```text
+JavaScript Code
+      ↓
+  Call Stack
+      ↓
+   Web APIs
+      ↓
+ ┌───────────────┐
+ │ Task Queue    │
+ │ Microtask Q.  │
+ └───────────────┘
+      ↓
+  Event Loop
+      ↓
+  Call Stack
+      ↓
+   Rendering
+```
+# 1. Call Stack
+### Explanation
+The **Call Stack** keeps track of the functions currently being executed.
+JavaScript executes one stack frame at a time.
+### Example
+```js 
+function first() {
+    second();
+}
+function second() {
+    console.log("Hello Vaishu");
+}
+first();
+```
+### Stack Flow
+When `first()` runs:
+```text
+Call Stack
+| second() |
+| first()  |
+| global   |
+------------
+```
+`second()` finishes first:
+```text 
+| first() |
+| global  |
+----------
+```
+Then `first()` finishes:
+```text 
+| global |
+---------
+```
+### Important
+The Call Stack follows:
+**LIFO — Last In, First Out**
+The function added last is executed/removed first.
+# 2. Web APIs
+### Explanation
+The **Web APIs** are browser-provided capabilities that JavaScript can use for operations such as:
+* `setTimeout()`
+* DOM events
+* `fetch()`
+* HTTP requests
+* `addEventListener()`
+* Geolocation
+* Timers
+These operations are handled by the **browser environment**, rather than being executed entirely on the JavaScript call stack.
+### Example
+```js 
+console.log("Start");
+setTimeout(() => {
+    console.log("Timer finished");
+}, 2000);
+console.log("End");
+```
+Output:
+```text
+Start
+End
+Timer finished
+```
+### What happens?
+```text 
+console.log("Start")
+       ↓
+Call Stack
+       ↓
+"Start"
+setTimeout()
+       ↓
+Browser Web API
+       ↓
+Timer starts
+console.log("End")
+       ↓
+Call Stack
+       ↓
+"End"
+After 2 seconds
+       ↓
+Task Queue
+       ↓
+Event Loop
+       ↓
+Call Stack
+       ↓
+"Timer finished"
+```
+The timer doesn't block the JavaScript code for two seconds.
+# 3. Task Queue
+### Explanation
+The **Task Queue**, also called the **Macrotask Queue**, stores callbacks that are ready to execute after asynchronous operations such as:
+* `setTimeout`
+* `setInterval`
+* certain DOM events
+* some browser events
+### Example
+```js 
+console.log("A");
+setTimeout(() => {
+    console.log("B");
+}, 0);
+console.log("C");
+```
+Output:
+```text 
+A
+C
+B
+```
+Even though the timer is `0ms`, `B` does not execute immediately.
+Flow:
+```text 
+console.log("A")
+     ↓
+Call Stack
+     ↓
+A
+setTimeout()
+     ↓
+Web API
+     ↓
+Task Queue
+
+console.log("C")
+     ↓
+Call Stack
+     ↓
+C
+
+Call Stack becomes empty
+     ↓
+Event Loop
+     ↓
+Task Queue
+     ↓
+B
+```
+### Important
+`setTimeout(fn, 0)` means:
+> Run the callback **as soon as it can be scheduled**, not immediately.
+# 4. Microtasks
+### Explanation
+**Microtasks** are small asynchronous callbacks that have **higher priority than normal tasks**.
+Common sources include:
+* `Promise.then()`
+* `Promise.catch()`
+* `Promise.finally()`
+* `queueMicrotask()`
+* continuation after `await`
+### Example
+```js 
+console.log("Start");
+Promise.resolve().then(() => {
+    console.log("Promise");
+});
+console.log("End");
+```
+Output:
+```text 
+Start
+End
+Promise
+```
+The Promise callback runs after the current synchronous code finishes.
+# 5. Microtask vs Task Queue
+This is a very important interview topic.
+```js 
+console.log("A");
+setTimeout(() => {
+    console.log("B");
+}, 0);
+Promise.resolve().then(() => {
+    console.log("C");
+});
+console.log("D");
+```
+Output:
+```text 
+A
+D
+C
+B
+```
+### Why?
+Execution order:
+```text 
+1. A
+2. D
+3. Microtasks → C
+4. Tasks → B
+```
+The Event Loop generally processes **microtasks before moving on to the next task**.
+# 6. Event Loop
+### Explanation
+The **Event Loop** coordinates:
+* Call Stack
+* Task Queue
+* Microtask Queue
+* browser rendering opportunities
+A simplified model:
+```text 
+             ┌──────────────┐
+             │  Call Stack  │
+             └──────┬───────┘
+                    ↑
+                    │
+                Event Loop
+                    │
+          ┌─────────┴─────────┐
+          ↓                   ↓
+   Microtask Queue       Task Queue
+```
+### Basic Rule
+The Event Loop checks whether the Call Stack is empty.
+If it is empty:
+```text 
+1. Process microtasks
+2. Rendering may happen at an appropriate opportunity
+3. Take the next task
+4. Repeat
+```
+The exact rendering/event-loop scheduling details are browser-dependent, so this is a useful conceptual model rather than a literal implementation diagram.
+# 7. Microtasks Example with `async/await`
+```js 
+async function test() {
+    console.log("B");
+    await Promise.resolve();
+    console.log("C");
+}
+console.log("A");
+test();
+console.log("D");
+```
+Output:
+```text 
+A
+B
+D
+C
+```
+### Why?
+Initially:
+```text
+A
+```
+Then `test()` starts:
+```text
+B
+```
+When execution reaches:
+```js
+await Promise.resolve();
+```
+the continuation after `await` is scheduled as a microtask.
+The current synchronous code continues:
+```text
+D
+```
+Then the microtask runs:
+```text
+C
+```
+So:
+```text
+A → B → D → C
+```
+# 8. Rendering
+### Explanation
+The browser also needs to **render/update the webpage**.
+Rendering can involve:
+```text 
+JavaScript
+   ↓
+Style calculation
+   ↓
+Layout
+   ↓
+Paint
+   ↓
+Display
+```
+For example, if JavaScript changes:
+```js 
+document.body.textContent = "Hello Vaishu";
+```
+the browser eventually needs to update what you see on screen.
+### Important
+JavaScript and rendering interact closely.
+If JavaScript performs a huge amount of synchronous work:
+```js 
+for (let i = 0; i < 10000000000; i++) {
+    // heavy work
+}
+```
+the main thread can remain busy, preventing the browser from responding and rendering smoothly.
+This can cause:
+* frozen UI
+* delayed clicks
+* animation stuttering
+* slow scrolling
+
+# 9. Complete Example
+```js
+console.log("1");
+setTimeout(() => {
+    console.log("2 - Timer");
+}, 0);
+Promise.resolve().then(() => {
+    console.log("3 - Promise");
+});
+console.log("4");
+```
+### Output
+```text
+1
+4
+3 - Promise
+2 - Timer
+```
+### Execution
+**Step 1 — Synchronous code**
+```text 
+console.log("1")
+console.log("4")
+```
+Output:
+```text
+1
+4
+```
+**Step 2 — Microtask**
+```text 
+Promise.then()
+```
+Output:
+```text
+3 - Promise
+```
+**Step 3 — Task**
+```text 
+setTimeout()
+```
+Output:
+```text
+2 - Timer
+```
+So the simplified order is:
+```text 
+Synchronous code
+      ↓
+Microtasks
+      ↓
+Rendering opportunity
+      ↓
+Next task
+```
+# 10. Real-Time Example — Button Click + API
+Consider:
+```js 
+button.addEventListener("click", async () => {
+    console.log("Button clicked");
+    const response = await fetch("/api/users");
+    const users = await response.json();
+    console.log(users);
+});
+```
+Conceptually:
+```text 
+User clicks button
+       ↓
+Browser event system
+       ↓
+Task Queue
+       ↓
+Event Loop
+       ↓
+Call Stack
+       ↓
+Click callback
+       ↓
+fetch()
+       ↓
+Web API / browser networking
+       ↓
+Network response
+       ↓
+Promise settlement
+       ↓
+Microtask
+       ↓
+Continue after await
+       ↓
+Update DOM
+       ↓
+Browser rendering
+```
+This is why the browser can continue handling other work while the network request is waiting.
+# 11. Call Stack vs Web APIs vs Queues
+
+| Component           | Purpose                                                  |
+| ------------------- | -------------------------------------------------------- |
+| **Call Stack**      | Executes JavaScript functions                            |
+| **Web APIs**        | Browser-provided asynchronous capabilities               |
+| **Task Queue**      | Holds ready task callbacks                               |
+| **Microtask Queue** | Holds Promise/`await` continuations and other microtasks |
+| **Event Loop**      | Coordinates when queued work can enter the Call Stack    |
+| **Rendering**       | Updates what the user sees                               |
+
+### What is the output?
+```js 
+console.log("Start");
+setTimeout(() => {
+    console.log("Timeout");
+}, 0);
+Promise.resolve().then(() => {
+    console.log("Promise");
+});
+console.log("End");
+```
+### Answer
+```text 
+Start
+End
+Promise
+Timeout
+```
+
+```text 
+CALL STACK
+   ↓
+Execute synchronous JavaScript
+   ↓
+MICROTASKS
+   ↓
+Promises / await
+   ↓
+RENDERING OPPORTUNITY
+   ↓
+TASK
+   ↓
+setTimeout / events
+   ↓
+Repeat
+```
+**Note:**
+> The Call Stack executes JavaScript, Web APIs handle browser-provided asynchronous work, completed callbacks enter task or microtask queues, and the Event Loop coordinates when they can execute; microtasks are processed before the next task, while the browser gets opportunities to render between pieces of work.
+
+# 33_Memory Management
+These concepts explain **how JavaScript manages memory** and why an application can become slow when unused objects remain reachable.
+## 1. References
+### Explanation
+In JavaScript, objects and arrays are stored in memory, and variables hold **references** to those objects.
+For example:
+```js
+const user = {
+    name: "Vaishu",
+    age: 22
+};
+```
+Conceptually:
+```text
+user
+ ↓
+┌──────────────────┐
+│ Object           │
+│ name: "Vaishu"   │
+│ age: 22           │
+└──────────────────┘
+```
+The variable `user` refers to the object.
+### Two Variables Can Refer to the Same Object
+```js
+const user1 = {
+    name: "Vaishu"
+};
+const user2 = user1;
+user2.name = "Priya";
+console.log(user1.name);
+```
+Output:
+```text
+Priya
+```
+Why?
+```text
+user1 ──┐
+        ↓
+     Object
+        ↑
+user2 ──┘
+```
+Both variables reference the **same object**.
+# 2. Reference vs Copy
+### Primitive Values
+Primitive values are copied by value.
+```js
+let a = 10;
+let b = a;
+b = 20;
+console.log(a);
+console.log(b);
+```
+Output:
+```text
+10
+20
+```
+Changing `b` doesn't affect `a`.
+### Objects
+Objects behave differently:
+```js
+let user1 = {
+    name: "Vaishu"
+};
+let user2 = user1;
+user2.name = "Priya";
+console.log(user1.name);
+```
+Output:
+```text
+Priya
+```
+Because:
+```text
+user1 ──┐
+        ↓
+      Object
+        ↑
+user2 ──┘
+```
+### Important
+```text
+Primitive → copied value
+Object    → copied reference
+Array     → copied reference
+Function  → copied reference
+```
+# 3. Garbage Collection
+### Explanation
+**Garbage Collection (GC)** is the automatic process by which JavaScript engines identify objects that are no longer reachable and reclaim their memory.
+You generally **don't manually free memory** in JavaScript.
+Example:
+```js
+let user = {
+    name: "Vaishu"
+};
+user = null;
+```
+Initially:
+```text
+user
+ ↓
+Object
+```
+After:
+```js
+user = null;
+```
+there is no longer a reference from `user` to that object.
+Conceptually:
+```text
+user → null
+Object → unreachable
+```
+If nothing else references that object, the JavaScript engine can eventually garbage-collect it.
+**Important:** garbage collection is automatic and the exact time it runs is implementation-dependent.
+# 4. Reachability
+### Explanation
+Garbage collection is based on the idea of **reachability**.
+An object is generally considered alive if it can still be reached through references from active roots, such as currently executing code and certain global/runtime references.
+### Example
+```js
+let user = {
+    name: "Vaishu"
+};
+let admin = user;
+user = null;
+```
+Is the object garbage collected?
+**No.**
+Because:
+```text
+user → null
+admin
+  ↓
+Object
+```
+`admin` still references the object.
+If:
+```js
+admin = null;
+```
+and no other references exist, the object becomes unreachable.
+
+# 5. Garbage Collection Example
+```js
+function createUser() {
+    const user = {
+        name: "Vaishu"
+    };
+    console.log(user.name);
+}
+createUser();
+```
+After `createUser()` finishes, if nothing outside the function references `user`, the object can become unreachable.
+```text
+createUser()
+     ↓
+ local user
+     ↓
+  Object
+     ↓
+function finishes
+     ↓
+no reference
+     ↓
+eligible for GC
+```
+# 6. Memory Leaks
+### Explanation
+A **memory leak** occurs when a program keeps references to objects that it no longer needs.
+Because those objects are still reachable, the garbage collector cannot reclaim them.
+```text
+No longer needed
+       ↓
+Still referenced
+       ↓
+Still reachable
+       ↓
+GC cannot remove it
+       ↓
+Memory usage increases
+```
+# 7. Common Cause: Unused Global Data
+```js
+const users = [];
+function addUser(user) {
+    users.push(user);
+}
+addUser({
+    name: "Vaishu"
+});
+```
+If `users` is global and continuously keeps old objects that the application no longer needs:
+```text
+Global users
+     ↓
+Object 1
+Object 2
+Object 3
+Object 4
+...
+```
+those objects remain reachable.
+If this continues indefinitely, memory usage can grow.
+### Better Approach
+Remove data when it is no longer required:
+```js
+users.length = 0;
+```
+Or use a more appropriate data structure/lifecycle.
+# 8. Event Listener Memory Leak
+This is a very important browser example.
+```js
+const button = document.getElementById("button");
+function handleClick() {
+    console.log("Clicked");
+}
+button.addEventListener("click", handleClick);
+```
+If an application creates listeners repeatedly without removing listeners that are no longer needed, callbacks and related objects may remain reachable longer than intended.
+### Cleanup
+```js
+button.removeEventListener("click", handleClick);
+```
+Notice that we use the **same function reference**.
+This works:
+```js
+button.addEventListener("click", handleClick);
+button.removeEventListener("click", handleClick);
+```
+But this does not remove the original listener:
+```js
+button.addEventListener("click", () => {
+    console.log("Clicked");
+});
+button.removeEventListener("click", () => {
+    console.log("Clicked");
+});
+```
+These are two different function objects.
+# 9. Timer Memory Leak
+Consider:
+```js
+const data = {
+    name: "Vaishu"
+};
+setInterval(() => {
+    console.log(data.name);
+}, 1000);
+```
+The interval continues running indefinitely.
+The callback keeps access to `data`, so the related objects may remain reachable for as long as that interval exists.
+### Cleanup
+```js
+const intervalId = setInterval(() => {
+    console.log(data.name);
+}, 1000);
+clearInterval(intervalId);
+```
+When the timer is no longer required, cancel it.
+# 10. Closures and Memory
+Closures can also keep references alive.
+```js
+function createCounter() {
+    let count = 0;
+    return function () {
+        count++;
+        return count;
+    };
+}
+const counter = createCounter();
+```
+The returned function remembers `count`.
+```text
+counter
+   ↓
+Function
+   ↓
+Closure
+   ↓
+count
+```
+This is **not automatically a memory leak**.
+The closure is useful because the application still needs `count`.
+It becomes a potential memory problem when a long-lived object unnecessarily retains large data through a closure.
+# 11. Detached DOM Elements
+A common browser memory issue is retaining references to DOM elements that are no longer part of the document.
+Example concept:
+```js
+let element = document.getElementById("profile");
+element.remove();
+console.log(element);
+```
+The element has been removed from the DOM, but the variable `element` still references it.
+```text
+element
+   ↓
+Detached DOM element
+```
+If a large application keeps unnecessary references to many detached elements, memory usage can increase.
+When no longer needed:
+```js
+element = null;
+```
+# 12. Shallow Copy and Shared References
+Remember the earlier immutability concept:
+```js
+const user = {
+    name: "Vaishu",
+    address: {
+        city: "Tiruppur"
+    }
+};
+const copy = {
+    ...user
+};
+```
+The outer object is copied, but the nested `address` object is still shared.
+```text
+user ──────────────┐
+                   ↓
+             address object
+                   ↑
+copy ──────────────┘
+```
+Therefore:
+```js
+copy.address.city = "Chennai";
+console.log(user.address.city);
+```
+Output:
+```text
+Chennai
+```
+For a deep independent copy, modern JavaScript can use:
+```js
+const deepCopy = structuredClone(user);
+```
+# 13. `WeakMap` and `WeakSet`
+JavaScript also provides weak collections that are useful for certain cases involving object references.
+### `WeakMap`
+```js
+const cache = new WeakMap();
+let user = {
+    name: "Vaishu"
+};
+cache.set(user, "User data");
+console.log(cache.get(user));
+```
+Output:
+```text
+User data
+```
+If later:
+```js
+user = null;
+```
+and there are no other strong references to the original object, the `WeakMap` entry does not by itself keep that object alive.
+This is useful for metadata associated with objects without forcing those objects to remain reachable.
+### Important
+`WeakMap` keys must be objects.
+# 14. Common Causes of Memory Leaks
+
+| Cause             | Example                           | Solution                               |
+| ----------------- | --------------------------------- | -------------------------------------- |
+| Global references | Large global arrays               | Remove unused data                     |
+| Event listeners   | Repeated listeners                | `removeEventListener()`                |
+| Timers            | Unstopped `setInterval()`         | `clearInterval()`                      |
+| Closures          | Unnecessary retained data         | Release references / lifecycle cleanup |
+| Detached DOM      | Removed elements still referenced | Remove unnecessary references          |
+| Caches            | Cache grows forever               | Expire/remove old entries              |
+
+# 15. Garbage Collection vs Memory Leak
+
+| Garbage Collection          | Memory Leak                                        |
+| --------------------------- | -------------------------------------------------- |
+| Automatic memory management | Unwanted memory retention                          |
+| Finds unreachable objects   | Objects remain reachable unnecessarily             |
+| Reclaims eligible memory    | Memory cannot be reclaimed while references remain |
+| Built into JS engines       | Usually caused by application design/code          |
+
+```text
+Reference
+    ↓
+Keeps object reachable
+
+No references
+    ↓
+Object becomes unreachable
+    ↓
+Eligible for Garbage Collection
+
+Unnecessary reference
+    ↓
+Object stays reachable
+    ↓
+Potential Memory Leak
+```
+### Note
+> **JavaScript uses automatic garbage collection to reclaim memory occupied by objects that are no longer reachable. A memory leak happens when objects that are no longer needed remain reachable because unnecessary references, event listeners, timers, caches, or closures continue to hold them.**
+
+# 34_Web APIs
+These are important **Browser Web APIs** that JavaScript uses to interact with the webpage, browser, device, and user.
+```text
+Browser Web APIs
+│
+├── DOM API          → Work with HTML elements
+├── Canvas API       → Draw graphics
+├── Geolocation API  → Get user's location
+├── Web Storage      → Store data in browser
+└── Notifications    → Show browser notifications
+```
+# 1. DOM API
+### Explanation
+**DOM (Document Object Model)** represents an HTML page as a tree of objects.
+JavaScript uses the DOM API to:
+* find HTML elements
+* change content
+* change styles/classes
+* create elements
+* remove elements
+* handle user interactions
+### Example HTML
+```html
+<h2 id="title">Welcome</h2>
+<button id="btn">Change Text</button>
+```
+### JavaScript
+```js 
+const title = document.getElementById("title");
+const button = document.getElementById("btn");
+button.addEventListener("click", () => {
+    title.textContent = "Welcome Vaishu!";
+});
+```
+When the button is clicked:
+```text
+Welcome
+   ↓
+Welcome Vaishu!
+```
+### Common DOM APIs
+```js
+document.getElementById("title");
+document.querySelector(".product");
+document.createElement("div");
+element.textContent = "Hello";
+element.classList.add("active");
+element.setAttribute("id", "user");
+element.appendChild(child);
+```
+### Technical Real-Time Use
+In an e-commerce application:
+```js
+const price = document.querySelector("#price");
+price.textContent = "₹50,000";
+```
+The product price can be updated dynamically without reloading the page.
+### Remember
+> **DOM API → Manipulate the webpage.**
+# 2. Canvas API
+### Explanation
+The **Canvas API** allows JavaScript to draw graphics inside an HTML `<canvas>` element.
+It can be used for:
+* charts
+* games
+* image processing
+* drawing applications
+* animations
+* signatures
+* visualizations
+### HTML
+```html
+<canvas id="canvas" width="400" height="200"></canvas>
+```
+### JavaScript
+```js
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+ctx.fillRect(50, 50, 150, 80);
+```
+This draws a rectangle.
+### Drawing a Circle
+```js
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+ctx.beginPath();
+ctx.arc(150, 100, 50, 0, Math.PI * 2);
+ctx.fill();
+```
+### Drawing Text
+```js
+ctx.font = "30px Arial";
+ctx.fillText("Vaishu", 50, 50);
+```
+### Technical Real-Time Use
+A simple signature/drawing application can use:
+```text
+Mouse / Touch
+     ↓
+Canvas
+     ↓
+Draw pixels
+```
+Similarly, a game can continuously update the canvas:
+```js 
+function gameLoop() {
+    // update game objects
+    // draw game objects
+    requestAnimationFrame(gameLoop);
+}
+gameLoop();
+```
+### Important
+Canvas is **pixel-based drawing**, unlike DOM elements which represent structured HTML elements.
+### Remember
+> **Canvas API → Draw graphics.**
+
+# 3. Geolocation API
+### Explanation
+The **Geolocation API** allows a website to request the user's geographic location.
+The browser normally asks the user for permission.
+### Syntax
+```js
+navigator.geolocation.getCurrentPosition(
+    success,
+    error
+);
+```
+### Example
+```js
+navigator.geolocation.getCurrentPosition(
+    position => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        console.log("Latitude:", latitude);
+        console.log("Longitude:", longitude);
+    },
+    error => {
+        console.log("Unable to get location:", error.message);
+    }
+);
+```
+Example output:
+```text
+Latitude: 11.xxxxx
+Longitude: 77.xxxxx
+```
+The exact coordinates depend on the user's device and permission.
+### Important Properties
+```js
+position.coords.latitude
+position.coords.longitude
+position.coords.accuracy
+```
+### Technical Real-Time Use
+A food delivery application can use the location to determine nearby restaurants:
+```text
+User
+ ↓
+Allow Location
+ ↓
+Geolocation API
+ ↓
+Latitude + Longitude
+ ↓
+Backend / Maps Service
+ ↓
+Nearby Restaurants
+```
+### Continuous Location
+For applications such as navigation or delivery tracking:
+```js
+const watchId = navigator.geolocation.watchPosition(position => {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+});
+```
+Stop watching:
+```js
+navigator.geolocation.clearWatch(watchId);
+```
+### Security/Privacy
+Location is sensitive information. Websites should request it only when necessary and clearly explain why it is needed.
+### Remember
+> **Geolocation API → Get device location with user permission.**
+# 4. Web Storage API
+### Explanation
+**Web Storage** allows websites to store data in the browser.
+It provides:
+```text
+localStorage
+sessionStorage
+```
+Both use a key-value interface and store strings.
+## `localStorage`
+Data remains available across browser sessions until it is removed.
+### Syntax
+```js
+localStorage.setItem("username", "Vaishu");
+const username = localStorage.getItem("username");
+console.log(username);
+```
+Output:
+```text
+Vaishu
+```
+### Remove Data
+```js
+localStorage.removeItem("username");
+```
+Remove everything for that origin:
+```js 
+localStorage.clear();
+```
+### Storing Objects
+Storage values are strings, so use JSON:
+```js
+const user = {
+    name: "Vaishu",
+    age: 22
+};
+localStorage.setItem(
+    "user",
+    JSON.stringify(user)
+);
+```
+Read it:
+```js 
+const user = JSON.parse(
+    localStorage.getItem("user")
+);
+console.log(user.name);
+```
+Output:
+```text
+Vaishu
+```
+### Technical Real-Time Uses
+* theme preference
+* language preference
+* non-sensitive UI settings
+* shopping cart data
+* recently selected filters
+## `sessionStorage`
+It has almost the same API:
+```js 
+sessionStorage.setItem("step", "2");
+console.log(
+    sessionStorage.getItem("step")
+);
+```
+It is associated with the current page session/tab and is generally cleared when that tab/session ends.
+### Real-Time Example
+Multi-step registration:
+```text
+Step 1
+  ↓
+sessionStorage
+  ↓
+Step 2
+  ↓
+sessionStorage
+  ↓
+Step 3
+```
+This can preserve temporary form progress.
+### localStorage vs sessionStorage
+| Feature                      | `localStorage`          | `sessionStorage`         |
+| ---------------------------- | ----------------------- | ------------------------ |
+| Persistence                  | Across browser sessions | Current page session/tab |
+| API                          | Same                    | Same                     |
+| Stores                       | Strings                 | Strings                  |
+| Automatically sent to server | No                      | No                       |
+| Typical use                  | Preferences             | Temporary state          |
+
+### Security Note
+Do not treat Web Storage as a secure place for sensitive authentication secrets. JavaScript-accessible storage can be exposed if your application has an XSS vulnerability.
+### Remember
+> **Web Storage → Store browser-side data.**
+# 5. Notifications API
+### Explanation
+The **Notifications API** allows a website to display notifications through the browser/operating system.
+Examples:
+```text
+ New message
+Your order has been shipped.
+```
+The user must grant permission.
+### Step 1 — Request Permission
+```js 
+Notification.requestPermission()
+    .then(permission => {
+        console.log(permission);
+    });
+```
+Possible results:
+```text
+"granted"
+"denied"
+"default"
+```
+### Step 2 — Show Notification
+```js 
+if (Notification.permission === "granted") {
+    new Notification("Hello Vaishu!");
+}
+```
+### Technical Real-Time Example
+An order application could show:
+```js
+if (Notification.permission === "granted") {
+    new Notification("Order Update", {
+        body: "Your order has been shipped!"
+    });
+}
+```
+Conceptually:
+```text
+Order status changes
+       ↓
+Application
+       ↓
+Notification API
+       ↓
+Browser / OS notification
+       ↓
+"Your order has been shipped!"
+```
+### Important
+Notifications require **user permission**. A website should not repeatedly request permission or send unnecessary notifications.
+For notifications that need to work even when the page isn't open, applications commonly use **Service Workers + Push API** in addition to the Notifications API.
+### Remember
+> **Notifications API → Show user-facing browser notifications.**
+
+| API                   | Main Purpose       | Example            |
+| --------------------- | ------------------ | ------------------ |
+| **DOM API**           | Manipulate webpage | Change button/text |
+| **Canvas API**        | Draw graphics      | Games/charts       |
+| **Geolocation API**   | Get location       | Delivery apps      |
+| **Web Storage**       | Store browser data | Theme/cart         |
+| **Notifications API** | Show notifications | Order updates      |
+
+Imagine a **food delivery website**.
+```text
+                 Food Delivery App
+                        │
+       ┌────────────────┼────────────────┐
+       ↓                ↓                ↓
+     DOM            Geolocation       Web Storage
+       │                │                │
+Update restaurant    Get location     Save preferences
+list / cart              │
+       │                 ↓
+       │            Nearby restaurants
+       │
+       ├──── Canvas → Delivery/map visualization
+       │
+       └──── Notifications → "Order delivered"
+```
+```text
+DOM           → Modify
+Canvas        → Draw
+Geolocation   → Locate
+Web Storage   → Store
+Notifications → Inform
+```
+These five are all **browser Web APIs**, but they solve different problems: **DOM for page structure, Canvas for graphics, Geolocation for location, Web Storage for client-side persistence, and Notifications for user alerts.**
+
