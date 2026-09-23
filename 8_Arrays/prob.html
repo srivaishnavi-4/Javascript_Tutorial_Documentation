@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <script>
+            const users = [
+    {
+        id: 1,
+        skills: [
+            { name: "python", rating: 5 },
+            { name: "c", rating: 3 }
+        ]
+    },
+    {
+        id: 2,
+        skills: [
+            { name: "javascript", rating: 4 },
+            { name: "java", rating: 5 },
+            { name: "python", rating: 2 }
+        ]
+    },
+    {
+        id: 3,
+        skills: [
+            { name: "react", rating: 3 },
+            { name: "node", rating: 4 },
+            { name: "mongodb", rating: 2 }
+        ]
+    }
+];
+
+const result = users
+    .flatMap(user => user.skills)
+    .sort((a, b) => b.rating - a.rating);
+
+console.log(result);
+        </script>
+    </body>
+</html>

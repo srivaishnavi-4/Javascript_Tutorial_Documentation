@@ -1,208 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Numbers and Math</title>
+    <title>Student Performance Calculator</title>
 </head>
+
 <body>
 
-<script>
+    <h2>Student Performance & Fee Calculator</h2>
 
-    // parseInt()
-    let age = "25";
+    <label>Student Name:</label>
+    <input type="text" id="name">
 
-    let result = parseInt(age);
+    <br><br>
 
-    console.log(result);
+    <label>Subject 1:</label>
+    <input type="number" id="mark1">
 
+    <br><br>
 
-    // parseInt() - decimal
-    let price = "99.99";
+    <label>Subject 2:</label>
+    <input type="number" id="mark2">
 
-    console.log(parseInt(price));
+    <br><br>
 
+    <label>Subject 3:</label>
+    <input type="number" id="mark3">
 
-    // parseInt() - form input
-    let quantity = "5";
+    <br><br>
 
-    let totalItems = parseInt(quantity);
+    <label>Total Fee:</label>
+    <input type="number" id="totalFee">
 
-    console.log(totalItems + 2);
+    <br><br>
 
+    <label>Paid Fee:</label>
+    <input type="number" id="paidFee">
 
-    // parseInt() - without conversion
-    console.log(quantity + 2);
+    <br><br>
 
+    <button id="calculateBtn">
+        Generate Report
+    </button>
 
-    // parseInt() - binary
-    console.log(parseInt("101", 2));
+    <pre id="result"></pre>
 
-
-    // parseFloat()
-    let price1 = "99.99";
-
-    let result1 = parseFloat(price1);
-
-    console.log(result1);
-
-
-    // parseFloat() - realtime
-    let price2 = "249.50";
-    let quantity1 = "3";
-
-    let total = parseFloat(price2) * parseInt(quantity1);
-
-    console.log(total);
-
-
-    // toFixed()
-    let price3 = 249.5678;
-
-    console.log(price3.toFixed(2));
-
-
-    // toFixed() - billing
-    let price4 = 499.99;
-    let quantity2 = 3;
-
-    let total1 = price4 * quantity2;
-
-    console.log(`Total: ₹${total1.toFixed(2)}`);
-
-
-    // toFixed() returns string
-    let value = 12.345;
-
-    console.log(typeof value.toFixed(2));
-
-
-    // isNaN()
-    console.log(isNaN(100));
-    console.log(isNaN("100"));
-    console.log(isNaN("hello"));
-
-
-    // isNaN() - validation
-    let age1 = "twenty";
-
-    if (isNaN(age1)) {
-        console.log("Please enter a valid number");
-    } else {
-        console.log("Valid age");
-    }
-
-
-    // Number.isNaN()
-    console.log(Number.isNaN(NaN));
-    console.log(Number.isNaN("hello"));
-
-
-    // Math.round()
-    console.log(Math.round(4.4));
-    console.log(Math.round(4.6));
-
-
-    // Math.round() - rating
-    let rating = 4.6;
-
-    console.log(Math.round(rating));
-
-
-    // Math.floor()
-    console.log(Math.floor(4.9));
-
-
-    // Math.floor() - pagination
-    let products = 47;
-    let productsPerPage = 10;
-
-    console.log(Math.floor(products / productsPerPage));
-
-
-    // Math.ceil()
-    console.log(Math.ceil(4.1));
-
-
-    // Math.ceil() - pagination
-    let totalProducts = 101;
-    let itemsPerPage = 10;
-
-    let pages = Math.ceil(totalProducts / itemsPerPage);
-
-    console.log(pages);
-
-
-    // Math.trunc()
-    console.log(Math.trunc(8.99));
-
-
-    // Math.round(), Math.floor(), Math.trunc()
-    console.log(Math.round(8.99));
-    console.log(Math.floor(8.99));
-    console.log(Math.trunc(8.99));
-
-
-    // Math.max()
-    console.log(Math.max(10, 50, 30, 20));
-
-
-    // Math.max() - array
-    let scores = [75, 92, 68, 88];
-
-    console.log(Math.max(...scores));
-
-
-    // Math.min()
-    console.log(Math.min(10, 50, 30, 20));
-
-
-    // Math.abs()
-    console.log(Math.abs(-25));
-
-
-    // Math.abs() - difference
-    let temperature1 = 35;
-    let temperature2 = 28;
-
-    let difference =
-        Math.abs(temperature1 - temperature2);
-
-    console.log(difference);
-
-
-    // Math.pow()
-    console.log(Math.pow(2, 3));
-
-
-    // Power operator
-    console.log(2 ** 3);
-
-
-    // Math.sqrt()
-    console.log(Math.sqrt(64));
-
-
-    // Math.random()
-    console.log(Math.random());
-
-
-    // Random number from 1 to 10
-    let number = Math.floor(Math.random() * 10) + 1;
-
-    console.log(number);
-
-
-    // Math.PI
-    console.log(Math.PI);
-
-
-    // Circle area
-    let radius = 5;
-
-    let area = Math.PI * radius * radius;
-
-    console.log(area);
-
-</script>
+    <script src="script.js"></script>
 
 </body>
 </html>

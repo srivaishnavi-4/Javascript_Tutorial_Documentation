@@ -2137,1300 +2137,1004 @@ Object
 ```
 These concepts become especially important when you start working with **JSON, APIs, React, Node.js, and real-world application data**.
 
-## 10_Strings
-A **string** is a sequence of characters used to represent text.
-Strings are commonly used for **user names, emails, messages, passwords, search queries, product names, API data, and form inputs**.
-```javascript
-let name = "Vaish";
-let email = "vaish@gmail.com";
-```
+# JavaScript Strings
 
-# 1. String Creation
-Strings can be created using:
-* Double quotes `" "`
-* Single quotes `' '`
-* Backticks `` ` ` ``
-```javascript
-let name1 = "Vaish";
-let name2 = 'Vaish';
-let name3 = `Vaish`;
-```
-All three contain a string.
+A **String** is used to store and manipulate text.
 
-# 2. String Length
+In a real-time application like a **Student Database Management System**, strings are used for student names, emails, departments, addresses, skills, search text, IDs, and messages.
+
+---
+
+## 1. String
+
 ### Explanation
-The `length` property returns the **number of characters** in a string.
-### Technical use
-Very commonly used for **form validation**.
-For example, checking whether a password has at least 8 characters:
+
+A string represents a sequence of characters or text.
+
+### Why is it used?
+
+Student information such as names, emails, departments, and addresses is stored as strings.
+
+### Code
+
 ```javascript
-let password = "hello123";
-if (password.length >= 8) {
-    console.log("Password length is valid");
-}
-```
-**Output:**
-```text
-Password length is valid
+const studentName = "Vaishu";
+const email = "vaishu@gmail.com";
+const department = "CSE";
+
+console.log(studentName);
+console.log(email);
+console.log(department);
 ```
 
-# 3. String Concatenation
+---
+
+## 2. `String()`
+
 ### Explanation
-**Concatenation** means joining two or more strings together.
-The `+` operator can be used for concatenation.
 
-### Technical use
-Used when creating **messages, labels, URLs, filenames, etc.**
+`String()` converts a value into a string.
+
+### Why is it used?
+
+Form values, IDs, numbers, or other data may need to be converted into text before performing string operations.
+
+### Code
+
 ```javascript
-let product = "Laptop";
-let price = 50000;
-let message = "Product: " + product + ", Price: ₹" + price;
-console.log(message);
-```
-**Output:**
-```text
-Product: Laptop, Price: ₹50000
-```
-### Important
-When `+` is used with strings, JavaScript performs concatenation
+const studentNumber = 101;
 
-# 4. Template Literals
+const studentId = String(studentNumber);
+
+console.log(studentId);
+console.log(typeof studentId);
+```
+
+Output:
+
+```text
+101
+string
+```
+
+---
+
+## 3. `length`
+
 ### Explanation
-**Template literals** are strings created using backticks:
+
+`length` returns the number of characters in a string.
+
+### Why is it used?
+
+It can be used to validate or analyze user input, such as checking whether a student name has enough characters.
+
+### Code
+
 ```javascript
-``
-```
-Their biggest advantage is that you can directly insert variables and expressions using:
-```javascript
-${}
-```
-### Technical use
-Template literals are very useful when dynamically generating **UI messages, API request data, HTML content, logs, and notifications**.
-For example:
-```javascript
-let product = "Laptop";
-let price = 50000;
-let quantity = 2;
-let bill = `
-Product: ${product}
-Price: ₹${price}
-Quantity: ${quantity}
-Total: ₹${price * quantity}
-`;
-console.log(bill);
-```
-**Output:**
-```text
-Product: Laptop
-Price: ₹50000
-Quantity: 2
-Total: ₹100000
+const name = "Vaishu";
+
+console.log(name.length);
 ```
 
-### Expressions inside `${}`
-You can perform calculations:
-```javascript
-let price = 1000;
-let discount = 10;
-console.log(`Final price: ₹${price - (price * discount / 100)}`);
-```
-Output
+Output:
+
 ```text
-Final price: ₹900
+6
 ```
-# 5. Escaping Characters
+
+---
+
+## 4. `trim()`
+
 ### Explanation
-Sometimes you need to include special characters inside a string.
-For example, if you use double quotes inside a double-quoted string:
+
+`trim()` removes whitespace from the beginning and end of a string.
+
+### Why is it used?
+
+Users may accidentally enter extra spaces in names, emails, or other fields.
+
+### Code
+
 ```javascript
-let message = "He said "Hello"";
-```
-This causes an error because JavaScript thinks the string ends before `Hello`.
-We use a **backslash `\`** to escape the special character.
-```javascript
-let message = "He said \"Hello\"";
-console.log(message);
-```
-**Output:**
-```text
-He said "Hello"
+const name = "   Vaishu   ";
+
+const cleanName = name.trim();
+
+console.log(cleanName);
 ```
 
-## Common Escape Characters
-
-| Escape | Meaning      |
-| ------ | ------------ |
-| `\"`   | Double quote |
-| `\'`   | Single quote |
-| `\\`   | Backslash    |
-| `\n`   | New line     |
-| `\t`   | Tab          |
-
-### `\n` — New line
-```javascript
-let message = "Hello\nWelcome to JavaScript";
-console.log(message);
-```
 Output:
-```text
-Hello
-Welcome to JavaScript
-```
-### `\t` — Tab
-```javascript
-console.log("Name:\tVaish");
-```
-Output:
-```text
-Name:   Vaish
-```
-### Technical use
-Escaping is useful when processing **text containing quotes, formatted messages, file paths, JSON-like data, or user-generated text**.
 
-# 6. Important String Methods
-String methods are built-in functions that allow you to **search, modify, extract, and manipulate text**.
-
-## `toUpperCase()`
-Converts a string to uppercase.
-```javascript
-let name = "vaish";
-console.log(name.toUpperCase());
-```
-Output:
 ```text
-VAISH
-```
-### Technical use
-Useful when normalizing user input.
-```javascript
-let search = "laptop";
-if (search.toUpperCase() === "LAPTOP") {
-    console.log("Product found");
-}
+Vaishu
 ```
 
-## `toLowerCase()`
-Converts a string to lowercase.
-```javascript
-let email = "VAISH@GMAIL.COM";
-console.log(email.toLowerCase());
-```
-Output:
-```text
-vaish@gmail.com
-```
-### Technical use
-Useful for **case-insensitive email/search comparisons**.
+---
 
-# 7. `trim()`
+## 5. `toLowerCase()`
+
 ### Explanation
-Removes whitespace from the **beginning and end** of a string.
-### Technical use
-Very common in **form validation**.
+
+Converts all characters to lowercase.
+
+### Why is it used?
+
+It is commonly used for **case-insensitive searching and comparison**.
+
+For example, `Vaishu`, `VAISHU`, and `vaishu` can be treated as the same search value.
+
+### Code
+
 ```javascript
-let username = "   Vaish   ";
-username = username.trim();
-if (username !== "") {
-    console.log("Valid username");
-}
+const searchText = "VAISHU";
+
+const normalizedSearch =
+    searchText.toLowerCase();
+
+console.log(normalizedSearch);
 ```
-# 8. `includes()`
-### Explanation
-Checks whether a string contains a particular substring.
-Returns `true` or `false`.
-```javascript
-let email = "vaish@gmail.com";
-console.log(email.includes("@"));
-```
+
 Output:
+
 ```text
-true
+vaishu
 ```
-### Technical use
-Checking whether an email contains `@`, or whether a search term exists in a product name.
+
+---
+
+## 6. `toUpperCase()`
+
+### Explanation
+
+Converts all characters to uppercase.
+
+### Why is it used?
+
+It is useful when information needs to follow a standard format, such as department codes.
+
+### Code
+
 ```javascript
-let product = "Apple MacBook";
-console.log(product.includes("MacBook"));
+const department = "cse";
+
+const standardDepartment =
+    department.toUpperCase();
+
+console.log(standardDepartment);
 ```
+
 Output:
+
+```text
+CSE
+```
+
+---
+
+## 7. `includes()`
+
+### Explanation
+
+`includes()` checks whether a string contains another string.
+
+It returns `true` or `false`.
+
+### Why is it used?
+
+It is useful for student search functionality.
+
+### Code
+
+```javascript
+const name = "Vaishu";
+
+const found =
+    name.toLowerCase().includes("vai");
+
+console.log(found);
+```
+
+Output:
+
 ```text
 true
 ```
 
-# 9. `startsWith()`
-Checks whether a string starts with a particular value.
+---
+
+## 8. `startsWith()`
+
+### Explanation
+
+`startsWith()` checks whether a string begins with a particular value.
+
+### Why is it used?
+
+Useful for validating prefixes such as student IDs.
+
+### Code
+
 ```javascript
-let url = "https://example.com";
-console.log(url.startsWith("https"));
+const studentId = "STU-1001";
+
+const validPrefix =
+    studentId.startsWith("STU");
+
+console.log(validPrefix);
 ```
+
 Output:
+
 ```text
 true
 ```
-### Technical use
-Can be used to check URL prefixes or file naming conventions.
 
+---
 
-# 10. `endsWith()`
-Checks whether a string ends with a particular value.
+## 9. `endsWith()`
+
+### Explanation
+
+`endsWith()` checks whether a string ends with a particular value.
+
+### Why is it used?
+
+Useful for checking email domains or file extensions.
+
+### Code
+
 ```javascript
-let file = "profile.jpg";
-console.log(file.endsWith(".jpg"));
+const email = "vaishu@gmail.com";
+
+const isGmail =
+    email.endsWith("@gmail.com");
+
+console.log(isGmail);
 ```
+
 Output:
+
 ```text
 true
 ```
-### Technical use
-Useful for **file-type validation**.
+
+---
+
+## 10. `indexOf()`
+
+### Explanation
+
+`indexOf()` returns the position of the first occurrence of a specified string.
+
+### Why is it used?
+
+Useful when you need to find where particular information appears inside a string.
+
+### Code
 
 ```javascript
-let fileName = "photo.png";
+const email = "vaishu@gmail.com";
 
-if (fileName.endsWith(".png") || fileName.endsWith(".jpg")) {
-    console.log("Valid image file");
-}
+const position =
+    email.indexOf("@");
+
+console.log(position);
 ```
 
-# 11. `charAt()`
-Returns the character at a particular index.
-```javascript
-let name = "Vaish";
-console.log(name.charAt(0));
-```
 Output:
+
+```text
+6
+```
+
+---
+
+## 11. `lastIndexOf()`
+
+### Explanation
+
+`lastIndexOf()` returns the position of the last occurrence of a value.
+
+### Why is it used?
+
+Useful when a character occurs multiple times and you need the final occurrence.
+
+### Code
+
+```javascript
+const email = "vaishu@example.com";
+
+const position =
+    email.lastIndexOf(".");
+
+console.log(position);
+```
+
+This finds the final `.` in the email address.
+
+---
+
+## 12. `charAt()`
+
+### Explanation
+
+`charAt()` returns the character at a specified position.
+
+### Why is it used?
+
+Useful when you need to inspect a particular character, such as getting the first letter of a student's name.
+
+### Code
+
+```javascript
+const name = "Vaishu";
+
+const firstLetter =
+    name.charAt(0);
+
+console.log(firstLetter);
+```
+
+Output:
+
 ```text
 V
 ```
-You can also use indexing:
+
+---
+
+## 13. String Indexing `[]`
+
+### Explanation
+
+Characters can also be accessed directly using their index.
+
+### Why is it used?
+
+It provides a simple way to access individual characters.
+
+### Code
+
 ```javascript
+const name = "Vaishu";
+
 console.log(name[0]);
+console.log(name[1]);
 ```
 
-# 12. `indexOf()`
-Returns the index of the first occurrence of a value.
-```javascript
-let email = "vaish@gmail.com";
-console.log(email.indexOf("@"));
-```
 Output:
-```text
-5
-```
-If the value doesn't exist:
-```javascript
-console.log(email.indexOf("#"));
-```
-Output:
-```text
--1
-```
-### Technical use
-Useful when you need to know **where a particular piece of text occurs**.
 
-# 13. `slice()`
-Extracts a portion of a string.
-```javascript
-let text = "JavaScript";
-let result = text.slice(0, 4);
-console.log(result);
-```
-Output:
 ```text
-Java
-```
-The ending index is not included.
-```text
-J a v a S c r i p t
-0 1 2 3 4 5 6 7 8 9
-↑-------↑
-0       4
+V
+a
 ```
 
-### Technical use
-Extracting parts of IDs, usernames, filenames, etc.
+---
 
-# 14. `substring()`
-Similar to `slice()`, it extracts part of a string.
-```javascript
-let text = "JavaScript";
-console.log(text.substring(0, 4));
-```
-Output:
-```text
-Java
-```
-For modern JavaScript, `slice()` is generally more flexible, especially with negative indexes.
+## 14. `charCodeAt()`
 
-# 15. `replace()`
-Replaces the **first matching occurrence**.
-```javascript
-let message = "Hello Sri";
-let result = message.replace("Sri", "Vaish");
-console.log(result);
-```
-Output:
-```text
-Hello Vaish
-```
-### Technical use
-Useful for replacing text in dynamically generated content.
-
-# 16. `replaceAll()`
-Replaces **all occurrences**.
-```javascript
-let message = "JavaScript is powerful. JavaScript is popular.";
-let result = message.replaceAll("JavaScript", "JS");
-console.log(result);
-```
-Output:
-```text
-JS is powerful. JS is popular.
-```
-
-# 17. `split()`
 ### Explanation
-`split()` converts a string into an **array** based on a separator.
+
+`charCodeAt()` returns the UTF-16 code unit of a character.
+
+### Why is it used?
+
+It is useful when applications need to work with the numeric representation of characters.
+
+### Code
+
 ```javascript
-let fruits = "Apple,Banana,Mango";
-let result = fruits.split(",");
-console.log(result);
-```
-Output:
-```text
-["Apple", "Banana", "Mango"]
-```
-### Technical use
-Very common when processing **CSV-like data, user input, or tags**.
+const letter = "A";
 
-# 18. `concat()`
-Joins strings together.
+console.log(letter.charCodeAt(0));
+```
+
+Output:
+
+```text
+65
+```
+
+---
+
+## 15. `codePointAt()`
+
+### Explanation
+
+`codePointAt()` returns the Unicode code point of a character.
+
+### Why is it used?
+
+It is particularly useful when working with Unicode characters and emojis.
+
+### Code
+
 ```javascript
-let firstName = "Sri";
-let lastName = "Vaishnavi";
-let fullName = firstName.concat(" ", lastName);
-console.log(fullName);
+const symbol = "😀";
+
+console.log(symbol.codePointAt(0));
 ```
+
+---
+
+## 16. `slice()`
+
+### Explanation
+
+`slice()` extracts a portion of a string without modifying the original string.
+
+### Why is it used?
+
+Useful for extracting parts of information, such as a username from an email.
+
+### Code
+
+```javascript
+const email = "vaishu@gmail.com";
+
+const username =
+    email.slice(0, email.indexOf("@"));
+
+console.log(username);
+```
+
 Output:
 
 ```text
-Sri Vaishnavi
+vaishu
 ```
 
-In modern JavaScript, `+` or template literals are generally more convenient.
+---
 
+## 17. `substring()`
 
+### Explanation
 
-| Concept              | Purpose                       | Real-time use              |
-| -------------------- | ----------------------------- | -------------------------- |
-| **String**           | Store text                    | Name, email, message       |
-| `length`             | Count characters              | Password validation        |
-| `+`                  | Concatenate strings           | Build messages             |
-| **Template literal** | Insert variables into strings | Dynamic UI/messages        |
-| `\`                  | Escape special characters     | Quotes/new lines           |
-| `toUpperCase()`      | Convert to uppercase          | Search/input normalization |
-| `toLowerCase()`      | Convert to lowercase          | Email/search normalization |
-| `trim()`             | Remove outer whitespace       | Form validation            |
-| `includes()`         | Check substring               | Search/email validation    |
-| `startsWith()`       | Check beginning               | URL/prefix validation      |
-| `endsWith()`         | Check ending                  | File extension validation  |
-| `charAt()`           | Get character                 | Character processing       |
-| `indexOf()`          | Find position                 | Search text                |
-| `slice()`            | Extract part                  | Extract ID/year/name       |
-| `replace()`          | Replace text                  | Modify content             |
-| `replaceAll()`       | Replace all matches           | Text processing            |
-| `split()`            | String → Array                | CSV/tags/input processing  |
-| `concat()`           | Join strings                  | Combine text               |
+`substring()` extracts characters between two indexes.
 
-### Note
+### Why is it used?
+
+Useful when you know the beginning and ending positions of the text you want.
+
+### Code
+
+```javascript
+const email = "vaishu@gmail.com";
+
+const domain =
+    email.substring(
+        email.indexOf("@") + 1
+    );
+
+console.log(domain);
+```
+
+Output:
 
 ```text
-length       → How many characters?
-includes()   → Does it contain this?
-indexOf()    → Where is it?
-slice()      → Give me a part
-split()      → String → Array
-replace()    → Change text
-trim()       → Remove outer spaces
-toUpperCase  → Uppercase
-toLowerCase  → Lowercase
-
-+            → Concatenate
-`Hello ${x}` → Template literal
-\            → Escape character
+gmail.com
 ```
-## 11_Numbers and Math
-These methods are commonly used when working with **user input, prices, calculations, form data, APIs, and validation**.
 
-## 1. `parseInt()`
+---
+
+## 18. `split()`
+
 ### Explanation
-`parseInt()` converts a value into an **integer (whole number)**.
-It removes the decimal part.
-### Syntax
-```js
-parseInt(value)
+
+`split()` divides a string into an array.
+
+### Why is it used?
+
+Useful when user input contains multiple values separated by commas.
+
+For example:
+
+```text
+JavaScript, Java, Python
 ```
-### Example
-```js
-let age = "25";
-let result = parseInt(age);
+
+can become:
+
+```javascript
+["JavaScript", "Java", "Python"]
+```
+
+### Code
+
+```javascript
+const skills =
+    "JavaScript, Java, Python";
+
+const skillList =
+    skills.split(",");
+
+console.log(skillList);
+```
+
+---
+
+## 19. `join()`
+
+### Explanation
+
+`join()` combines array elements into a single string.
+
+### Why is it used?
+
+Useful for converting processed student data back into display text.
+
+### Code
+
+```javascript
+const skills = [
+    "JavaScript",
+    "Java",
+    "Python"
+];
+
+const result =
+    skills.join(" | ");
+
 console.log(result);
 ```
-**Output:**
-```text
-25
-```
-### Decimal example
-```js
-let price = "99.99";
-console.log(parseInt(price));
-```
-**Output:**
-```text
-99
-```
-### Technical real-time use
-When data comes from an HTML form, it usually comes as a **string**.
-```js
-let quantity = "5";
-let totalItems = parseInt(quantity);
-console.log(totalItems + 2);
-```
+
 Output:
+
 ```text
-7
+JavaScript | Java | Python
 ```
-Without conversion:
-```js
-console.log(quantity + 2);
-```
-Output:
-```text
-52
-```
-Because `"5"` is a string.
-### Important
-You can also specify the number system:
-```js
-parseInt("101", 2);
-```
-Output:
-```text
-5
-```
-Here `101` is interpreted as a **binary number**.
-# 2. `parseFloat()`
+
+---
+
+## 20. `replace()`
+
 ### Explanation
-`parseFloat()` converts a value into a **decimal number**.
-### Syntax
-```js
-parseFloat(value)
-```
-### Example
-```js
-let price = "99.99";
-let result = parseFloat(price);
+
+`replace()` replaces the first matching occurrence.
+
+### Why is it used?
+
+Useful for correcting or cleaning user-entered text.
+
+### Code
+
+```javascript
+const department =
+    "Computer Science Department";
+
+const result =
+    department.replace(
+        "Computer Science",
+        "CSE"
+    );
+
 console.log(result);
 ```
-Output:
-```text
-99.99
-```
-### Technical real-time use
-Suppose an e-commerce application receives product price from a form:
-```js
-let price = "249.50";
-let quantity = "3";
-let total = parseFloat(price) * parseInt(quantity);
-console.log(total);
-```
-Output:
-```text
-748.5
-```
-# 3. `toFixed()`
+
+---
+
+## 21. `replaceAll()`
+
 ### Explanation
-`toFixed()` is used to format a number with a specific number of **decimal places**.
-### Syntax
-```js
-number.toFixed(decimalPlaces)
+
+`replaceAll()` replaces every occurrence of a value.
+
+### Why is it used?
+
+Useful when the same unwanted character or text appears multiple times.
+
+### Code
+
+```javascript
+const phone =
+    "987-654-3210";
+
+const cleanPhone =
+    phone.replaceAll("-", "");
+
+console.log(cleanPhone);
 ```
-### Example
-```js
-let price = 249.5678;
-console.log(price.toFixed(2));
-```
+
 Output:
+
 ```text
-249.57
+9876543210
 ```
-It rounds the value to **2 decimal places**.
-### Technical real-time use
-Very common in **billing, invoices, shopping carts, banking displays**, etc.
-```js
-let price = 499.99;
-let quantity = 3;
-let total = price * quantity;
-console.log(`Total: ₹${total.toFixed(2)}`);
-```
-Output:
-```text
-Total: ₹1499.97
-```
-### Important
-`toFixed()` returns a **string**, not a number.
-```js
-let value = 12.345;
-console.log(typeof value.toFixed(2));
-```
-Output:
-```text
-string
-```
-# 4. `isNaN()`
+
+---
+
+## 22. `search()`
+
 ### Explanation
-`isNaN()` checks whether a value is **Not a Number**.
-`NaN` means **Not-a-Number**.
-### Syntax
-```js
-isNaN(value)
+
+`search()` searches a string using a regular expression and returns the position of the match.
+
+### Why is it used?
+
+Useful when searching for patterns in user input.
+
+### Code
+
+```javascript
+const email =
+    "vaishu@gmail.com";
+
+const position =
+    email.search("@");
+
+console.log(position);
 ```
-It returns:
-* `true` → value cannot be treated as a valid number
-* `false` → value can be treated as a number
-### Example
-```js
-console.log(isNaN(100));
-console.log(isNaN("100"));
-console.log(isNaN("hello"));
+
+---
+
+## 23. `match()`
+
+### Explanation
+
+`match()` searches a string for a pattern and returns the matching result.
+
+### Why is it used?
+
+Useful for extracting specific information from text.
+
+### Code
+
+```javascript
+const text =
+    "Vaishu has 85 marks";
+
+const result =
+    text.match(/\d+/);
+
+console.log(result[0]);
 ```
+
 Output:
+
 ```text
-false
-false
+85
+```
+
+---
+
+## 24. `matchAll()`
+
+### Explanation
+
+`matchAll()` finds all matches of a pattern.
+
+### Why is it used?
+
+Useful when multiple pieces of information need to be extracted from the same string.
+
+### Code
+
+```javascript
+const text =
+    "JavaScript 90, Java 85, Python 95";
+
+const matches =
+    text.matchAll(/\d+/g);
+
+for (const match of matches) {
+    console.log(match[0]);
+}
+```
+
+Output:
+
+```text
+90
+85
+95
+```
+
+---
+
+## 25. `concat()`
+
+### Explanation
+
+`concat()` combines strings.
+
+### Why is it used?
+
+Useful for creating structured values such as student IDs.
+
+### Code
+
+```javascript
+const prefix = "STU";
+const number = "1001";
+
+const studentId =
+    prefix.concat("-", number);
+
+console.log(studentId);
+```
+
+Output:
+
+```text
+STU-1001
+```
+
+---
+
+## 26. `padStart()`
+
+### Explanation
+
+`padStart()` adds characters to the beginning of a string until it reaches a specified length.
+
+### Why is it used?
+
+Useful for creating fixed-format IDs.
+
+### Code
+
+```javascript
+const number = "25";
+
+const studentId =
+    number.padStart(4, "0");
+
+console.log(studentId);
+```
+
+Output:
+
+```text
+0025
+```
+
+---
+
+## 27. `padEnd()`
+
+### Explanation
+
+`padEnd()` adds characters to the end of a string until it reaches a specified length.
+
+### Why is it used?
+
+Useful when creating aligned text or fixed-width reports.
+
+### Code
+
+```javascript
+const department = "CSE";
+
+const formatted =
+    department.padEnd(10, " ");
+
+console.log(formatted + " | 101");
+```
+
+---
+
+## 28. `repeat()`
+
+### Explanation
+
+`repeat()` repeats a string a specified number of times.
+
+### Why is it used?
+
+Useful for creating separators or formatting reports.
+
+### Code
+
+```javascript
+const separator =
+    "-".repeat(30);
+
+console.log(separator);
+```
+
+Output:
+
+```text
+------------------------------
+```
+
+---
+
+## 29. `localeCompare()`
+
+### Explanation
+
+`localeCompare()` compares two strings according to language/locale sorting rules.
+
+### Why is it used?
+
+Useful for sorting student names alphabetically.
+
+### Code
+
+```javascript
+const name1 = "Vaishu";
+const name2 = "Priya";
+
+const result =
+    name1.localeCompare(name2);
+
+console.log(result);
+```
+
+It can be used with `sort()`:
+
+```javascript
+const students = [
+    "Vaishu",
+    "Arun",
+    "Priya"
+];
+
+students.sort((a, b) =>
+    a.localeCompare(b)
+);
+
+console.log(students);
+```
+
+---
+
+## 30. `normalize()`
+
+### Explanation
+
+`normalize()` converts Unicode text into a standardized representation.
+
+### Why is it used?
+
+Useful when text can contain different Unicode representations of visually similar characters.
+
+### Code
+
+```javascript
+const name = "Vaishu";
+
+const normalized =
+    name.normalize();
+
+console.log(normalized);
+```
+
+---
+
+## 31. `isWellFormed()`
+
+### Explanation
+
+`isWellFormed()` checks whether a string contains well-formed Unicode.
+
+### Why is it used?
+
+Useful when applications process user-generated Unicode text.
+
+### Code
+
+```javascript
+const text = "Vaishu";
+
+console.log(text.isWellFormed());
+```
+
+Output:
+
+```text
 true
 ```
-### Technical real-time use
-Suppose a user enters an age:
-```js
-let age = "twenty";
-if (isNaN(age)) {
-    console.log("Please enter a valid number");
-} else {
-    console.log("Valid age");
-}
-```
-Output:
-```text
-Please enter a valid number
-```
-### Better modern option: `Number.isNaN()`
-```js
-console.log(Number.isNaN(NaN));      // true
-console.log(Number.isNaN("hello"));  // false
-```
-`Number.isNaN()` performs a stricter check because it does **not automatically convert the value**.
 
-# 5. Math Methods
-JavaScript provides the built-in `Math` object for mathematical operations.
-Syntax:
-```js
-Math.method()
-```
-## `Math.round()`
-Rounds to the nearest integer.
-```js
-console.log(Math.round(4.4));
-console.log(Math.round(4.6));
-```
-Output:
-```text
-4
-5
-```
-### Real-time use
-Rounding a calculated rating:
-```js
-let rating = 4.6;
+---
 
-console.log(Math.round(rating));
-```
+## 32. `toWellFormed()`
 
-## `Math.floor()`
-Rounds **down**.
-```js
-console.log(Math.floor(4.9));
-```
-Output:
-```text
-4
-```
-### Real-time use
-Pagination:
-```js
-let products = 47;
-let productsPerPage = 10;
-let pages = Math.ceil(products / productsPerPage);
-console.log(pages);
-```
-Output:
-```text
-5
-```
-Here `Math.ceil()` is actually more appropriate because we need enough pages to contain all products.
-
-## `Math.ceil()`
-Rounds **up**.
-```js
-console.log(Math.ceil(4.1));
-```
-Output:
-```text
-5
-```
-### Technical use
-```js
-let totalItems = 101;
-let itemsPerPage = 10;
-let pages = Math.ceil(totalItems / itemsPerPage);
-console.log(pages);
-```
-Output:
-```text
-11
-```
-
-## `Math.trunc()`
-Removes the decimal part without rounding.
-```js
-console.log(Math.trunc(8.99));
-```
-Output:
-```text
-8
-```
-Difference:
-```js
-Math.round(8.99); // 9
-Math.floor(8.99); // 8
-Math.trunc(8.99); // 8
-```
-## `Math.max()`
-Returns the **largest value**.
-```js
-console.log(Math.max(10, 50, 30, 20));
-```
-Output:
-```text
-50
-```
-### Technical use
-Finding the highest score:
-```js
-let scores = [75, 92, 68, 88];
-console.log(Math.max(...scores));
-```
-Output:
-```text
-92
-```
-## `Math.min()`
-Returns the **smallest value**.
-```js
-console.log(Math.min(10, 50, 30, 20));
-```
-Output:
-```text
-10
-```
-
-## `Math.abs()`
-Returns the positive value of a number.
-```js
-console.log(Math.abs(-25));
-```
-Output:
-```text
-25
-```
-### Technical use
-Finding the difference between two values:
-```js
-let temperature1 = 35;
-let temperature2 = 28;
-let difference = Math.abs(temperature1 - temperature2);
-console.log(difference);
-```
-Output:
-```text
-7
-```
-## `Math.pow()`
-Calculates a number raised to a power.
-```js
-console.log(Math.pow(2, 3));
-```
-Output:
-```text
-8
-```
-Equivalent modern syntax:
-```js
-console.log(2 ** 3);
-```
-## `Math.sqrt()`
-Returns the square root.
-```js
-console.log(Math.sqrt(64));
-```
-Output:
-```text
-8
-```
-### Technical use
-Used in mathematical calculations such as distance calculations.
-
-## `Math.random()`
-Generates a random number between **0 and less than 1**.
-```js
-console.log(Math.random());
-```
-Possible output:
-```text
-0.726483
-```
-### Generate a random number from 1 to 10
-```js
-let number = Math.floor(Math.random() * 10) + 1;
-console.log(number);
-```
-Possible output:
-```text
-7
-```
-### Technical use
-Randomizing UI elements, games, simulations, test data, etc.
-**Important:** Don't use `Math.random()` for security-sensitive values such as OTPs, passwords, or authentication tokens. Use the Web Crypto API instead.
-
-## `Math.PI`
-Provides the value of π.
-```js
-console.log(Math.PI);
-```
-Output:
-```text
-3.141592653589793
-```
-### Technical use
-Circle calculation:
-```js
-let radius = 5;
-let area = Math.PI * radius * radius;
-console.log(area);
-```
-Output:
-```text
-78.53981633974483
-```
-# Note
-
-| Method          | Purpose                 | Example                         |
-| --------------- | ----------------------- | ------------------------------- |
-| `parseInt()`    | Convert to integer      | `parseInt("25.8") → 25`         |
-| `parseFloat()`  | Convert to decimal      | `parseFloat("25.8") → 25.8`     |
-| `toFixed()`     | Format decimal places   | `(25.678).toFixed(2) → "25.68"` |
-| `isNaN()`       | Check invalid number    | `isNaN("hello") → true`         |
-| `Math.round()`  | Nearest integer         | `4.6 → 5`                       |
-| `Math.floor()`  | Round down              | `4.9 → 4`                       |
-| `Math.ceil()`   | Round up                | `4.1 → 5`                       |
-| `Math.trunc()`  | Remove decimal          | `4.9 → 4`                       |
-| `Math.max()`    | Largest value           | `Math.max(2,8,5) → 8`           |
-| `Math.min()`    | Smallest value          | `Math.min(2,8,5) → 2`           |
-| `Math.abs()`    | Positive/absolute value | `Math.abs(-5) → 5`              |
-| `Math.pow()`    | Power                   | `Math.pow(2,3) → 8`             |
-| `Math.sqrt()`   | Square root             | `Math.sqrt(25) → 5`             |
-| `Math.random()` | Random number           | `0 ≤ x < 1`                     |
-| `Math.PI`       | π value                 | `3.14159...`                    |
-
-## 12_Date and Time
-The **Date object** is used to work with **dates and time** in JavaScript.
-It is commonly used in:
-* Login/session timestamps
-* Order dates
-* Appointment scheduling
-* Chat messages
-* Age calculation
-* File creation dates
-* API timestamps
-* Reports and dashboards
-
-# 1. Creating a Date Object
 ### Explanation
-You can create a date using the `Date` constructor.
-### Syntax
-```js
-new Date()
-```
-### Example
-```js
-let currentDate = new Date();
-console.log(currentDate);
-```
-Output will contain the current date and time, for example:
-```text
-Thu Sep 17 2026 22:30:00 GMT+0530 (India Standard Time)
-```
-The exact output depends on the current time.
-### Technical real-time use
-When a user places an order:
-The application can store this date with the order record.
 
-# 2. Creating a Specific Date
-You can provide a date manually.
-```js
-let date = new Date("2026-09-17");
-console.log(date);
-```
-You can also specify date components:
-```js
-let date = new Date(2026, 8, 17);
-console.log(date);
-```
-### Important
-Months are **zero-indexed**:
-```text
-January   → 0
-February  → 1
-March     → 2
-...
-September → 8
-December  → 11
-```
-So:
-```js
-new Date(2026, 8, 17)
-```
-means:
-```text
-September 17, 2026
-```
-# 3. Date Formatting
-The default `Date` output isn't always suitable for displaying to users.
-JavaScript provides several formatting methods.
-## `toDateString()`
-Returns only the date portion in a readable format.
-```js
-let date = new Date();
-console.log(date.toDateString());
-```
-Example output:
-```text
-Thu Sep 17 2026
-```
-## `toTimeString()`
-Returns the time information.
-```js
-let date = new Date();
-console.log(date.toTimeString());
-```
-Example:
-```text
-22:30:15 GMT+0530 (India Standard Time)
-```
-## `toISOString()`
-Returns the date in **ISO 8601 format**.
-```js
-let date = new Date();
-console.log(date.toISOString());
-```
-Example:
-```text
-2026-09-17T17:00:15.000Z
-```
-### Technical real-time use
-`toISOString()` is very common when sending dates through **REST APIs** or storing timestamps in databases.
+`toWellFormed()` converts a string containing malformed Unicode into a well-formed string.
 
-# 4. Getting Individual Date Values
-JavaScript provides methods to extract individual parts.
-## `getFullYear()`
-Returns the year.
-```js
-let date = new Date();
-console.log(date.getFullYear());
+### Why is it used?
+
+Useful for safely processing text before displaying or transmitting it.
+
+### Code
+
+```javascript
+const text = "Vaishu";
+
+const safeText =
+    text.toWellFormed();
+
+console.log(safeText);
 ```
-Output:
-```text
-2026
-```
-## `getMonth()`
-Returns the month from `0` to `11`.
-```js
-let date = new Date();
-console.log(date.getMonth());
-```
-For September:
-```text
-8
-```
-To display a normal month number:
-```js
-console.log(date.getMonth() + 1);
-```
-Output:
-```text
-9
-```
-## `getDate()`
-Returns the day of the month.
-```js
-let date = new Date();
-console.log(date.getDate());
-```
-For September 17:
-```text
-17
-```
-## `getDay()`
-Returns the day of the week.
-Values:
-```text
-0 → Sunday
-1 → Monday
-2 → Tuesday
-3 → Wednesday
-4 → Thursday
-5 → Friday
-6 → Saturday
-```
-Example:
-```js
-let date = new Date();
-console.log(date.getDay());
-```
-For Thursday:
-```text
-4
-```
-### Important difference
-```text
-getDate() → day of the month
-getDay()  → day of the week
-```
-For example:
-```text
-September 17, Thursday
-getDate() → 17
-getDay()  → 4
-```
-## `getHours()`
-```js
-let date = new Date();
-console.log(date.getHours());
-```
-Returns hours from:
-```text
-0 - 23
-```
-## `getMinutes()`
-```js
-console.log(date.getMinutes());
-```
-Returns:
-```text
-0 - 59
-```
-## `getSeconds()`
-```js
-console.log(date.getSeconds());
-```
-Returns:
-```text
-0 - 59
-```
-## `getMilliseconds()`
-```js
-console.log(date.getMilliseconds());
-```
-Returns:
-```text
-0 - 999
-```
-# 5. Setting Date Values
-JavaScript also provides `set` methods.
-### `setFullYear()`
-```js
-let date = new Date();
-date.setFullYear(2030);
-console.log(date);
-```
-### `setMonth()`
-```js
-date.setMonth(5);
-```
-`5` means June.
-### `setDate()`
-```js
-date.setDate(25);
-```
-### `setHours()`
-```js
-date.setHours(10);
-```
-There are also:
-```js
-setMinutes()
-setSeconds()
-setMilliseconds()
-```
-# 6. Timestamps
+
+---
+
+## 33. Template Literals
+
 ### Explanation
-A **timestamp** represents a date/time as the number of **milliseconds since January 1, 1970 UTC**.
-This is called the **Unix epoch** or **epoch time**.
-## `Date.now()`
-Returns the current timestamp.
-```js
-let timestamp = Date.now();
-console.log(timestamp);
-```
-Example:
-```text
-1789660815000
-```
-The exact value changes continuously.
-# 7. Getting Timestamp from a Date
-You can use `getTime()`.
-```js
-let date = new Date();
-console.log(date.getTime());
-```
-This gives the timestamp corresponding to that date.
-```js
-let date1 = new Date("2026-01-01");
-console.log(date1.getTime());
-```
-# 8. Timestamp → Date
-You can convert a timestamp back into a `Date`.
-```js
-let timestamp = Date.now();
-let date = new Date(timestamp);
-console.log(date);
-```
-### Technical real-time use
-APIs and databases often exchange timestamps.
-```text
-Backend
-   ↓
-1789660815000
-   ↓
-Frontend
-   ↓
-new Date(timestamp)
-   ↓
-Display readable date
-```
-For example:
-```js
-let timestamp = 1789660815000;
-let date = new Date(timestamp);
-console.log(date.toDateString());
-```
-# 9. Comparing Dates
-Since dates can be converted to timestamps, comparing dates is straightforward.
-```js
-let date1 = new Date("2026-09-10");
-let date2 = new Date("2026-09-17");
-if (date1 < date2) {
-    console.log("date1 is earlier");
-}
-```
-Output:
-```text
-date1 is earlier
-```
-### Technical use
-Checking whether a subscription has expired:
-```js
-let expiryDate = new Date("2026-09-20");
-let today = new Date();
-if (today > expiryDate) {
-    console.log("Subscription expired");
-} else {
-    console.log("Subscription is active");
-}
-```
-# 10. Finding Difference Between Dates
-Because timestamps are in milliseconds, we can subtract two dates.
-```js
-let start = new Date("2026-09-10");
-let end = new Date("2026-09-17");
-let difference = end - start;
-console.log(difference);
-```
-The result is milliseconds.
-To convert it into days:
-```js
-let millisecondsPerDay = 1000 * 60 * 60 * 24;
-let days = difference / millisecondsPerDay;
-console.log(days);
-```
-Output:
-```text
-7
-```
-### Technical use
-This can be used for:
-* Subscription duration
-* Delivery estimates
-* Booking duration
-* Attendance calculations
-* Days remaining until an event
-# 11. Custom Date Formatting
-Suppose you want:
-```text
-17/09/2026
-```
-You can construct it yourself.
-```js
-let date = new Date();
-let day = String(date.getDate()).padStart(2, "0");
-let month = String(date.getMonth() + 1).padStart(2, "0");
-let year = date.getFullYear();
-let formattedDate = `${day}/${month}/${year}`;
-console.log(formattedDate);
-```
-Example:
-```text
-17/09/2026
-```
-Here we are combining:
-* `getDate()`
-* `getMonth()`
-* `getFullYear()`
-* `padStart()`
-* Template literals
-# 12. `Intl.DateTimeFormat()`
-For more professional localization, JavaScript provides `Intl.DateTimeFormat`.
-```js
-let date = new Date();
-let formatted = new Intl.DateTimeFormat("en-IN", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-}).format(date);
-console.log(formatted);
-```
-Example:
-```text
-17 September 2026
-```
-You can also include time:
-```js
-let formatted = new Intl.DateTimeFormat("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short"
-}).format(new Date());
-console.log(formatted);
-```
-Example:
-```text
-17 Sept 2026, 10:30 pm
-```
-This is useful for **localized UI, invoices, dashboards, bookings, and notifications**.
-# 13. UTC Methods
-JavaScript also provides UTC versions of date methods.
-For example:
-```js
-getFullYear()
-getMonth()
-getDate()
-getHours()
-```
-have corresponding UTC versions:
-```js
-getUTCFullYear()
-getUTCMonth()
-getUTCDate()
-getUTCHours()
-```
-Example:
-```js
-let date = new Date();
-console.log(date.getHours());
-console.log(date.getUTCHours());
-```
-The values can differ because local time and UTC are different.
-### Important
-For APIs and backend systems, timestamps are often stored/transmitted in **UTC**, then converted to the user's local timezone for display.
 
-# 14. Important Date Methods
+Template literals use backticks `` ` `` and allow variables and expressions to be inserted directly into strings.
 
-| Method                  | Purpose                    |
-| ----------------------- | -------------------------- |
-| `new Date()`            | Create current Date object |
-| `Date.now()`            | Current timestamp          |
-| `getTime()`             | Get timestamp              |
-| `getFullYear()`         | Get year                   |
-| `getMonth()`            | Get month `0–11`           |
-| `getDate()`             | Get day of month           |
-| `getDay()`              | Get day of week            |
-| `getHours()`            | Get hour                   |
-| `getMinutes()`          | Get minutes                |
-| `getSeconds()`          | Get seconds                |
-| `setFullYear()`         | Change year                |
-| `setMonth()`            | Change month               |
-| `setDate()`             | Change day                 |
-| `toDateString()`        | Readable date              |
-| `toTimeString()`        | Readable time              |
-| `toISOString()`         | ISO date/time              |
-| `Intl.DateTimeFormat()` | Localized formatting       |
+### Why is it used?
 
+Very useful for dynamically generating student reports, messages, table rows, and UI content.
 
-# Note
+### Code
+
+```javascript
+const name = "Vaishu";
+const department = "CSE";
+const year = 3;
+
+const profile = `
+Student Name: ${name}
+Department: ${department}
+Year: ${year}
+`;
+
+console.log(profile);
+```
+
+---
+
+# Real-Time String Processing Flow
+
+The concepts work together rather than independently:
 
 ```text
-Date
- ↓
-new Date()             → Current date/time
-Date.now()             → Current timestamp
-getTime()              → Date → timestamp
-new Date(timestamp)    → Timestamp → date
+User Input
+    ↓
+trim()
+    ↓
+Clean unnecessary spaces
+    ↓
+toLowerCase() / toUpperCase()
+    ↓
+Standardize the data
+    ↓
+includes() / startsWith() / endsWith()
+    ↓
+Validate or search
+    ↓
+indexOf() / lastIndexOf()
+    ↓
+Find required positions
+    ↓
+slice() / substring()
+    ↓
+Extract required information
+    ↓
+split()
+    ↓
+Convert text into structured data
+    ↓
+replace() / replaceAll()
+    ↓
+Clean or modify data
+    ↓
+match() / matchAll()
+    ↓
+Extract patterns
+    ↓
+concat() / padStart() / join()
+    ↓
+Format the data
+    ↓
+Template Literals
+    ↓
+Display the final result
+```
 
-getFullYear()          → Year
-getMonth()             → Month (0–11)
-getDate()              → Day of month
-getDay()               → Day of week
-getHours()             → Hour
-getMinutes()           → Minutes
-getSeconds()           → Seconds
+### Overall purpose
 
-toDateString()         → Readable date
-toTimeString()         → Readable time
-toISOString()          → API/database-friendly format
-Intl.DateTimeFormat()  → User-friendly localized format
-```
-**`getDate()` vs `getDay()`**
-```text
-getDate() → 17
-getDay()  → 4 (Thursday)
-```
-**`getMonth()`**
-```text
-January → 0
-September → 8
-December → 11
-```
-**Timestamp**
-```text
-Date → milliseconds since Jan 1, 1970 UTC
-```
-**API-friendly date**
-```js
-new Date().toISOString()
-```
-**Current timestamp**
-```js
-Date.now()
-```
+The main purpose of JavaScript Strings in a real application is **text processing**:
+
+**Raw user text → clean → validate → search → extract → transform → format → display/store.**
 
 ## 13_Error Handling
 JavaScript provides **error-handling mechanisms** to prevent an application from crashing when something unexpected happens.

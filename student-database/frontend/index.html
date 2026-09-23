@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>Student Database</h2>
+
+        <div>
+            <a href="index.html">Register</a>
+            <a href="staff.html">Staff</a>
+            <a href="principal.html">Principal</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <div class="page-header">
+            <h1>Student Registration</h1>
+            <p>Add a new student to the database</p>
+        </div>
+
+        <form id="studentForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Student ID</label>
+                    <input type="number" id="studentId" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="dob" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Department</label>
+
+                    <select id="department" required>
+                        <option value="">Select Department</option>
+                        <option>CSE</option>
+                        <option>IT</option>
+                        <option>ECE</option>
+                        <option>EEE</option>
+                        <option>MECH</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Year</label>
+
+                    <select id="year" required>
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Section</label>
+                    <input type="text" id="section" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Parent Name</label>
+                    <input type="text" id="parentName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Parent Phone</label>
+                    <input type="tel" id="parentPhone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Assigned Staff</label>
+
+                    <select id="staff" required>
+                        <option value="">Select Staff</option>
+                        <option>Priya</option>
+                        <option>Arun</option>
+                        <option>Kavitha</option>
+                        <option>Rahul</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label>Address</label>
+                    <textarea id="address" rows="4" required></textarea>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn">
+                Add Student
+            </button>
+
+        </form>
+
+        <p id="message"></p>
+
+    </main>
+
+    <script src="js/student.js"></script>
+
+</body>
+
+</html>

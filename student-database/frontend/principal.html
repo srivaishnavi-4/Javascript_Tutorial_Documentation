@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Principal Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <h2>Student Database</h2>
+
+    <div>
+
+        <a href="index.html">Register</a>
+        <a href="staff.html">Staff</a>
+        <a href="principal.html">Principal</a>
+
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <div class="page-header">
+
+        <h1>Principal Dashboard</h1>
+
+        <p>Overview of all students and assigned staff</p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>Total Students</h3>
+
+            <p id="totalStudents">0</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>CSE Students</h3>
+
+            <p id="cseStudents">0</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>IT Students</h3>
+
+            <p id="itStudents">0</p>
+
+        </div>
+
+    
+       <div class="card">
+
+            <h3>ECE Students</h3>
+
+            <p id="eceStudents">0</p>
+
+        </div>
+
+       <div class="card">
+
+            <h3>MECH Students</h3>
+
+            <p id="mechStudents">0</p>
+
+        </div>
+
+       <div class="card">
+
+            <h3>EEE Students</h3>
+
+            <p id="eeeStudents">0</p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Section</th>
+                    <th>Staff</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="principalTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+
+<script src="js/principal.js"></script>
+
+</body>
+
+</html>
