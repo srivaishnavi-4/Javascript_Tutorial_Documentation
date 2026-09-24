@@ -1,0 +1,6 @@
+[
+  {"id":101,"name":"Laptop","price":65000,"category":"Electronics"},
+  {"id":102,"name":"Mouse","price":1200,"category":"Accessories"},
+  {"id":103,"name":"Keyboard","price":1800,"category":"Accessories"},
+  {"id":104,"name":"Monitor","price":15000,"category":"Electronics"}
+]

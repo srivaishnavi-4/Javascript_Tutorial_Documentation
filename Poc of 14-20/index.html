@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vaishu Product Dashboard</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+<header>
+  <h1>Product Dashboard</h1>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Product Search & Cart</h2>
+    <form id="searchForm">
+      <input id="searchInput" placeholder="Search products..." autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+    <p id="searchStatus">Loading products...</p>
+    <ul id="productList"></ul>
+    <p>Cart items: <strong id="cartCount">0</strong></p>
+  </section>
+
+  <section class="card">
+    <h2>Event Object / Bubbling / stopPropagation</h2>
+    <div id="eventParent" class="event-box">
+      Parent area
+      <button id="eventChild">Click Child</button>
+    </div>
+    <p id="eventOutput">Click the child button.</p>
+  </section>
+
+  <section class="card">
+    <h2>DOM Manipulation</h2>
+    <div id="domBox" class="demo-box">Original content</div>
+    <button id="changeTextBtn">textContent</button>
+    <button id="htmlBtn">innerHTML</button>
+    <button id="toggleBtn">Toggle classList</button>
+    <button id="attributeBtn">Attributes</button>
+    <button id="createBtn">createElement</button>
+  </section>
+
+  <section class="card">
+    <h2>Browser Objects (BOM)</h2>
+    <button id="alertBtn">alert()</button>
+    <button id="confirmBtn">confirm()</button>
+    <button id="promptBtn">prompt()</button>
+    <button id="urlBtn">location</button>
+    <button id="clipboardBtn">Clipboard</button>
+    <button id="geoBtn">Geolocation</button>
+    <button id="reloadBtn">Reload</button>
+    <pre id="browserInfo"></pre>
+  </section>
+
+  <section class="card">
+    <h2>Timers</h2>
+    <p>Countdown: <strong id="timerValue">10</strong></p>
+    <button id="startTimerBtn">Start Interval</button>
+    <button id="stopTimerBtn">clearInterval</button>
+    <button id="delayBtn">setTimeout</button>
+    <button id="cancelDelayBtn">clearTimeout</button>
+    <p id="timerMessage"></p>
+  </section>
+
+  <section class="card">
+    <h2>JSON + Shallow/Deep Copy</h2>
+    <button id="jsonBtn">Parse / Stringify</button>
+    <button id="shallowBtn">Shallow Copy</button>
+    <button id="deepBtn">Deep Copy</button>
+    <pre id="jsonOutput"></pre>
+  </section>
+
+  <section class="card">
+    <h2>ES6 Features</h2>
+    <pre id="es6Output"></pre>
+  </section>
+
+  <section class="card">
+    <h2>Event Delegation + data-* Attributes</h2>
+    <div id="delegationList"></div>
+    <p id="delegationOutput">Click View Details.</p>
+  </section>
+</main>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
