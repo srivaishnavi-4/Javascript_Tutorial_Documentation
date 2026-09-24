@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Student Feedback Portal</title>
+</head>
+
+<body>
+
+    <h1>Student Feedback Portal</h1>
+
+    <form id="feedbackForm">
+
+        <label>
+            Name:
+        </label>
+
+        <input
+            id="name"
+            type="text"
+            required
+        >
+
+        <br><br>
+
+        <label>
+            Feedback:
+        </label>
+
+        <textarea
+            id="message"
+            required
+        ></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Submit Feedback
+        </button>
+
+    </form>
+
+    <h2>Server Response</h2>
+
+    <pre id="result"></pre>
+
+    <script src="/app.js"></script>
+
+</body>
+
+</html>

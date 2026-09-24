@@ -1,0 +1,17 @@
+{
+  "name": "39_tooling",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "esbuild src/app.js --bundle --outfile=dist/bundle.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "esbuild": "^...",
+    "eslint": "^10.11.0",
+    "prettier": "^..."
+  }
+}

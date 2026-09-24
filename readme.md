@@ -16349,3 +16349,1288 @@ The exact formatting can vary slightly by installed Jest/Mocha versions.
 ```
 **Unit testing isolates one piece of business logic and verifies its behavior using controlled inputs and assertions. Jest provides an integrated testing solution, while Mocha can be combined with Chai for a more modular testing stack. Mocking removes external dependencies from the test so that failures can be attributed to the unit being tested rather than the dependency.**
 
+# 38_Security
+## 1. What is JavaScript Security?
+JavaScript security is the practice of protecting web applications from attacks involving:
+* User input
+* Browser execution
+* HTTP requests
+* Authentication
+* Cookies
+* DOM manipulation
+* External resources
+Important concepts:
+* XSS
+* CSRF
+* Input Validation
+* Input Sanitization
+* Content Security Policy (CSP)
+* Secure Cookies
+# 2. XSS
+## Explanation
+**Cross-Site Scripting (XSS)** occurs when attacker-controlled content is injected into a web page and executed by the browser.
+Example:
+```html
+<script>alert("Hacked")</script>
+```
+Unsafe code:
+```js
+element.innerHTML = userInput;
+```
+If `userInput` contains HTML or JavaScript, the browser may interpret it as markup.
+## Why is XSS dangerous?
+Depending on the application, XSS can allow an attacker to:
+* Modify page content
+* Perform actions as the victim
+* Read accessible page data
+* Steal data available to scripts
+* Redirect users
+* Display fake login forms
+The exact impact depends on the application's architecture and security controls.
+# 3. Types of XSS
+## Stored XSS
+Malicious content is stored by the application and later displayed to users.
+Example:
+```text
+User comment
+    ↓
+Stored by application
+    ↓
+Displayed to another user
+```
+## Reflected XSS
+Malicious input is immediately reflected in a server response.
+For example, unsafe URL parameters may be included directly in generated HTML.
+## DOM-Based XSS
+The vulnerability occurs in client-side JavaScript when unsafe data is inserted into the DOM.
+Example:
+```js
+element.innerHTML = location.hash;
+```
+# 4. XSS Prevention
+Important techniques include:
+### 1. Output Encoding
+Special characters are represented safely.
+```text
+<  →  &lt;
+>  →  &gt;
+```
+### 2. Use Safe DOM APIs
+For plain text, prefer:
+```js
+element.textContent = userInput;
+```
+instead of:
+```js
+element.innerHTML = userInput;
+```
+### 3. Input Validation
+Check whether input has the expected:
+* Type
+* Length
+* Format
+* Range
+### 4. HTML Sanitization
+If an application intentionally allows HTML, sanitize it using a trusted library.
+### 5. Content Security Policy
+Use CSP as an additional browser-level defense.
+# 5. innerHTML vs textContent
+## innerHTML
+```js
+element.innerHTML = userInput;
+```
+`innerHTML` interprets the value as HTML.
+Therefore, it must be handled carefully when the value comes from an untrusted source.
+## textContent
+```js
+element.textContent = userInput;
+```
+`textContent` treats the value as text.
+Example:
+```js
+element.textContent =
+    "<script>alert(1)</script>";
+```
+The browser displays the text instead of creating a script element.
+### When to use?
+```text
+Need plain text
+→ textContent
+Need HTML
+→ innerHTML, but only with appropriately trusted or sanitized content
+```
+# 6. Input Sanitization
+## Explanation
+Input sanitization transforms or removes dangerous content before using the data in a sensitive context.
+Conceptually:
+```text
+User Input
+→ Sanitization
+→ Safer Representation
+```
+Example:
+```js
+function sanitizeInput(input) {
+    return input
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+```
+Input:
+```html
+<script>alert(1)</script>
+```
+Possible encoded output:
+```text
+&lt;script&gt;alert(1)&lt;/script&gt;
+```
+### Important
+Do not rely on a simple custom replacement function for production HTML sanitization. Use a well-maintained sanitizer appropriate for the output context.
+# 7. Validation vs Sanitization
+These are different concepts.
+## Validation
+Validation checks whether input is acceptable.
+```js
+if (username.length < 3) {
+    throw new Error("Invalid username");
+}
+```
+Meaning:
+```text
+"Is this input allowed?"
+```
+## Sanitization
+Sanitization transforms input into a safer representation.
+```js
+const safe = sanitizeInput(username);
+```
+Meaning:
+```text
+"How can I safely process this input?"
+```
+Both can be useful, depending on the context.
+# 8. CSRF
+## Explanation
+**Cross-Site Request Forgery (CSRF)** occurs when a malicious website causes a user's browser to send an unwanted request to another application where the user is authenticated.
+For example, a banking application may have:
+```http
+POST /transfer
+```
+If the victim is authenticated and the application does not have appropriate CSRF defenses, an attacker may attempt to cause an unwanted state-changing request.
+The key issue is that browsers can automatically attach authentication credentials such as cookies to requests.
+# 9. CSRF Tokens
+A common defense is a **CSRF token**.
+The server generates an unpredictable token and the trusted application includes it with the request.
+Example:
+```html
+<form method="POST">
+    <input
+        type="hidden"
+        name="csrfToken"
+        value="RANDOM_TOKEN"
+    >
+    <button>Submit</button>
+</form>
+```
+Server-side conceptual check:
+```js
+if (
+    request.body.csrfToken !==
+    session.csrfToken
+) {
+    return response
+        .status(403)
+        .send("Invalid CSRF token");
+}
+```
+In production, use a well-maintained CSRF implementation rather than designing token management from scratch.
+# 10. SameSite Cookies
+The `SameSite` cookie attribute is an important CSRF defense.
+Example:
+```http
+Set-Cookie:
+sessionId=abc123;
+HttpOnly;
+Secure;
+SameSite=Lax
+```
+Common values:
+```text
+Strict
+Lax
+None
+```
+`SameSite` controls when cookies are sent in cross-site contexts.
+# 11. HttpOnly Cookies
+`HttpOnly` prevents normal client-side JavaScript from reading a cookie.
+Example:
+```http
+Set-Cookie:
+sessionId=abc123;
+HttpOnly;
+Secure
+```
+This can reduce the impact of some attacks involving JavaScript attempting to access authentication cookies.
+### Important
+`HttpOnly` does **not** prevent XSS.
+# 12. Secure Cookies
+Sensitive cookies should generally use:
+```text
+Secure
+```
+Example:
+```http
+Set-Cookie:
+sessionId=abc123;
+Secure;
+HttpOnly;
+SameSite=Lax
+```
+`Secure` tells the browser to send the cookie only over HTTPS connections.
+# 13. Content Security Policy (CSP)
+## Explanation
+**Content Security Policy (CSP)** is a browser security mechanism that controls which resources a page is allowed to load or execute.
+It is commonly delivered using an HTTP response header.
+Example:
+```http
+Content-Security-Policy:
+default-src 'self';
+script-src 'self';
+style-src 'self';
+object-src 'none'
+```
+## Why is CSP used?
+CSP can reduce the impact of some injection attacks by restricting where scripts and other resources can come from.
+It is an additional security layer rather than a replacement for safe coding practices.
+
+# 14. Important CSP Directives
+## default-src
+Defines the default source policy.
+```http
+default-src 'self'
+```
+## script-src
+Controls JavaScript sources.
+```http
+script-src 'self'
+```
+## style-src
+Controls CSS sources.
+```http
+style-src 'self'
+```
+## img-src
+Controls image sources.
+```http
+img-src 'self'
+```
+## connect-src
+Controls connections such as:
+* `fetch()`
+* XMLHttpRequest
+* WebSocket
+Example:
+```http
+connect-src 'self' https://api.example.com
+```
+## object-src
+Controls plugin/object resources.
+A restrictive policy is:
+```http
+object-src 'none'
+```
+# 15. CSP with Helmet
+For an Express application, Helmet can help configure security-related HTTP headers.
+Install:
+```bash
+npm install helmet
+```
+Example:
+```js
+const helmet = require("helmet");
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'"],
+                styleSrc: ["'self'"],
+                objectSrc: ["'none'"]
+            }
+        }
+    })
+);
+```
+# 16. XSS vs CSRF
+
+| XSS                                                 | CSRF                                              |
+| --------------------------------------------------- | ------------------------------------------------- |
+| Cross-Site Scripting                                | Cross-Site Request Forgery                        |
+| Attacker-controlled content executes in the browser | Attacker causes an unwanted authenticated request |
+| Often related to unsafe output/DOM handling         | Often related to insufficient request protection  |
+| CSP can reduce impact                               | CSRF tokens and SameSite cookies can help         |
+
+# 17. CSP vs Sanitization
+These operate at different levels.
+### Sanitization
+Makes data safer before using it.
+```text
+Input
+→ Sanitize
+→ Use safely
+```
+### CSP
+Controls what the browser is allowed to load or execute.
+```text
+Response
+→ Browser
+→ CSP enforcement
+```
+They are **not interchangeable**.
+# 18. Important Security Practices
+### Never Trust User Input
+Treat external input as untrusted.
+### Validate Input
+Check:
+```text
+Type
+Length
+Format
+Range
+```
+### Use Safe DOM APIs
+For plain text:
+```js
+element.textContent = userInput;
+```
+### Be Careful with innerHTML
+Avoid inserting untrusted input directly into:
+```js
+element.innerHTML
+```
+### Use HTTPS
+Protect data while it is transmitted.
+### Secure Authentication Cookies
+Consider:
+```text
+Secure
+HttpOnly
+SameSite
+```
+### Use CSP
+Restrict script and resource sources.
+### Protect State-Changing Requests
+Use appropriate mechanisms such as:
+```text
+CSRF tokens
+SameSite cookies
+Origin/request validation
+```
+### Keep Dependencies Updated
+For npm projects:
+```bash
+npm audit
+```
+# 19. Core Concepts to Remember
+```text
+XSS
+→ Attacker-controlled content executes in a victim's browser.
+
+CSRF
+→ Attacker causes an unwanted authenticated request.
+
+Validation
+→ Checks whether input meets requirements.
+
+Sanitization
+→ Makes input safer for its intended context.
+
+Output Encoding
+→ Safely represents data for a specific output context.
+
+textContent
+→ Treats content as text.
+
+innerHTML
+→ Parses content as HTML.
+
+CSP
+→ Restricts resources the browser can load or execute.
+
+HttpOnly
+→ Prevents normal JavaScript access to a cookie.
+
+Secure
+→ Sends a cookie only over HTTPS.
+
+SameSite
+→ Controls cookie behavior in cross-site contexts.
+```
+# 39_Tooling
+## 1. What is JavaScript Tooling?
+JavaScript tooling refers to the collection of tools used to develop, maintain, test, optimize, format, and build JavaScript applications.
+Instead of manually performing every development task, tooling automates repetitive tasks.
+Common JavaScript tools include:
+* npm
+* Yarn
+* ESLint
+* Prettier
+* Bundlers
+* Build tools
+* Package managers
+### Typical Workflow
+```text
+Write Code
+    ↓
+Package Management
+    ↓
+Linting
+    ↓
+Formatting
+    ↓
+Bundling
+    ↓
+Build
+    ↓
+Deployment
+```
+# 2. npm
+
+## Explanation
+
+**npm (Node Package Manager)** is the default package manager that comes with Node.js.
+
+It is used to:
+
+* Install packages
+* Remove packages
+* Update packages
+* Manage project dependencies
+* Run project scripts
+* Maintain package versions
+
+## Why is npm used?
+
+Without npm, developers would have to manually download JavaScript libraries and manage their dependencies.
+
+npm automates this process.
+
+## Initialize a project
+
+```bash
+npm init
+```
+
+For automatic initialization:
+
+```bash
+npm init -y
+```
+
+This creates:
+
+```text
+package.json
+```
+
+---
+
+# 3. package.json
+
+`package.json` contains important information about a JavaScript project.
+
+Example:
+
+```json
+{
+    "name": "my-project",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node src/app.js",
+        "test": "jest"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
+```
+
+It can contain:
+
+* Project name
+* Version
+* Scripts
+* Dependencies
+* Development dependencies
+
+---
+
+# 4. Dependencies
+
+Dependencies are packages required by the application.
+
+Example:
+
+```bash
+npm install express
+```
+
+This adds Express to:
+
+```json
+"dependencies": {
+    "express": "..."
+}
+```
+
+## Why?
+
+The application needs Express while running.
+
+---
+
+# 5. DevDependencies
+
+Development dependencies are tools required during development but generally not part of the application's runtime logic.
+
+Example:
+
+```bash
+npm install --save-dev eslint
+```
+
+This adds:
+
+```json
+"devDependencies": {
+    "eslint": "..."
+}
+```
+
+Examples:
+
+* ESLint
+* Prettier
+* Jest
+* Mocha
+* Bundlers
+
+---
+
+# 6. npm Scripts
+
+Scripts allow developers to create reusable commands.
+
+Example:
+
+```json
+"scripts": {
+    "start": "node src/app.js",
+    "lint": "eslint src",
+    "format": "prettier --write .",
+    "build": "esbuild src/app.js --bundle --outfile=dist/bundle.js"
+}
+```
+
+Run:
+
+```bash
+npm start
+```
+
+or:
+
+```bash
+npm run lint
+```
+
+or:
+
+```bash
+npm run build
+```
+
+## Why use scripts?
+
+Instead of remembering long commands:
+
+```bash
+esbuild src/app.js --bundle --outfile=dist/bundle.js
+```
+
+we can simply use:
+
+```bash
+npm run build
+```
+
+---
+
+# 7. package-lock.json
+
+When npm installs packages, it creates:
+
+```text
+package-lock.json
+```
+
+It records the exact dependency versions and dependency tree used by the project.
+
+## Why?
+
+Suppose:
+
+```text
+Developer A
+```
+
+installs a dependency today.
+
+Later:
+
+```text
+Developer B
+```
+
+installs the project.
+
+The lock file helps both environments use the same dependency versions.
+
+---
+
+# 8. npm install
+
+Install all dependencies:
+
+```bash
+npm install
+```
+
+Install a package:
+
+```bash
+npm install express
+```
+
+Install development dependency:
+
+```bash
+npm install --save-dev eslint
+```
+
+Remove package:
+
+```bash
+npm uninstall express
+```
+
+Update package:
+
+```bash
+npm update
+```
+
+---
+
+# 9. Yarn
+
+## Explanation
+
+Yarn is another JavaScript package manager.
+
+It performs many of the same tasks as npm.
+
+```text
+npm
+  OR
+Yarn
+```
+
+Both can manage project dependencies.
+
+## npm
+
+```bash
+npm install
+npm run build
+```
+
+## Yarn
+
+```bash
+yarn install
+yarn build
+```
+
+## Why use Yarn?
+
+Some teams prefer Yarn because of its workflow, dependency-management features, or existing project setup.
+
+## Important
+
+You normally don't need to use npm and Yarn together for the same project.
+
+Choose one package manager for a project.
+
+---
+
+# 10. npm vs Yarn
+
+| Feature               | npm               | Yarn      |
+| --------------------- | ----------------- | --------- |
+| Package manager       | Yes               | Yes       |
+| Install packages      | Yes               | Yes       |
+| Run scripts           | Yes               | Yes       |
+| Dependency management | Yes               | Yes       |
+| Lock file             | package-lock.json | yarn.lock |
+| Alternative           | Yarn              | npm       |
+
+---
+
+# 11. ESLint
+
+## Explanation
+
+ESLint is a **JavaScript linter**.
+
+A linter analyzes source code and identifies:
+
+* Possible bugs
+* Unused variables
+* Problematic patterns
+* Coding-rule violations
+* Inconsistent code practices
+
+Example:
+
+```js
+const name = "Vaishu";
+
+console.log("Hello");
+```
+
+ESLint may report:
+
+```text
+'name' is assigned a value but never used
+```
+
+---
+
+# 12. Why ESLint is used
+
+Imagine a team with 20 developers.
+
+Without coding rules:
+
+```text
+Developer A → style A
+Developer B → style B
+Developer C → style C
+```
+
+ESLint provides common rules.
+
+```text
+           ESLint
+              ↓
+     Common coding rules
+              ↓
+        Consistent code
+```
+
+It helps detect problems early.
+
+---
+
+# 13. ESLint Example
+
+Install:
+
+```bash
+npm install --save-dev eslint
+```
+
+Modern ESLint configuration:
+
+```js
+// eslint.config.js
+
+import js from "@eslint/js";
+
+export default [
+    js.configs.recommended,
+    {
+        rules: {
+            "no-unused-vars": "warn",
+            "no-console": "off"
+        }
+    }
+];
+```
+
+Run:
+
+```bash
+npm run lint
+```
+
+---
+
+# 14. ESLint vs Compiler
+
+ESLint is not a compiler.
+
+For example:
+
+```text
+Compiler
+    ↓
+Converts/transforms code
+
+ESLint
+    ↓
+Analyzes code quality
+```
+
+ESLint can identify:
+
+```js
+const unused = 10;
+```
+
+but it does not replace the JavaScript runtime.
+
+---
+
+# 15. Prettier
+
+## Explanation
+
+Prettier is a **code formatter**.
+
+Its purpose is to automatically format source code consistently.
+
+Example:
+
+Before:
+
+```js
+const student={name:"Vaishu",marks:[80,90,75]}
+```
+
+After:
+
+```js
+const student = {
+    name: "Vaishu",
+    marks: [80, 90, 75],
+};
+```
+
+---
+
+# 16. Why Prettier is used
+
+Without a formatter:
+
+```text
+Developer A → 2 spaces
+Developer B → 4 spaces
+Developer C → tabs
+```
+
+Prettier creates a common formatting style.
+
+```text
+Source Code
+     ↓
+  Prettier
+     ↓
+Formatted Code
+```
+
+---
+
+# 17. Prettier Commands
+
+Install:
+
+```bash
+npm install --save-dev prettier
+```
+
+Format:
+
+```bash
+npx prettier --write .
+```
+
+Check formatting:
+
+```bash
+npx prettier --check .
+```
+
+Using npm script:
+
+```bash
+npm run format
+```
+
+---
+
+# 18. ESLint vs Prettier
+
+These tools solve different problems.
+
+| Tool     | Main Purpose                       |
+| -------- | ---------------------------------- |
+| ESLint   | Code quality and possible problems |
+| Prettier | Code formatting                    |
+
+Example:
+
+```text
+ESLint
+"Is this code problematic?"
+```
+
+Prettier:
+
+```text
+"Is this code consistently formatted?"
+```
+
+They can be used together.
+
+---
+
+# 19. Bundlers
+
+## Explanation
+
+A bundler combines multiple JavaScript modules and dependencies into optimized output files.
+
+Example:
+
+```text
+app.js
+   ↓
+calculator.js
+   ↓
+utility.js
+   ↓
+library
+```
+
+A bundler can produce:
+
+```text
+bundle.js
+```
+
+---
+
+# 20. Why Bundlers are used
+
+Modern applications may contain hundreds of modules.
+
+Instead of loading everything individually:
+
+```text
+app.js
+calculator.js
+user.js
+api.js
+utils.js
+...
+```
+
+a bundler can produce optimized files.
+
+```text
+Many Modules
+     ↓
+  Bundler
+     ↓
+bundle.js
+```
+
+This makes application delivery easier.
+
+---
+
+# 21. Popular JavaScript Bundlers
+
+Common bundlers include:
+
+* Webpack
+* Rollup
+* Parcel
+* esbuild
+* Vite's underlying build tooling
+
+Different projects choose different tools based on their requirements.
+# 22. esbuild
+For our mini POC, we use **esbuild**.
+Install:
+```bash
+npm install --save-dev esbuild
+```
+Build:
+```bash
+npx esbuild src/app.js --bundle --outfile=dist/bundle.js
+```
+The result:
+```text
+src/
+    app.js
+    calculator.js
+        ↓
+    esbuild
+
+        ↓
+dist/
+    bundle.js
+```
+# 23. What Does Bundling Actually Do?
+Suppose:
+```js
+// calculator.js
+export function add(a, b) {
+    return a + b;
+}
+```
+And:
+```js
+// app.js
+import { add } from "./calculator.js";
+console.log(add(10, 20));
+```
+The bundler analyzes:
+
+```text
+app.js
+  ↓
+needs add()
+  ↓
+calculator.js
+  ↓
+include required code
+  ↓
+bundle.js
+```
+The browser can then load the bundled output.
+# 24. Bundler vs Package Manager
+These are different concepts.
+### npm / Yarn
+Manage packages.
+```text
+Install
+Update
+Remove
+Manage dependencies
+```
+### Bundler
+Processes application source code.
+```text
+Modules
+  ↓
+Bundle
+  ↓
+Optimized output
+```
+So:
+```text
+npm/Yarn
+    ↓
+"What packages does my project need?"
+
+Bundler
+    ↓
+"How should my application code be combined and prepared?"
+```
+# 25. Build Process
+
+A typical JavaScript project can use:
+
+```text
+Developer
+    ↓
+Write JavaScript
+    ↓
+ESLint
+    ↓
+Check code quality
+    ↓
+Prettier
+    ↓
+Format code
+    ↓
+Bundler
+    ↓
+Build application
+    ↓
+Deploy
+```
+# 26. Linter vs Formatter vs Bundler
+
+| Tool Type       | Purpose                            |
+| --------------- | ---------------------------------- |
+| Package Manager | Manage dependencies                |
+| Linter          | Find code-quality problems         |
+| Formatter       | Format code                        |
+| Bundler         | Combine/process modules            |
+| Build Tool      | Automate the overall build process |
+
+# 28. Complete Commands
+
+Create project:
+
+```bash
+npm init -y
+```
+
+Install tools:
+
+```bash
+npm install --save-dev eslint @eslint/js prettier esbuild
+```
+
+Run application:
+
+```bash
+npm start
+```
+
+Run ESLint:
+
+```bash
+npm run lint
+```
+
+Format code:
+
+```bash
+npm run format
+```
+
+Check formatting:
+
+```bash
+npm run format:check
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+Run complete workflow:
+
+```bash
+npm run dev
+```
+
+| Tool     | Why we use it                   | Alternative                     |
+| -------- | ------------------------------- | ------------------------------- |
+| npm      | Manage dependencies and scripts | Yarn                            |
+| Yarn     | Alternative package manager     | npm                             |
+| ESLint   | Detect code-quality problems    | Biome                           |
+| Prettier | Automatically format code       | ESLint formatting rules / Biome |
+| esbuild  | Bundle JavaScript               | Webpack, Rollup, Parcel         |
+
+# 30. Real-Time Development Example
+Imagine a company building a student portal.
+The project contains:
+```text
+login.js
+student.js
+marks.js
+attendance.js
+dashboard.js
+api.js
+utils.js
+```
+### npm
+Installs:
+```text
+axios
+react
+etc.
+```
+### ESLint
+Checks:
+```text
+Unused variables
+Incorrect patterns
+Code-quality issues
+```
+### Prettier
+Formats:
+```text
+JavaScript
+JSON
+CSS
+HTML
+```
+### Bundler
+Processes:
+```text
+Multiple modules
+      ↓
+Optimized build
+```
+### npm vs Yarn
+
+Both are package managers.
+
+```text
+npm → Node.js default package manager
+Yarn → Alternative package manager
+```
+
+### ESLint vs Prettier
+
+```text
+ESLint → Code quality
+Prettier → Code formatting
+```
+
+### Bundler vs npm
+
+```text
+npm → Manages dependencies
+Bundler → Processes application modules
+```
+
+### ESLint vs Compiler
+
+```text
+ESLint → Analyzes code
+Compiler/transpiler → Converts code
+```
+
+# 33. One-Line Explanation for Each
+
+**npm:**
+Manages JavaScript packages, dependencies, and project scripts.
+
+**Yarn:**
+An alternative package manager for JavaScript projects.
+
+**ESLint:**
+Analyzes JavaScript code and identifies potential problems and coding-rule violations.
+
+**Prettier:**
+Automatically formats source code according to a consistent style.
+
+**Bundler:**
+Combines application modules and dependencies into build-ready files.
+
+**esbuild:**
+A fast bundler and build tool used to process JavaScript and other web assets.
+
