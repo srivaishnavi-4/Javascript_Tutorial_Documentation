@@ -1,0 +1,19 @@
+{
+  "name": "37_unit_testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "test:jest": "jest",
+        "test:mocha": "mocha tests/mocha/*.test.js",
+        "test": "npm run test:jest && npm run test:mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

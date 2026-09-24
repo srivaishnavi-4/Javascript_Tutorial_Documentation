@@ -3136,6 +3136,1277 @@ The main purpose of JavaScript Strings in a real application is **text processin
 
 **Raw user text → clean → validate → search → extract → transform → format → display/store.**
 
+# 11_Numbers & Math — Tomorrow Preparation
+
+## 1. `Number()`
+
+### What is it?
+
+`Number()` converts a value into a JavaScript number.
+
+```javascript
+const mark = Number("85");
+
+console.log(mark); // 85
+```
+
+### Why is it used?
+
+HTML form inputs return values as **strings**, even when the input type is `number`.
+
+```javascript
+const mark = markInput.value;
+
+console.log(typeof mark); // string
+```
+
+So before performing calculations, we convert it:
+
+```javascript
+const mark = Number(markInput.value);
+```
+
+### Alternative
+
+`parseInt()` or `parseFloat()` can also convert strings.
+
+```javascript
+parseInt("85")
+parseFloat("85.5")
+```
+
+### Difference
+
+```javascript
+Number("85.5");      // 85.5
+parseInt("85.5");    // 85
+parseFloat("85.5");  // 85.5
+```
+
+**When to use what?**
+
+* `Number()` → general number conversion
+* `parseInt()` → specifically want an integer
+* `parseFloat()` → specifically want a decimal number
+
+---
+
+# 2. `Number.isNaN()`
+
+### What is it?
+
+It checks whether a value is actually `NaN` (**Not-a-Number**).
+
+```javascript
+const mark = Number("hello");
+
+console.log(Number.isNaN(mark)); // true
+```
+
+### Why is it used?
+
+When taking user input, we need to make sure the converted value is actually a valid number.
+
+```javascript
+const mark = Number(input.value);
+
+if (Number.isNaN(mark)) {
+    alert("Enter a valid number");
+}
+```
+
+### Alternative
+
+Global `isNaN()` also exists:
+
+```javascript
+isNaN(value)
+```
+
+But `Number.isNaN()` is safer because it does **not perform automatic type conversion**.
+
+```javascript
+Number.isNaN("hello"); // false
+isNaN("hello");       // true
+```
+
+> "`Number.isNaN()` is useful for validating numeric input after conversion. I prefer it when I want to specifically check whether the value is the special `NaN` value."
+
+---
+
+# 3. `Number.isInteger()`
+
+### What is it?
+
+Checks whether a number is a whole number.
+
+```javascript
+Number.isInteger(85);   // true
+Number.isInteger(85.5); // false
+```
+
+### Why is it used?
+
+Some application fields should contain only whole numbers.
+
+Example:
+
+```javascript
+const age = Number(ageInput.value);
+
+if (!Number.isInteger(age)) {
+    alert("Age must be a whole number");
+}
+```
+
+### Alternative
+
+You could use:
+
+```javascript
+Number.isInteger(value)
+```
+
+instead of manually checking:
+
+```javascript
+value % 1 === 0
+```
+
+`Number.isInteger()` is clearer and more readable.
+
+---
+
+# 4. `Number.isFinite()`
+
+### What is it?
+
+Checks whether a value is a finite number.
+
+```javascript
+Number.isFinite(100);      // true
+Number.isFinite(Infinity); // false
+Number.isFinite(NaN);      // false
+```
+
+### Why is it used?
+
+Useful when financial or calculation data must contain a valid finite number.
+
+```javascript
+const fee = Number(feeInput.value);
+
+if (!Number.isFinite(fee)) {
+    alert("Invalid fee");
+}
+```
+
+### Alternative
+
+Global:
+
+```javascript
+isFinite(value)
+```
+
+But `Number.isFinite()` is stricter because it doesn't automatically convert the value.
+
+```javascript
+Number.isFinite("100"); // false
+isFinite("100");       // true
+```
+
+---
+
+# 5. `parseInt()`
+
+### What is it?
+
+Converts a string into an integer.
+
+```javascript
+const age = parseInt("21");
+```
+
+Result:
+
+```text
+21
+```
+
+### Why is it used?
+
+When you specifically need the **integer portion** of a value.
+
+```javascript
+const value = parseInt("25px");
+
+console.log(value); // 25
+```
+
+### Alternative
+
+```javascript
+Number("25px")
+```
+
+returns:
+
+```text
+NaN
+```
+
+So `parseInt()` is useful when parsing strings that begin with numeric content.
+
+### Important
+
+Always provide the radix when parsing integers:
+
+```javascript
+parseInt("101", 10);
+```
+
+`10` means decimal.
+
+---
+
+# 6. `parseFloat()`
+
+### What is it?
+
+Converts a string into a floating-point/decimal number.
+
+```javascript
+const price = parseFloat("99.50");
+
+console.log(price); // 99.5
+```
+
+### Why is it used?
+
+Useful when extracting decimal values from strings.
+
+```javascript
+parseFloat("99.50");
+```
+
+### Alternative
+
+```javascript
+Number("99.50");
+```
+
+Both give:
+
+```text
+99.5
+```
+
+But:
+
+```javascript
+parseFloat("99.50px"); // 99.5
+Number("99.50px");     // NaN
+```
+
+So choose based on whether you want **strict conversion** or **parsing from the beginning of a string**.
+
+---
+
+# 7. `toFixed()`
+
+### What is it?
+
+Formats a number to a specified number of decimal places.
+
+```javascript
+const average = 85.6666;
+
+console.log(average.toFixed(2));
+// "85.67"
+```
+
+### Why is it used?
+
+Very common in:
+
+* marks
+* percentages
+* prices
+* invoices
+* reports
+* financial applications
+
+Example:
+
+```javascript
+const percentage = 85.6666;
+
+const formatted = percentage.toFixed(2);
+```
+
+Result:
+
+```text
+85.67
+```
+
+### Important point
+
+`toFixed()` returns a **string**, not a number.
+
+```javascript
+typeof percentage.toFixed(2);
+// "string"
+```
+
+### Alternative
+
+You could use:
+
+```javascript
+Math.round()
+```
+
+but it doesn't directly control decimal places in the same convenient way.
+
+```javascript
+Math.round(85.6666); // 86
+```
+
+Use:
+
+* `toFixed()` → display formatting
+* `Math.round()` → mathematical rounding
+
+---
+
+# 8. `Math.round()`
+
+### What is it?
+
+Rounds a number to the nearest integer.
+
+```javascript
+Math.round(85.6); // 86
+Math.round(85.4); // 85
+```
+
+### Why is it used?
+
+When an application doesn't need decimal precision.
+
+Example:
+
+```javascript
+const average = 85.6;
+
+const roundedAverage = Math.round(average);
+```
+
+### Alternative
+
+* `Math.floor()` → always downward
+* `Math.ceil()` → always upward
+* `toFixed()` → control decimal display
+
+---
+
+# 9. `Math.floor()`
+
+### What is it?
+
+Rounds a number **downward**.
+
+```javascript
+Math.floor(85.9); // 85
+```
+
+### Why is it used?
+
+Useful when you need complete units.
+
+Example:
+
+```javascript
+const hours = 5.8;
+
+console.log(Math.floor(hours));
+// 5
+```
+
+### Alternative
+
+```javascript
+Math.round()
+```
+
+But `round()` can go upward.
+
+```javascript
+Math.round(5.8); // 6
+Math.floor(5.8); // 5
+```
+
+---
+
+# 10. `Math.ceil()`
+
+### What is it?
+
+Rounds a number **upward**.
+
+```javascript
+Math.ceil(5.1); // 6
+```
+
+### Why is it used?
+
+Useful when partial quantities must count as a complete unit.
+
+For example, if one classroom can contain 30 students:
+
+```javascript
+const students = 61;
+
+const rooms = Math.ceil(students / 30);
+
+console.log(rooms); // 3
+```
+
+Because:
+
+```text
+61 / 30 = 2.03
+```
+
+You need **3 rooms**.
+
+### Alternative
+
+`Math.floor()` would give 2, which would not be enough.
+
+---
+
+# 11. `Math.max()`
+
+### What is it?
+
+Returns the largest number.
+
+```javascript
+const highest = Math.max(85, 92, 78);
+
+console.log(highest); // 92
+```
+
+### Why is it used?
+
+In the Student Performance system:
+
+```javascript
+const highestMark =
+    Math.max(mark1, mark2, mark3);
+```
+
+This is useful for finding:
+
+* highest mark
+* highest salary
+* maximum score
+* maximum value
+
+### Alternative
+
+You could sort an array:
+
+```javascript
+marks.sort((a, b) => b - a);
+```
+
+and take the first value.
+
+But `Math.max()` is simpler when you only need the maximum value.
+
+---
+
+# 12. `Math.min()`
+
+### What is it?
+
+Returns the smallest number.
+
+```javascript
+const lowest = Math.min(85, 92, 78);
+
+console.log(lowest); // 78
+```
+
+### Why is it used?
+
+For:
+
+* lowest mark
+* minimum price
+* minimum value
+* minimum quantity
+
+### Alternative
+
+Sorting can also find the smallest value, but it is unnecessary if you only need the minimum.
+
+---
+
+# 13. `Math.abs()`
+
+### What is it?
+
+Returns the absolute value.
+
+```javascript
+Math.abs(-500); // 500
+```
+
+### Why is it used?
+
+Suppose:
+
+```javascript
+const feeBalance = 10000 - 12000;
+```
+
+Result:
+
+```text
+-2000
+```
+
+If we want to display the difference without the negative sign:
+
+```javascript
+const difference = Math.abs(feeBalance);
+
+console.log(difference); // 2000
+```
+
+### Alternative
+
+You could manually check:
+
+```javascript
+if (value < 0) {
+    value = value * -1;
+}
+```
+
+But `Math.abs()` is much cleaner.
+
+---
+
+# 14. `Math.pow()`
+
+### What is it?
+
+Raises a number to a power.
+
+```javascript
+Math.pow(2, 3);
+```
+
+Result:
+
+```text
+8
+```
+
+because:
+
+```text
+2 × 2 × 2 = 8
+```
+
+### Why is it used?
+
+Useful in:
+
+* mathematical calculations
+* statistics
+* scientific calculations
+* algorithms
+
+### Modern alternative
+
+The exponentiation operator:
+
+```javascript
+2 ** 3
+```
+
+Both produce:
+
+```text
+8
+```
+
+### Which one?
+
+Today, `**` is usually simpler:
+
+```javascript
+const result = 2 ** 3;
+```
+
+`Math.pow()` is still valid and may appear in existing code.
+
+---
+
+# 15. `Math.sqrt()`
+
+### What is it?
+
+Returns the square root.
+
+```javascript
+Math.sqrt(25); // 5
+```
+
+### Why is it used?
+
+Useful in mathematical and statistical calculations.
+
+Example:
+
+```javascript
+const score = 81;
+
+const root = Math.sqrt(score);
+```
+
+### Alternative
+
+There isn't a simpler standard arithmetic operator for square root.
+
+You can technically use:
+
+```javascript
+81 ** 0.5
+```
+
+but:
+
+```javascript
+Math.sqrt(81)
+```
+
+communicates the intention more clearly.
+
+---
+
+# 16. `Math.random()`
+
+### What is it?
+
+Generates a pseudo-random number between `0` and less than `1`.
+
+```javascript
+Math.random();
+```
+
+Example:
+
+```text
+0.48372
+```
+
+### Why is it used?
+
+Useful for:
+
+* temporary IDs
+* random selection
+* random questions
+* OTP-like demo values
+* games
+* test data
+
+Example:
+
+```javascript
+const randomNumber =
+    Math.floor(Math.random() * 9000) + 1000;
+```
+
+This generates a 4-digit number from `1000` to `9999`.
+
+### Alternative
+
+For security-sensitive random values, don't use `Math.random()`.
+
+Use the browser's cryptographic API:
+
+```javascript
+crypto.getRandomValues()
+```
+
+### Important interview point
+
+> "`Math.random()` is not suitable for security-sensitive values such as real authentication tokens or secure OTP generation."
+
+---
+
+# 17. Arithmetic Operators
+
+These perform calculations.
+
+```javascript
+const total = mark1 + mark2;
+const difference = mark1 - mark2;
+const product = mark1 * mark2;
+const average = total / 2;
+const remainder = mark1 % 2;
+```
+
+### Why are they used?
+
+Almost every numerical application needs arithmetic.
+
+For our Student Performance system:
+
+```javascript
+const total = mark1 + mark2 + mark3;
+
+const average = total / 3;
+
+const percentage = (total / 300) * 100;
+```
+
+### Alternative
+
+There is no practical replacement for basic arithmetic operators.
+
+Functions such as `Math.*` solve specific mathematical operations, while operators perform basic calculations.
+
+---
+
+# 18. Comparison Operators
+
+They compare values.
+
+```javascript
+if (mark >= 50) {
+    console.log("Pass");
+}
+```
+
+Common operators:
+
+```text
+>    greater than
+<    less than
+>=   greater than or equal
+<=   less than or equal
+===  strictly equal
+!==  strictly not equal
+```
+
+### Why are they used?
+
+To make decisions.
+
+Example:
+
+```javascript
+if (percentage >= 90) {
+    grade = "A";
+}
+```
+
+### Alternative
+
+For multiple conditions, you could use a `switch` in some situations, but comparisons are still necessary for ranges.
+
+---
+
+# 19. `NaN`
+
+### What is it?
+
+`NaN` means **Not-a-Number**.
+
+```javascript
+const result = Number("hello");
+
+console.log(result);
+// NaN
+```
+
+### Why does it matter?
+
+User input can be invalid.
+
+```javascript
+const mark = Number(input.value);
+
+if (Number.isNaN(mark)) {
+    alert("Invalid mark");
+}
+```
+
+### Important point
+
+`NaN` is technically a special numeric value:
+
+```javascript
+typeof NaN;
+// "number"
+```
+
+This is a common JavaScript interview question.
+
+---
+
+# 20. `Infinity`
+
+### What is it?
+
+Represents a value larger than JavaScript's finite numeric range.
+
+It can occur through division by zero:
+
+```javascript
+console.log(10 / 0);
+// Infinity
+```
+
+### Why does it matter?
+
+Applications performing calculations should sometimes check for invalid infinite results.
+
+```javascript
+if (!Number.isFinite(result)) {
+    console.log("Invalid calculation");
+}
+```
+
+### Alternative
+
+You could check:
+
+```javascript
+result === Infinity
+```
+
+but:
+
+```javascript
+Number.isFinite(result)
+```
+
+is more comprehensive because it also rejects `-Infinity` and `NaN`.
+
+---
+
+# The Most Important Alternatives to Remember
+
+| Requirement         | Common choice        | Alternative                             |
+| ------------------- | -------------------- | --------------------------------------- |
+| Convert to number   | `Number()`           | `parseInt()`, `parseFloat()`            |
+| Check `NaN`         | `Number.isNaN()`     | `isNaN()`                               |
+| Check integer       | `Number.isInteger()` | `% 1 === 0`                             |
+| Check finite number | `Number.isFinite()`  | `isFinite()`                            |
+| Format decimals     | `toFixed()`          | `Math.round()`                          |
+| Nearest integer     | `Math.round()`       | —                                       |
+| Downward rounding   | `Math.floor()`       | —                                       |
+| Upward rounding     | `Math.ceil()`        | —                                       |
+| Largest value       | `Math.max()`         | sorting                                 |
+| Smallest value      | `Math.min()`         | sorting                                 |
+| Absolute value      | `Math.abs()`         | manual negative check                   |
+| Power               | `**`                 | `Math.pow()`                            |
+| Square root         | `Math.sqrt()`        | `** 0.5`                                |
+| Random value        | `Math.random()`      | `crypto.getRandomValues()` for security |
+
+
+Don't explain it as:
+
+> "I used `Number`, `Math.round`, `Math.max`..."
+
+Instead explain it as a **technical flow**:
+
+> "My POC is a Student Performance and Fee Calculator. The user enters marks and fee information through an HTML form. Since form values are received as strings, I first use `Number()` to convert them into numeric values. Then I validate the values using `Number.isNaN()`, `Number.isInteger()`, and `Number.isFinite()` depending on the requirement."
+
+Then:
+
+> "After validation, I use arithmetic operators to calculate the total, average, and percentage. `Math.round()` is used when I need the nearest whole number, while `toFixed()` is used when I only want to control how many decimal places are displayed."
+
+Then:
+
+> "For additional analysis, `Math.max()` finds the highest mark and `Math.min()` finds the lowest mark. `Math.abs()` is useful for displaying the absolute fee difference. `Math.pow()` and `Math.sqrt()` demonstrate mathematical calculations, while `Math.random()` can generate a temporary reference number."
+
+And finally:
+
+> "The important point is that I don't choose these methods randomly. I choose each one according to the requirement—for example, `toFixed()` for presentation, `Math.round()` for mathematical rounding, `Number()` for conversion, and `Number.isNaN()` for validation."
+
+**INPUT → PROBLEM → METHOD → WHY THIS METHOD → ALTERNATIVE**
+
+Example:
+
+```text
+"85.678"
+    ↓
+Need a number
+    ↓
+Number()
+    ↓
+Because I need to perform calculations
+    ↓
+Alternative: parseFloat()
+    ↓
+But Number() is appropriate for general conversion
+```
+  ## 12_Date & Time
+  # Date and Time in JavaScript
+
+JavaScript provides the **`Date` object** to work with dates, times, timestamps, formatting, comparison, and calculations.
+
+### Why is Date and Time used?
+
+In a real-time application like your **Student Database Management System**, Date and Time can be used for:
+
+* Recording when a student was registered
+* Showing the current date/time
+* Calculating age from date of birth
+* Comparing dates
+* Finding how many days remain until an event
+* Formatting dates for display
+* Recording login/activity timestamps
+* Sorting records by registration date
+
+---
+
+## 1. `Date` Object
+
+**Concept:** Represents a specific date and time.
+
+```javascript
+const now = new Date();
+```
+
+**Why used:** To get the current date and time from the user's system.
+
+Example:
+
+```javascript
+const registrationTime = new Date();
+
+console.log(registrationTime);
+```
+
+---
+
+## 2. `new Date()`
+
+Creates a Date object.
+
+```javascript
+const now = new Date();
+```
+
+It contains:
+
+```text
+Year
+Month
+Day
+Hour
+Minute
+Second
+Millisecond
+```
+
+---
+
+## 3. Creating a Specific Date
+
+```javascript
+const dob = new Date("2004-05-12");
+
+console.log(dob);
+```
+
+**Why used:** When you already have a particular date, such as a student's date of birth.
+
+---
+
+## 4. `Date.now()`
+
+Returns the current time as a **timestamp** in milliseconds.
+
+```javascript
+const timestamp = Date.now();
+
+console.log(timestamp);
+```
+
+**Why used:** Useful for storing timestamps and comparing when events occurred.
+
+For example:
+
+```javascript
+const studentId = Date.now();
+```
+
+can generate a simple unique-looking ID based on the current time.
+
+---
+
+## 5. Getting Date Components
+
+### `getFullYear()`
+
+Gets the year.
+
+```javascript
+const date = new Date();
+
+console.log(date.getFullYear());
+```
+
+### `getMonth()`
+
+Gets the month.
+
+```javascript
+console.log(date.getMonth());
+```
+Months start from **0**:
+
+```text
+0 → January
+1 → February
+...
+11 → December
+```
+
+### `getDate()`
+
+Gets the day of the month.
+
+```javascript
+console.log(date.getDate());
+```
+
+### `getDay()`
+
+Gets the day of the week.
+
+```javascript
+console.log(date.getDay());
+```
+
+```text
+0 → Sunday
+1 → Monday
+2 → Tuesday
+...
+6 → Saturday
+```
+
+### Time components
+
+```javascript
+date.getHours();
+date.getMinutes();
+date.getSeconds();
+date.getMilliseconds();
+```
+
+**Why used:** To extract individual parts of a date/time for calculations or display.
+
+---
+
+## 6. Setting Date Components
+
+JavaScript also provides:
+
+```javascript
+date.setFullYear(2026);
+date.setMonth(5);
+date.setDate(15);
+date.setHours(10);
+date.setMinutes(30);
+```
+
+**Why used:** To modify an existing date.
+
+---
+
+## 7. `toDateString()`
+
+Converts a Date into a readable date string.
+
+```javascript
+const date = new Date();
+
+console.log(date.toDateString());
+```
+
+Example:
+
+```text
+Thu Sep 24 2026
+```
+
+**Why used:** When you want to display only the date.
+
+---
+
+## 8. `toTimeString()`
+
+Returns the time portion.
+
+```javascript
+console.log(new Date().toTimeString());
+```
+
+**Why used:** When you need to display the current time.
+
+---
+
+## 9. `toISOString()`
+
+Converts a date into the standard ISO format.
+
+```javascript
+const date = new Date();
+
+console.log(date.toISOString());
+```
+
+Example:
+
+```text
+2026-09-24T17:30:00.000Z
+```
+
+**Why used:** Very common when sending dates between frontend and backend or storing timestamps.
+
+---
+
+## 10. `toLocaleDateString()`
+
+Formats a date according to a locale.
+
+```javascript
+const date = new Date();
+
+console.log(date.toLocaleDateString());
+```
+
+You can specify a format:
+
+```javascript
+console.log(
+    date.toLocaleDateString("en-IN")
+);
+```
+
+**Why used:** To display dates in a format familiar to the user.
+
+---
+
+## 11. `toLocaleTimeString()`
+
+```javascript
+const date = new Date();
+
+console.log(
+    date.toLocaleTimeString("en-IN")
+);
+```
+
+**Why used:** To display time according to the user's locale.
+
+---
+
+## 12. Comparing Dates
+
+Dates can be compared using timestamps.
+
+```javascript
+const date1 = new Date("2026-09-20");
+const date2 = new Date("2026-09-24");
+
+console.log(date1 < date2);
+```
+
+Output:
+
+```text
+true
+```
+
+**Why used:** Checking whether:
+
+* registration date is before today
+* deadline has passed
+* student's DOB is valid
+* one event occurs before another
+
+---
+
+## 13. Date Difference
+
+```javascript
+const start = new Date("2026-09-20");
+const end = new Date("2026-09-24");
+
+const difference = end - start;
+
+console.log(difference);
+```
+
+The result is in milliseconds.
+
+To convert to days:
+
+```javascript
+const days = difference / (1000 * 60 * 60 * 24);
+
+console.log(days);
+```
+
+**Why used:** Calculate durations such as:
+
+```text
+Days between registration and today
+Days until an exam
+Days since a student's admission
+```
+
+
+
+| Concept                | Why it is used                            |
+| ---------------------- | ----------------------------------------- |
+| `Date`                 | Represents date and time                  |
+| `new Date()`           | Gets current date/time                    |
+| `new Date("...")`      | Creates a specific date                   |
+| `Date.now()`           | Gets current timestamp                    |
+| `getFullYear()`        | Gets year                                 |
+| `getMonth()`           | Gets month                                |
+| `getDate()`            | Gets day of month                         |
+| `getDay()`             | Gets weekday                              |
+| `getHours()`           | Gets hour                                 |
+| `getMinutes()`         | Gets minutes                              |
+| `getSeconds()`         | Gets seconds                              |
+| `setFullYear()`        | Changes year                              |
+| `setMonth()`           | Changes month                             |
+| `setDate()`            | Changes day                               |
+| `toDateString()`       | Displays readable date                    |
+| `toTimeString()`       | Displays readable time                    |
+| `toISOString()`        | Creates standard date/time representation |
+| `toLocaleDateString()` | Formats date for users                    |
+| `toLocaleTimeString()` | Formats time for users                    |
+
 ## 13_Error Handling
 JavaScript provides **error-handling mechanisms** to prevent an application from crashing when something unexpected happens.
 The main concepts are:
@@ -12727,4 +13998,2354 @@ Web Storage   → Store
 Notifications → Inform
 ```
 These five are all **browser Web APIs**, but they solve different problems: **DOM for page structure, Canvas for graphics, Geolocation for location, Web Storage for client-side persistence, and Notifications for user alerts.**
+ ## 35_Debugging
+ # Debugging in JavaScript
+
+## 1. What is Debugging?
+
+**Debugging** is the process of identifying, analyzing, and fixing errors or unexpected behavior in a program.
+
+When an application does not produce the expected result, debugging helps us understand:
+
+* Where the problem occurs
+* Why the problem occurs
+* What values are involved
+* How the code is executing
+* How to fix the root cause
+
+For example, in the **Shopping Cart POC**, if the total amount is incorrect, debugging helps us inspect the `price`, `quantity`, and `total` values during execution.
+
+---
+
+# 2. Why Debugging is Important
+
+Debugging is important because real-world applications contain:
+
+* Incorrect calculations
+* Invalid user input
+* Unexpected API responses
+* Incorrect conditions
+* Logic errors
+* Missing data
+* Runtime errors
+* Performance issues
+
+Instead of randomly changing code, debugging gives us a **systematic way to find the root cause**.
+
+### Example
+
+Suppose the expected cart total is:
+
+```text
+₹52,000
+```
+
+but the application displays:
+
+```text
+₹51,003
+```
+
+We need to determine whether the problem is with:
+
+```text
+Product price
+      ↓
+Quantity
+      ↓
+Calculation
+      ↓
+Loop
+      ↓
+Final total
+```
+
+Debugging allows us to inspect each stage.
+
+---
+
+# 3. Types of Errors
+
+Understanding the type of error helps us decide how to debug it.
+
+## 3.1 Syntax Error
+
+Occurs when JavaScript syntax is invalid.
+
+```javascript
+const name = "Vaishu"
+console.log(name
+```
+
+The closing `)` is missing.
+
+The browser reports a syntax error before executing the code.
+
+### How to debug
+
+Check the Console for the error message and line number.
+
+---
+
+## 3.2 Runtime Error
+
+The syntax is valid, but an error occurs while the program is running.
+
+```javascript
+const user = undefined;
+
+console.log(user.name);
+```
+
+This causes an error because `user` does not contain an object.
+
+### How to debug
+
+Use:
+
+* Console
+* Breakpoints
+* Variable inspection
+* Stack trace
+
+---
+
+## 3.3 Logical Error
+
+The program executes without an error, but produces the **wrong result**.
+
+For example:
+
+```javascript
+total += item.price + item.quantity;
+```
+
+when the intended calculation is:
+
+```javascript
+total += item.price * item.quantity;
+```
+
+This is particularly important because JavaScript does not necessarily report an error.
+
+The **Shopping Cart POC** demonstrates this type of debugging.
+
+---
+
+# 4. Console Debugging
+
+The `console` object provides methods for inspecting application behavior.
+
+The most commonly used methods are:
+
+### `console.log()`
+
+Used for general debugging information.
+
+```javascript
+console.log("Current total:", total);
+```
+
+### `console.error()`
+
+Used to display errors.
+
+```javascript
+console.error("Invalid cart total");
+```
+
+### `console.warn()`
+
+Used for warnings.
+
+```javascript
+console.warn("Cart is empty");
+```
+
+### `console.info()`
+
+Used for informational messages.
+
+```javascript
+console.info("User successfully logged in");
+```
+
+### `console.table()`
+
+Used to display arrays and objects in a table.
+
+```javascript
+console.table(cart);
+```
+
+This is especially useful when debugging lists of records.
+
+---
+
+# 5. Breakpoints
+
+A **breakpoint** pauses JavaScript execution at a specific line.
+
+For example, in the POC we can place a breakpoint at the calculation:
+
+```javascript
+total += item.price * item.quantity;
+```
+
+When execution stops, we can inspect:
+
+```text
+item
+item.name
+item.price
+item.quantity
+total
+```
+
+### Why use breakpoints?
+
+Without a breakpoint, the code executes continuously.
+
+With a breakpoint:
+
+```text
+Program starts
+     ↓
+Execute code
+     ↓
+Breakpoint
+     ↓
+PAUSE
+     ↓
+Inspect variables
+     ↓
+Continue execution
+```
+
+This makes it easier to understand what the application is actually doing.
+
+---
+
+# 6. Conditional Breakpoints
+
+A normal breakpoint stops every time execution reaches a line.
+
+A **conditional breakpoint** stops only when a particular condition becomes true.
+
+For example:
+
+```javascript
+item.quantity > 5
+```
+
+The debugger pauses only when the condition is satisfied.
+
+### Real-time use
+
+Suppose an application processes 1,000 users but only one user causes a problem.
+
+Instead of stopping for every user, we can use:
+
+```javascript
+user.id === 100
+```
+
+This makes debugging much faster.
+
+---
+
+# 7. `debugger` Statement
+
+JavaScript provides the `debugger` statement.
+
+```javascript
+debugger;
+```
+
+When DevTools is open, execution pauses at that statement.
+
+In the POC:
+
+```javascript
+for (const item of cart) {
+
+    debugger;
+
+    // calculation
+}
+```
+
+This allows us to inspect each cart item while the loop is executing.
+
+### Breakpoint vs `debugger`
+
+| Breakpoint                         | `debugger`                                                |
+| ---------------------------------- | --------------------------------------------------------- |
+| Added through DevTools             | Added inside code                                         |
+| Does not modify source code        | Appears in source code                                    |
+| Useful for temporary investigation | Useful when you know exactly where execution should pause |
+
+---
+
+# 8. Watch Expressions
+
+A **watch expression** allows us to monitor variables or calculations while debugging.
+
+For the Shopping Cart POC, we could watch:
+
+```javascript
+item.price
+```
+
+```javascript
+item.quantity
+```
+
+```javascript
+item.price * item.quantity
+```
+
+```javascript
+total
+```
+
+This helps us understand how values change during execution.
+
+### Example
+
+Initially:
+
+```text
+total = 0
+```
+
+After first item:
+
+```text
+total = 50000
+```
+
+After second item:
+
+```text
+total = 52000
+```
+
+This makes it easier to identify exactly where an unexpected value appears.
+
+---
+
+# 9. DevTools
+
+**Developer Tools**, commonly called **DevTools**, are browser-provided tools used to inspect and debug web applications.
+
+They can normally be opened using:
+
+```text
+F12
+```
+
+or:
+
+```text
+Ctrl + Shift + I
+```
+
+---
+
+# 10. Important DevTools Panels
+
+## Console
+
+Used for:
+
+* JavaScript output
+* Errors
+* Warnings
+* Running JavaScript manually
+* Inspecting values
+
+---
+
+## Sources / Debugger
+
+Used for:
+
+* Viewing JavaScript files
+* Setting breakpoints
+* Stepping through code
+* Inspecting variables
+* Watch expressions
+
+This is where most JavaScript debugging happens.
+
+---
+
+## Network
+
+Used to debug communication between the frontend and backend.
+
+We can inspect:
+
+* API URL
+* HTTP method
+* Request data
+* Response data
+* Status code
+* Response time
+
+For example:
+
+```text
+GET /api/users
+Status: 200
+```
+
+or:
+
+```text
+GET /api/users
+Status: 404
+```
+
+A `404` indicates that the requested resource was not found.
+
+---
+
+## Elements
+
+Used to inspect:
+
+* HTML
+* CSS
+* DOM structure
+
+For example, if a button is not displaying correctly, Elements allows us to inspect its HTML and applied CSS.
+
+---
+
+## Application
+
+Used to inspect browser-side storage such as:
+
+* Local Storage
+* Session Storage
+* Cookies
+* IndexedDB
+
+---
+
+# 11. Step-by-Step Debugging
+
+When a bug occurs, follow a systematic process.
+
+### Step 1 — Reproduce the problem
+
+First make sure you can consistently reproduce the issue.
+
+### Step 2 — Understand the expected behavior
+
+Determine what the application **should** do.
+
+### Step 3 — Observe the actual behavior
+
+Determine what the application **actually** does.
+
+### Step 4 — Check the Console
+
+Look for:
+
+* Errors
+* Warnings
+* Unexpected values
+
+### Step 5 — Identify suspicious code
+
+Find the part of the application responsible for the incorrect behavior.
+
+### Step 6 — Add a breakpoint
+
+Pause execution at the suspicious line.
+
+### Step 7 — Inspect variables
+
+Check whether the values are what you expect.
+
+### Step 8 — Use Watch Expressions
+
+Monitor important calculations or variables.
+
+### Step 9 — Step through the code
+
+Execute the program line by line.
+
+### Step 10 — Fix the root cause
+
+Change the actual problematic logic rather than hiding the symptom.
+
+### Step 11 — Test again
+
+Make sure the fix works and has not introduced another problem.
+
+---
+
+# 12. Step Over, Step Into and Step Out
+
+These controls are available while execution is paused.
+
+## Step Over
+
+Executes the current line and moves to the next line.
+
+Useful when you don't need to inspect the internal implementation of a function.
+
+---
+
+## Step Into
+
+Enters a function call.
+
+For example:
+
+```javascript
+calculateTotal(cart);
+```
+
+Step Into allows us to enter:
+
+```javascript
+function calculateTotal(cart) {
+```
+
+Useful when we suspect the problem is inside the function.
+
+---
+
+## Step Out
+
+Finishes the current function and returns to the calling code.
+
+Useful when we entered a function but no longer need to inspect its internal execution.
+
+---
+
+# 13. Call Stack
+
+The **Call Stack** shows the sequence of functions that are currently executing.
+
+For example:
+
+```text
+calculateCartTotal()
+        ↓
+processCart()
+        ↓
+checkout()
+        ↓
+button click
+```
+
+If an error occurs inside `calculateCartTotal()`, the call stack helps us understand **how the program reached that function**.
+
+This is particularly useful when working with large applications containing many functions.
+
+---
+
+# 14. Scope Inspection
+
+While execution is paused, DevTools allows us to inspect variables belonging to different scopes.
+
+For example:
+
+```javascript
+function calculateTotal(price) {
+
+    const tax = price * 0.18;
+
+    return price + tax;
+}
+```
+
+While paused, we can inspect:
+
+```text
+Local:
+price
+tax
+```
+
+and other available outer/global variables.
+
+This helps determine whether a variable contains the expected value.
+
+---
+
+# 15. Stack Trace
+
+When a runtime error occurs, JavaScript often provides a **stack trace**.
+
+It shows:
+
+* Error type
+* Error message
+* File
+* Line number
+* Function calls that led to the error
+
+Example:
+
+```text
+TypeError: Cannot read properties of undefined
+    at displayUser()
+    at loadUsers()
+    at main()
+```
+
+The stack trace helps us trace the problem back through the execution path.
+
+---
+
+# 16. Debugging API Calls
+
+In real applications, many bugs are caused by incorrect API responses rather than JavaScript syntax.
+
+Use the **Network** tab to inspect:
+
+```text
+Request
+   ↓
+URL
+   ↓
+Method
+   ↓
+Headers
+   ↓
+Request Body
+   ↓
+Response
+   ↓
+Status Code
+```
+
+For example, if the UI shows no users, inspect:
+
+```text
+GET /api/users
+```
+
+and verify:
+
+```text
+Status → 200
+Response → expected user data
+```
+
+If the response is incorrect, the problem may be in the backend or API rather than the UI.
+
+---
+
+# 17. Console Debugging vs Breakpoint Debugging
+
+| Feature                       | Console | Breakpoint |
+| ----------------------------- | ------- | ---------- |
+| Check a value                 | ✓       | ✓          |
+| Pause execution               | ✗       | ✓          |
+| Inspect variables             | Limited | ✓          |
+| Follow execution step-by-step | ✗       | ✓          |
+| Monitor expressions           | Limited | ✓          |
+| Quick debugging               | ✓       | ✓          |
+| Complex debugging             | Limited | ✓          |
+
+### Simple rule
+
+**Use Console when you want quick information.**
+
+**Use Breakpoints when you need to understand program execution.**
+
+---
+
+# 18. Common Debugging Mistakes
+
+### 1. Adding too many `console.log()` statements
+
+Too many logs can make the Console difficult to understand.
+
+Use breakpoints when you need detailed investigation.
+
+### 2. Debugging without reproducing the issue
+
+If you cannot reproduce the bug, it becomes difficult to determine its cause.
+
+### 3. Checking only the final result
+
+Instead of checking only:
+
+```javascript
+console.log(total);
+```
+
+inspect intermediate values:
+
+```javascript
+item.price
+item.quantity
+item.price * item.quantity
+total
+```
+
+### 4. Fixing symptoms instead of the root cause
+
+For example, changing the final total manually does not fix the incorrect calculation.
+
+Find where the wrong value was introduced.
+
+---
+
+# 19. Debugging Best Practices
+
+* Reproduce the issue first.
+* Read the error message carefully.
+* Check the exact line mentioned by the error.
+* Inspect input values.
+* Use breakpoints for complex logic.
+* Use conditional breakpoints for repetitive code.
+* Use watch expressions for important calculations.
+* Use the Network tab for API problems.
+* Use the Call Stack to trace function execution.
+* Remove temporary debugging statements when they are no longer needed.
+* Test the fix after making changes.
+
+---
+
+# 20. Debugging Mindset
+
+The most important part of debugging is not knowing every DevTools feature.
+
+It is learning to ask:
+
+```text
+What did I expect?
+        ↓
+What actually happened?
+        ↓
+Where did they become different?
+        ↓
+What value caused the difference?
+        ↓
+Why did that value become incorrect?
+        ↓
+How can I fix the root cause?
+```
+
+
+| Concept                    | POC Implementation                          |
+| -------------------------- | ------------------------------------------- |
+| Console debugging          | `console.log()`                             |
+| Error messages             | `console.error()`                           |
+| Warnings                   | `console.warn()`                            |
+| Structured data inspection | `console.table(cart)`                       |
+| Breakpoint                 | DevTools line breakpoint                    |
+| Programmatic breakpoint    | `debugger`                                  |
+| Watch expressions          | `item.price`, `total`, calculations         |
+| Step Over                  | Execute cart calculation line-by-line       |
+| Variable inspection        | `item`, `price`, `quantity`, `total`        |
+| Logical error              | Incorrect `+` instead of `*`                |
+| Root-cause analysis        | Inspect calculation and intermediate values |
+| DevTools                   | Console + Sources/Debugger                  |
+| Real-time scenario         | Shopping cart total calculation             |
+
+> **Debugging is a systematic process of reproducing a problem, inspecting program execution and values, identifying the root cause, fixing it, and verifying the solution.**
+## 36_Performance Optimization
+## 1. What is Performance Optimization?
+Performance optimization is the process of improving an application's:
+* Execution speed
+* Loading speed
+* Responsiveness
+* Rendering performance
+* Memory usage
+* Network efficiency
+* CPU usage
+
+The goal is to make the application responsive while using resources efficiently.
+# 2. Why Performance Optimization is Important
+
+A poorly optimized application can cause:
+
+* Slow page loading
+* Delayed user interactions
+* High CPU usage
+* Excessive memory usage
+* Unnecessary network requests
+* UI freezing
+* Poor mobile performance
+
+Example:
+
+```text
+User types
+    ↓
+Search function
+    ↓
+API request
+    ↓
+Server
+    ↓
+Response
+```
+
+If every keystroke creates an API request:
+
+```text
+V       → Request
+Va      → Request
+Vai     → Request
+Vaishu  → Request
+```
+unnecessary work is performed.
+Performance techniques such as **debouncing** can reduce this.
+# 3. Measure Before Optimizing
+The most important performance principle is:
+```text
+Measure
+   ↓
+Find bottleneck
+   ↓
+Optimize
+   ↓
+Measure again
+```
+Don't optimize code only because it looks inefficient.
+First determine where the actual bottleneck exists.
+# 4. performance.now()
+JavaScript provides:
+```js
+performance.now()
+```
+for measuring elapsed time.
+Example:
+```js
+const start = performance.now();
+performCalculation();
+const end = performance.now();
+console.log(
+    `Execution time: ${end - start} ms`
+);
+```
+# 5. Why performance.now()?
+It is useful for measuring:
+* Function execution time
+* Algorithm performance
+* Before/after optimization
+* Performance experiments
+Alternative:
+```js
+Date.now()
+```
+For performance measurements, `performance.now()` is generally more appropriate.
+# 6. Debouncing
+## Explanation
+Debouncing delays execution until a specified period has passed without another triggering event.
+Example:
+```text
+User types:
+V
+Va
+Vai
+Vaishu
+        ↓
+
+Wait 300 ms
+
+        ↓
+
+Execute search
+```
+# 7. Debounce Example
+```js
+function debounce(callback, delay) {
+
+    let timer;
+
+    return (...args) => {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+
+            callback(...args);
+
+        }, delay);
+    };
+}
+```
+Usage:
+```js
+const search =
+    debounce(
+        performSearch,
+        300
+    );
+input.addEventListener(
+    "input",
+    search
+);
+```
+# 8. Why Debouncing?
+
+Without debounce:
+
+```text
+Every keystroke
+       ↓
+Function executes
+       ↓
+Possible API request
+```
+
+With debounce:
+
+```text
+User stops typing
+       ↓
+Wait
+       ↓
+Function executes
+```
+
+### Real-Time Use Cases
+
+* Search boxes
+* Autocomplete
+* API requests
+* Form validation
+* Filtering
+
+---
+
+# 9. Throttling
+
+## Explanation
+
+Throttling limits how frequently a function can execute.
+
+Example:
+
+```text
+Scroll event
+Scroll event
+Scroll event
+Scroll event
+Scroll event
+
+       ↓
+
+Controlled execution
+```
+
+---
+
+# 10. Throttle Example
+
+```js
+function throttle(callback, delay) {
+
+    let lastExecution = 0;
+
+    return (...args) => {
+
+        const now =
+            Date.now();
+
+        if (
+            now - lastExecution >=
+            delay
+        ) {
+
+            lastExecution = now;
+
+            callback(...args);
+        }
+    };
+}
+```
+
+Usage:
+
+```js
+window.addEventListener(
+    "scroll",
+    throttle(
+        handleScroll,
+        200
+    )
+);
+```
+
+---
+
+# 11. Debounce vs Throttle
+
+| Debounce                   | Throttle                   |
+| -------------------------- | -------------------------- |
+| Waits until activity stops | Limits execution frequency |
+| Search                     | Scroll                     |
+| Autocomplete               | Mouse movement             |
+| API input                  | Resize                     |
+| Form validation            | Dragging                   |
+
+Simple rule:
+
+```text
+Search → Debounce
+
+Scroll → Throttle
+```
+
+---
+
+# 12. DOM Performance
+
+DOM operations can become expensive when performed repeatedly.
+
+Avoid unnecessary updates such as:
+
+```js
+items.forEach(item => {
+
+    list.innerHTML +=
+        `<li>${item.name}</li>`;
+
+});
+```
+
+This repeatedly changes the DOM.
+
+---
+
+# 13. DocumentFragment
+
+A better approach is:
+
+```js
+const fragment =
+    document.createDocumentFragment();
+
+items.forEach(item => {
+
+    const element =
+        document.createElement("li");
+
+    element.textContent =
+        item.name;
+
+    fragment.appendChild(element);
+});
+
+list.replaceChildren(
+    fragment
+);
+```
+
+The elements are prepared first and the DOM is updated once.
+
+---
+
+# 14. Why DocumentFragment?
+
+Instead of:
+
+```text
+Create
+ ↓
+DOM update
+
+Create
+ ↓
+DOM update
+
+Create
+ ↓
+DOM update
+```
+
+we can do:
+
+```text
+Create elements
+      ↓
+DocumentFragment
+      ↓
+One DOM update
+```
+
+This can reduce unnecessary DOM work for large updates.
+
+---
+
+# 15. Event Delegation
+
+Suppose a page contains many buttons.
+
+Instead of attaching an event listener to every button:
+
+```js
+buttons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        handleClick
+    );
+
+});
+```
+
+we can sometimes attach one listener to their parent:
+
+```js
+list.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target.matches(
+                ".delete"
+            )
+        ) {
+
+            deleteStudent(
+                event.target.dataset.id
+            );
+        }
+    }
+);
+```
+
+This is called **event delegation**.
+
+It can reduce the number of event listeners.
+
+---
+
+# 16. Memoization
+
+## Explanation
+
+Memoization stores the result of a previous calculation.
+
+```js
+function memoize(callback) {
+
+    const cache = new Map();
+
+    return (value) => {
+
+        if (cache.has(value)) {
+
+            return cache.get(value);
+        }
+
+        const result =
+            callback(value);
+
+        cache.set(
+            value,
+            result
+        );
+
+        return result;
+    };
+}
+```
+
+---
+
+# 17. Why Memoization?
+
+Suppose:
+
+```js
+calculate("Vaishu");
+calculate("Vaishu");
+calculate("Vaishu");
+```
+
+Without memoization, the calculation can happen repeatedly.
+
+With memoization:
+
+```text
+First call
+    ↓
+Calculate
+    ↓
+Store result
+
+Second call
+    ↓
+Return cached result
+```
+
+---
+
+# 18. When to Use Memoization
+
+Good for:
+
+* Expensive calculations
+* Repeated calculations
+* Deterministic functions
+
+Avoid unnecessary memoization when:
+
+* Calculations are very cheap
+* Inputs are almost always unique
+* Cache memory can grow excessively
+
+---
+
+# 19. Async Loading
+
+## Explanation
+
+Async loading means loading resources without making the application wait for everything before it can continue.
+
+Instead of:
+
+```text
+Application starts
+       ↓
+Load every feature
+       ↓
+Start application
+```
+
+we can use:
+
+```text
+Application starts
+       ↓
+Load required resources
+       ↓
+Application becomes usable
+       ↓
+Load additional resources asynchronously
+```
+
+---
+
+# 20. Dynamic Import
+
+JavaScript supports dynamic imports:
+
+```js
+const module =
+    await import(
+        "./analytics.js"
+    );
+```
+
+Unlike a normal static import:
+
+```js
+import {
+    calculateAverage
+} from "./analytics.js";
+```
+
+a dynamic import loads the module when the code reaches that statement.
+
+---
+
+# 21. Real-Time Async Loading Example
+
+```js
+button.addEventListener(
+    "click",
+    async () => {
+
+        const analytics =
+            await import(
+                "./analytics.js"
+            );
+
+        analytics.generateReport();
+    }
+);
+```
+
+The analytics module is loaded only when the user requests it.
+
+---
+
+# 22. Why Async Loading?
+
+Useful when the application contains:
+
+* Large features
+* Rarely used modules
+* Admin panels
+* Reports
+* Analytics
+* Large third-party libraries
+
+Example:
+
+```text
+Student Dashboard
+       ↓
+Initial application
+       ↓
+User clicks Analytics
+       ↓
+Load analytics.js
+```
+
+This can reduce the amount of JavaScript required initially.
+
+---
+
+# 23. Async Loading vs Normal Import
+
+### Static import
+
+```js
+import {
+    calculateAverage
+} from "./analytics.js";
+```
+
+The dependency is part of the module's initial dependency graph.
+
+### Dynamic import
+
+```js
+const module =
+    await import(
+        "./analytics.js"
+    );
+```
+
+The module can be loaded on demand.
+
+---
+
+# 24. Lazy Loading
+
+Lazy loading means delaying resource loading until it is actually needed.
+
+Examples:
+
+```text
+Images
+JavaScript modules
+Routes
+Components
+Videos
+Large libraries
+```
+
+Example:
+
+```js
+await import(
+    "./analytics.js"
+);
+```
+
+Dynamic imports are commonly used to implement lazy loading for JavaScript modules.
+
+---
+
+# 25. Code Splitting
+
+Code splitting divides application code into smaller chunks.
+
+Instead of:
+
+```text
+application.js
+     ↓
+Large file
+```
+
+we can have:
+
+```text
+main.js
+analytics.js
+admin.js
+reports.js
+```
+
+The application can load additional chunks when required.
+
+Bundlers can generate these chunks automatically from dynamic imports.
+
+---
+
+# 26. Web Workers
+
+## Explanation
+
+A Web Worker allows JavaScript to execute work in a separate worker context rather than directly on the main UI thread.
+
+Normally:
+
+```text
+Main Thread
+    ↓
+JavaScript
+    ↓
+Rendering
+    ↓
+User Interaction
+```
+
+If JavaScript performs a very heavy calculation:
+
+```text
+Heavy Calculation
+       ↓
+Main Thread blocked
+       ↓
+UI becomes unresponsive
+```
+
+A Web Worker can move the heavy computation away from the main thread.
+
+---
+
+# 27. Web Worker Architecture
+
+```text
+Main Thread
+     |
+     | postMessage()
+     ↓
+Web Worker
+     |
+     | Heavy calculation
+     |
+     | postMessage()
+     ↓
+Main Thread
+```
+
+---
+
+# 28. Creating a Worker
+
+### `worker.js`
+
+```js
+self.onmessage = (event) => {
+
+    const number =
+        event.data;
+
+    let result = 0;
+
+    for (
+        let i = 0;
+        i < number;
+        i++
+    ) {
+
+        result += i;
+    }
+
+    self.postMessage(
+        result
+    );
+};
+```
+
+### Main JavaScript
+
+```js
+const worker =
+    new Worker(
+        "./worker.js"
+    );
+
+worker.onmessage =
+    (event) => {
+
+        console.log(
+            "Worker result:",
+            event.data
+        );
+    };
+
+worker.postMessage(
+    100000000
+);
+```
+
+---
+
+# 29. Why Web Workers?
+
+Web Workers are useful for CPU-intensive work such as:
+
+* Large data processing
+* Complex calculations
+* Image processing
+* Parsing large datasets
+* Mathematical operations
+* Encryption-related computations where appropriate
+
+The main thread can continue handling the UI while the worker performs the calculation.
+
+---
+
+# 30. Web Worker Limitations
+
+Workers don't have direct access to the normal page DOM.
+
+For example, this is not normally available inside a dedicated worker:
+
+```js
+document.getElementById(...)
+```
+
+Instead, communicate using:
+
+```js
+postMessage()
+```
+
+and:
+
+```js
+onmessage
+```
+
+---
+
+# 31. Web Workers vs Async Loading
+
+These solve different problems.
+
+### Async Loading
+
+Answers:
+
+> "When should this code be loaded?"
+
+```text
+Load module only when needed
+```
+
+### Web Worker
+
+Answers:
+
+> "Where should this heavy computation execute?"
+
+```text
+Execute heavy work away from main UI thread
+```
+
+Therefore:
+
+```text
+Async Loading
+→ Loading optimization
+
+Web Worker
+→ CPU/UI responsiveness optimization
+```
+
+They can also be used together.
+
+---
+
+# 32. requestAnimationFrame()
+
+For visual animations:
+
+```js
+requestAnimationFrame()
+```
+
+is generally preferable to manually scheduling frame updates with `setInterval()`.
+
+Example:
+
+```js
+function animate() {
+
+    position += 2;
+
+    element.style.left =
+        `${position}px`;
+
+    if (position < 500) {
+
+        requestAnimationFrame(
+            animate
+        );
+    }
+}
+
+requestAnimationFrame(
+    animate
+);
+```
+
+---
+
+# 33. Why requestAnimationFrame?
+
+The browser schedules the callback around its rendering cycle.
+
+It is useful for:
+
+* Animations
+* Canvas drawing
+* Visual movement
+* Smooth UI updates
+
+---
+
+# 34. Browser Rendering
+
+A simplified rendering process is:
+
+```text
+JavaScript
+    ↓
+Style calculation
+    ↓
+Layout
+    ↓
+Paint
+    ↓
+Composite
+```
+
+Large amounts of JavaScript or unnecessary DOM changes can interfere with rendering.
+
+---
+
+# 35. Layout Thrashing
+
+Layout thrashing can happen when JavaScript repeatedly alternates between changing the DOM and reading layout information.
+
+Example:
+
+```js
+element.style.width =
+    "200px";
+
+console.log(
+    element.offsetWidth
+);
+
+element.style.width =
+    "300px";
+
+console.log(
+    element.offsetWidth
+);
+```
+
+Repeated read/write patterns can cause extra layout work.
+
+---
+
+# 36. Better Pattern
+
+Group reads and writes where possible.
+
+```text
+Read layout
+    ↓
+Calculate
+    ↓
+Apply changes
+```
+
+instead of:
+
+```text
+Write
+ ↓
+Read
+ ↓
+Write
+ ↓
+Read
+```
+
+---
+
+# 37. Memory Optimization
+
+JavaScript uses garbage collection to reclaim memory that is no longer reachable.
+
+However, applications can still create memory leaks.
+
+Common causes:
+
+* Unremoved event listeners
+* Active timers
+* Unnecessary global references
+* Large retained objects
+* Detached DOM nodes
+* Unbounded caches
+
+---
+
+# 38. Event Listener Cleanup
+
+Keep the handler reference:
+
+```js
+function handleClick() {
+    console.log("Clicked");
+}
+
+button.addEventListener(
+    "click",
+    handleClick
+);
+```
+
+Later:
+
+```js
+button.removeEventListener(
+    "click",
+    handleClick
+);
+```
+
+This is important when components or pages are created and destroyed repeatedly.
+
+---
+
+# 39. Network Performance
+
+Performance also depends on network resources.
+
+Optimization techniques include:
+
+* Compression
+* Caching
+* Code splitting
+* Lazy loading
+* Smaller assets
+* Efficient APIs
+* CDN usage
+
+---
+
+# 40. Image Optimization
+
+Images can significantly affect page load time.
+
+Techniques include:
+
+* Resize images
+* Compress images
+* Use suitable modern formats
+* Lazy-load images that aren't immediately visible
+
+Example:
+
+```html
+<img
+    src="student.jpg"
+    loading="lazy"
+    alt="Student"
+>
+```
+
+---
+
+# 41. Caching
+
+Caching avoids repeating expensive work.
+
+Examples:
+
+```text
+Browser cache
+HTTP cache
+Application cache
+Memoization
+Service worker cache
+```
+
+Memoization is mainly about reusing computation results.
+
+Browser/HTTP caching is mainly about reusing previously fetched resources.
+
+# 42. Performance Tools
+## Browser DevTools
+### Performance
+Analyze:
+* JavaScript execution
+* Rendering
+* Layout
+* Paint
+* Long tasks
+### Memory
+Analyze:
+* Heap usage
+* Retained objects
+* Potential memory leaks
+### Network
+Analyze:
+* Request time
+* Response size
+* Resource loading
+* Caching
+# 43. Lighthouse
+Lighthouse can analyze web applications for:
+* Performance
+* Accessibility
+* Best practices
+* SEO
+It provides measurements and recommendations that can help identify areas for improvement.
+# 44. Core Web Vitals
+Important user-experience metrics include:
+### LCP
+Largest Contentful Paint.
+Measures how quickly the main content becomes visible.
+### INP
+Interaction to Next Paint.
+Measures responsiveness to user interactions.
+### CLS
+Cumulative Layout Shift.
+Measures unexpected visual movement.
+# 45. Performance Optimization Workflow
+Always follow:
+```text
+Measure
+   ↓
+Identify bottleneck
+   ↓
+Understand cause
+   ↓
+Choose optimization
+   ↓
+Implement
+   ↓
+Measure again
+   ↓
+Compare
+```
+
+| Technique                 | Purpose                                      |
+| ------------------------- | -------------------------------------------- |
+| `performance.now()`       | Measure execution time                       |
+| Debounce                  | Reduce burst events                          |
+| Throttle                  | Limit continuous events                      |
+| Memoization               | Reuse expensive results                      |
+| DocumentFragment          | Batch DOM updates                            |
+| Event delegation          | Reduce listeners                             |
+| Async loading             | Load resources without blocking initial work |
+| Dynamic import            | Load modules on demand                       |
+| Lazy loading              | Delay unnecessary resources                  |
+| Code splitting            | Divide application code                      |
+| Web Workers               | Move heavy computation away from main thread |
+| `requestAnimationFrame()` | Schedule visual updates                      |
+| Caching                   | Avoid repeated work/network requests         |
+| Image optimization        | Reduce resource size                         |
+
+# 47. Debounce vs Throttle vs Async Loading vs Web Worker
+This distinction is important in interviews.
+### Debounce
+```text
+Controls event frequency
+```
+### Throttle
+```text
+Limits event frequency
+```
+### Async Loading
+```text
+Controls when resources are loaded
+```
+### Web Worker
+```text
+Controls where heavy computation executes
+```
+## 37_Unit Testing
+**Unit testing** is the process of testing the smallest independently testable part of an application, such as a function, method, or module.
+The main objective is to verify that a unit produces the expected result for different inputs and conditions.
+```text
+Input
+  ↓
+Function / Unit
+  ↓
+Expected Output
+  ↓
+Assertion
+```
+In our POC:
+```text
+studentService.getStudentResult()
+```
+is the unit being tested.
+### Why is it used?
+* Detects bugs early.
+* Verifies individual business logic.
+* Makes code safer to modify.
+* Reduces debugging effort.
+* Helps prevent regression.
+* Documents expected behavior through test cases.
+### Alternative
+For larger application validation, **integration testing** and **end-to-end testing** are alternatives/complementary approaches, but they test broader parts of the system rather than one isolated unit.
+# 2. Test Case
+A **test case** defines a particular condition, input, action, and expected result that should be verified.
+Example:
+```text
+Input:
+Student marks = [80, 70, 90]
+Expected:
+Average = 80
+Result = PASS
+```
+### Implementation
+```js
+test("should return PASS", () => {
+    studentRepository.findStudentById
+        .mockReturnValue({
+            id: 1,
+            name: "Vaishu",
+            marks: [80, 70, 90]
+        });
+    const result =
+        studentService.getStudentResult(1);
+    expect(result.result).toBe("PASS");
+});
+```
+### Output
+```text
+✓ should return PASS
+```
+### Why is it used?
+A test case defines **exactly what behavior must be verified**, making testing systematic instead of manually checking outputs.
+### Alternative
+Manual testing can verify the same behavior, but it is slower and difficult to repeat consistently.
+# 3. Arrange – Act – Assert
+**AAA** is a common structure for writing readable unit tests.
+```text
+Arrange → prepare data
+Act     → execute functionality
+Assert  → verify result
+```
+### Implementation
+```js
+// Arrange
+studentRepository.findStudentById
+    .mockReturnValue({
+        id: 1,
+        name: "Vaishu",
+        marks: [80, 70, 90]
+    });
+// Act
+const result =
+    studentService.getStudentResult(1);
+// Assert
+expect(result.result).toBe("PASS");
+```
+### Why is it used?
+It separates **test preparation, execution, and verification**, making failures easier to understand.
+### Alternative
+Given/When/Then is another commonly used structure, especially in BDD-style testing.
+# 4. Assertions
+An **assertion** compares the actual result with the expected result.
+```js
+expect(result.result).toBe("PASS");
+```
+If:
+```text
+Expected = PASS
+Actual   = PASS
+```
+the test passes.
+If:
+```text
+Expected = PASS
+Actual   = FAIL
+```
+the test fails.
+### Output
+```text
+✓ should return PASS
+```
+### Why is it used?
+Assertions automatically determine whether the implementation behaves as expected.
+### Alternatives
+Different frameworks provide different assertion styles:
+```js
+// Jest
+expect(value).toBe(10);
+// Chai
+expect(value).to.equal(10);
+```
+# 5. Positive Test
+A positive test verifies that the application behaves correctly for valid input.
+### Implementation
+```js
+studentRepository.findStudentById
+    .mockReturnValue({
+        id: 1,
+        name: "Vaishu",
+        marks: [80, 70, 90]
+    });
+const result =
+    studentService.getStudentResult(1);
+expect(result.result).toBe("PASS");
+```
+### Output
+```text
+✓ should return PASS when average is 50 or above
+```
+### Why is it used?
+It verifies the **expected successful path** of the application.
+### Alternative
+Positive tests can also be implemented using **parameterized/data-driven tests** when multiple valid inputs need to be tested.
+# 6. Negative Test
+A negative test verifies how the application behaves when the input or condition does not satisfy the expected business rule.
+```js
+studentRepository.findStudentById
+    .mockReturnValue({
+        id: 2,
+        name: "Priya",
+        marks: [40, 45, 35]
+    });
+const result =
+    studentService.getStudentResult(2);
+expect(result.result).toBe("FAIL");
+```
+### Output
+```text
+✓ should return FAIL when average is below 50
+```
+### Why is it used?
+It verifies that the application correctly handles **invalid, unsuccessful, or unexpected conditions**.
+### Alternative
+Boundary and edge-case testing can be used when the focus is specifically on limits.
+# 7. Error Testing
+Error testing verifies whether the application correctly throws or handles errors.
+In our POC, an unknown student produces an error.
+```js
+studentRepository.findStudentById
+    .mockReturnValue(undefined);
+expect(() => {
+    studentService.getStudentResult(999);
+}).toThrow("Student not found");
+```
+### Output
+```text
+✓ should throw error when student is not found
+```
+### Why is it used?
+Applications must handle failures predictably instead of silently producing incorrect results.
+### Alternative
+Error handling can also be tested through **error callbacks**, rejected Promises, or HTTP error responses depending on the application.
+# 8. Mocking
+**Mocking** replaces a real dependency with a controlled fake implementation during testing.
+Our real application uses:
+```text
+studentService
+      ↓
+studentRepository
+      ↓
+students.json
+```
+During unit testing:
+
+```text
+studentService
+      ↓
+Mock repository
+      ↓
+Fake student data
+```
+### Jest implementation
+```js
+jest.mock("../../src/studentRepository");
+studentRepository.findStudentById
+    .mockReturnValue({
+        id: 1,
+        name: "Vaishu",
+        marks: [80, 70, 90]
+    });
+```
+### Output
+```text
+✓ should return PASS
+```
+### Why is it used?
+Mocking isolates the unit from external dependencies such as:
+* databases
+* APIs
+* file systems
+* payment services
+* email services
+
+This makes tests **fast, deterministic, and independent**.
+### Alternatives
+* **Stub** → provides predefined responses.
+* **Spy** → observes whether/how a function was called.
+* **Fake** → simplified working implementation.
+* **Dependency injection** → allows dependencies to be replaced during testing.
+# 9. Jest
+
+**Jest** is a JavaScript testing framework that provides a test runner, assertions, mocking, and other testing utilities in one package.
+
+### Implementation
+
+```js
+test("should calculate average correctly", () => {
+
+    studentRepository.findStudentById
+        .mockReturnValue({
+            id: 3,
+            name: "Kavi",
+            marks: [60, 70, 80]
+        });
+
+    const result =
+        studentService.getStudentResult(3);
+
+    expect(result.average).toBe(70);
+});
+```
+### Output
+```text
+PASS tests/jest/studentService.test.js
+
+✓ should calculate average correctly
+```
+### Why is it used?
+Jest provides an integrated testing environment, so separate assertion and mocking libraries are often unnecessary.
+### Alternatives
+* Mocha
+* Vitest
+* Jasmine
+* AVA
+# 10. Mocha
+**Mocha** is a JavaScript test framework used to structure and execute test cases.
+### Implementation
+```js
+it("should calculate average correctly", () => {
+
+    mockStudent({
+        id: 3,
+        name: "Kavi",
+        marks: [60, 70, 80]
+    });
+
+    const result =
+        studentService.getStudentResult(3);
+
+    expect(result.average).to.equal(70);
+});
+```
+### Output
+```text
+Student Result Service
+  ✓ should calculate average correctly
+1 passing
+```
+### Why is it used?
+Mocha provides flexible test execution and allows developers to choose supporting libraries such as Chai for assertions.
+### Alternatives
+* Jest
+* Jasmine
+* Vitest
+# 11. Chai
+**Chai** is an assertion library commonly used with Mocha.
+### Implementation
+```js
+const { expect } = require("chai");
+expect(result.result)
+    .to.equal("PASS");
+```
+### Output
+```text
+✓ should return PASS
+```
+### Why is it used?
+Chai provides readable assertion styles for verifying test results.
+### Alternatives
+* Jest built-in assertions
+* Node.js `assert`
+* Jasmine matchers
+
+# 12. Jest vs Mocha + Chai
+
+| Feature       | Jest               | Mocha + Chai                      |
+| ------------- | ------------------ | --------------------------------- |
+| Test runner   | Yes                | Mocha                             |
+| Assertions    | Built-in           | Chai                              |
+| Mocking       | Built-in           | Additional library/manual mocking |
+| Setup         | Simple             | More configurable                 |
+| Typical usage | Integrated testing | Flexible testing stack            |
+
+In this POC:
+```text
+Jest
+= Test Runner + Assertions + Mocking
+```
+while:
+```text
+Mocha + Chai
+= Test Runner + Assertion Library
+```
+# 13. `beforeEach`
+`beforeEach()` executes setup code before every test.
+### Implementation
+```js
+beforeEach(() => {
+    jest.clearAllMocks();
+});
+```
+### Why is it used?
+It prevents state from one test affecting another test.
+```text
+Test 1
+ ↓
+Reset
+ ↓
+Test 2
+ ↓
+Reset
+ ↓
+Test 3
+```
+### Alternative
+Depending on the requirement:
+```js
+beforeAll()
+afterEach()
+afterAll()
+```
+can be used for different setup and cleanup stages.
+# 14. Test Isolation
+**Test isolation** means each test should execute independently without depending on another test.
+For example:
+```text
+Test A → independent
+Test B → independent
+Test C → independent
+```
+Mocking helps achieve this:
+```js
+studentRepository.findStudentById
+    .mockReturnValue(fakeStudent);
+```
+### Why is it used?
+If one test changes shared data, other tests should not unexpectedly fail.
+### Alternative
+Use fresh test fixtures, setup/teardown hooks, temporary files, or dependency injection.
+# 15. Unit Under Test
+The **Unit Under Test (UUT)** is the specific function or module being tested.
+In our POC:
+```js
+getStudentResult(studentId)
+```
+is the unit under test.
+```text
+Repository
+     ↓
+Student Service ← Unit Under Test
+     ↓
+Result
+```
+### Why is it used?
+Clearly identifying the UUT keeps the test focused on one responsibility.
+### Alternative
+For broader validation, integration tests can test multiple connected components.
+# 16. Real Data vs Mock Data
+Our application has actual JSON data:
+```json
+[
+    {
+        "id": 1,
+        "name": "Vaishu",
+        "marks": [80, 75, 90]
+    }
+]
+```
+The repository reads it:
+```js
+const data =
+    fs.readFileSync(filePath, "utf-8");
+return JSON.parse(data);
+```
+But the unit test replaces that dependency:
+```js
+studentRepository.findStudentById
+    .mockReturnValue({
+        id: 1,
+        name: "Vaishu",
+        marks: [80, 70, 90]
+    });
+```
+### Why?
+The test focuses on:
+```text
+"Is the result calculation correct?"
+```
+rather than:
+```text
+"Can the JSON file be read?"
+```
+That separation is a core principle of unit testing.
+# 17. Test Output
+Running:
+```bash
+npm test
+```
+produces output similar to:
+```text
+PASS tests/jest/studentService.test.js
+Student Result Service
+ ✓ should return PASS when average is 50 or above
+ ✓ should return FAIL when average is below 50
+ ✓ should throw error when student is not found
+ ✓ should call repository with correct ID
+Test Suites: 1 passed
+Tests:       4 passed
+
+Student Result Service
+
+  ✓ should return PASS when average is 50 or above
+  ✓ should return FAIL when average is below 50
+  ✓ should throw error when student is not found
+  ✓ should calculate average correctly
+
+4 passing
+```
+The exact formatting can vary slightly by installed Jest/Mocha versions.
+
+```text
+                 students.json
+                       ↓
+              studentRepository
+                       ↓
+               studentService
+                       ↓
+              getStudentResult()
+                       ↓
+              ┌────────┴────────┐
+              ↓                 ↓
+            Jest          Mocha + Chai
+              ↓                 ↓
+           Mocking          Mocking
+              ↓                 ↓
+          Assertions        Assertions
+              ↓                 ↓
+             PASS / FAIL / ERROR
+```
+**Unit testing isolates one piece of business logic and verifies its behavior using controlled inputs and assertions. Jest provides an integrated testing solution, while Mocha can be combined with Chai for a more modular testing stack. Mocking removes external dependencies from the test so that failures can be attributed to the unit being tested rather than the dependency.**
 

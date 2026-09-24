@@ -240,7 +240,7 @@ Web APIs
 DOM API, Canvas, Geolocation, Web Storage, Notifications
 
 
-35
+35-c
 	
 Debugging
 	
@@ -254,21 +254,21 @@ Performance Optimization
 Debounce, throttle, lazy loading, async loading, Web Workers
 
 
-37
+37-c
 	
 Unit Testing
 	
 Jest, Mocha, Chai, writing test cases, mocking
 
 
-38
+38-c
 	
 Security
 	
 XSS, CSRF, input sanitization, content security policy (CSP)
 
 
-39
+39-c
 	
 Tooling
 	
