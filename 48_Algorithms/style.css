@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+}
+
+button {
+    margin: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+input {
+    padding: 8px;
+}
+
+.student {
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+}
+
+#result {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #333;
+}

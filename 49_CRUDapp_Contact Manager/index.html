@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vaishu Contact Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <header class="header">
+            <h1>Contact Manager</h1>
+            <p>Manage your contacts</p>
+        </header>
+
+
+        <section class="form-section">
+
+            <h2 id="formTitle">Add Contact</h2>
+
+            <form id="contactForm">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Full name"
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email address"
+                >
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Phone number"
+                >
+
+                <input
+                    type="text"
+                    id="company"
+                    placeholder="Company"
+                >
+
+                <button type="submit" id="submitButton">
+                    Add Contact
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelButton"
+                    class="cancel hidden"
+                >
+                    Cancel
+                </button>
+
+            </form>
+
+            <p id="errorMessage"></p>
+
+        </section>
+
+
+        <section class="contacts-section">
+
+            <div class="top-bar">
+
+                <h2>Contacts</h2>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search contacts..."
+                >
+
+            </div>
+
+
+            <div id="contactList"></div>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

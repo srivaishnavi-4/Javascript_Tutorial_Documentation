@@ -4805,76 +4805,390 @@ The main concepts are:
 4. Event Delegation
 
 # 1. Event Listeners
-### Explanation
-An **event listener** waits for a particular event and executes a function when that event happens.
-For example, when a user clicks a button, JavaScript can execute some code.
-### Syntax
-```js
+An **event listener** is used to make JavaScript respond when a specific action happens on a webpage.
+
+For example:
+
+* User clicks a button
+* User moves the mouse
+* User presses a keyboard key
+* User moves the mouse over an element
+* User types into an input
+* User submits a form
+
+The main method used is:
+
+```javascript
 element.addEventListener("event", function);
 ```
-### Simple Example
-```html
-<button id="btn">Click Me</button>
-<script>
-    let button = document.getElementById("btn");
-    button.addEventListener("click", function () {
-        console.log("Button clicked");
-    });
-</script>
-```
-When the button is clicked:
-```text
-Button clicked
-```
 
-### Common Events
+### Why do we use Event Listeners?
 
-| Event       | When it occurs                |
-| ----------- | ----------------------------- |
-| `click`     | Element is clicked            |
-| `dblclick`  | Double click                  |
-| `mouseover` | Mouse enters element          |
-| `mouseout`  | Mouse leaves element          |
-| `keydown`   | Keyboard key is pressed       |
-| `keyup`     | Keyboard key is released      |
-| `input`     | Input value changes           |
-| `change`    | Input selection/value changes |
-| `submit`    | Form is submitted             |
-| `focus`     | Input receives focus          |
-| `blur`      | Input loses focus             |
+We use event listeners to create **interactive web applications**.
+
+For example, in a real application:
+
+* **Click** → Open menu / submit button / delete item
+* **Mouse** → Show tooltip / preview / hover effects
+* **Keyboard** → Search products / keyboard shortcuts
+* **Input** → Validate user data while typing
+* **Submit** → Send form data to backend
 
 ---
-### Technical Real-Time Example
-A search box can listen for user input:
+
+# 2. Basic Syntax
+
+```javascript
+element.addEventListener("eventName", function () {
+    // Code executed when event occurs
+});
+```
+
+Example:
+
+```javascript
+const button = document.querySelector("#saveBtn");
+
+button.addEventListener("click", function () {
+    console.log("Data saved");
+});
+```
+
+### Why `addEventListener()`?
+
+It allows us to attach JavaScript behavior to an element **without mixing JavaScript directly into HTML**.
+
+### Alternative
+
+Inline event handling:
 
 ```html
-<input id="search" placeholder="Search products">
+<button onclick="saveData()">Save</button>
+```
 
-<script>
-    let searchBox = document.getElementById("search");
+But `addEventListener()` is generally preferred because it keeps **HTML and JavaScript separate** and allows multiple listeners for the same event.
 
-    searchBox.addEventListener("input", function () {
-        console.log(searchBox.value);
-    });
-</script>
+---
+
+# 3. Mouse Event Listeners
+
+Mouse events are used when the user interacts with the page using a mouse.
+
+The commonly used mouse events are:
+
+| Event         | When it occurs            | Common use              |
+| ------------- | ------------------------- | ----------------------- |
+| `click`       | Element is clicked        | Buttons, links, actions |
+| `dblclick`    | Element is double-clicked | Open/edit actions       |
+| `mousedown`   | Mouse button is pressed   | Drag operations         |
+| `mouseup`     | Mouse button is released  | Completing drag/action  |
+| `mousemove`   | Mouse moves               | Tracking cursor         |
+| `mouseenter`  | Mouse enters element      | Show tooltip            |
+| `mouseleave`  | Mouse leaves element      | Hide tooltip            |
+| `contextmenu` | Right-click occurs        | Custom context menu     |
+
+---
+
+## 3.1 `click`
+
+The `click` event occurs when the user clicks an element.
+
+### Why do we use it?
+
+It is one of the most frequently used events for performing an action.
+
+**Real-time examples:**
+
+* Login button
+* Add to cart
+* Delete button
+* Open menu
+* Like button
+
+```javascript
+const button = document.querySelector("#saveBtn");
+
+button.addEventListener("click", function () {
+    console.log("Save button clicked");
+});
 ```
-If the user types:
+
+---
+
+## 3.2 `dblclick`
+
+Triggered when the user double-clicks an element.
+
+```javascript
+const file = document.querySelector("#file");
+
+file.addEventListener("dblclick", function () {
+    console.log("File opened");
+});
+```
+
+### Why use it?
+
+Useful when an application needs a different action for a **double-click**.
+
+Example:
+
+A file manager could use:
+
+* Single click → Select file
+* Double click → Open file
+
+---
+
+## 3.3 `mouseenter`
+
+Triggered when the mouse enters an element.
+
+```javascript
+const product = document.querySelector("#product");
+
+product.addEventListener("mouseenter", function () {
+    console.log("Mouse entered product");
+});
+```
+
+### Why use it?
+
+Commonly used for:
+
+* Tooltips
+* Product previews
+* Showing additional information
+* Highlighting UI elements
+
+---
+
+## 3.4 `mouseleave`
+
+Triggered when the mouse leaves an element.
+
+```javascript
+product.addEventListener("mouseleave", function () {
+    console.log("Mouse left product");
+});
+```
+
+### Why use it?
+
+Usually paired with `mouseenter`.
+
+For example:
+
 ```text
-Laptop
+Mouse enters → Show product details
+Mouse leaves  → Hide product details
 ```
-The input event can be used to:
+
+---
+
+## 3.5 `mousemove`
+
+Triggered whenever the mouse moves inside an element.
+
+```javascript
+const box = document.querySelector("#box");
+
+box.addEventListener("mousemove", function (event) {
+    console.log(event.clientX, event.clientY);
+});
+```
+
+### Why use it?
+
+Useful for applications such as:
+
+* Drawing applications
+* Mouse tracking
+* Image magnification
+* Custom cursor effects
+* Drag-and-drop interfaces
+
+`mousemove` can fire **very frequently**, so expensive operations should be avoided inside it.
+
+---
+
+# 4. Keyboard Event Listeners
+
+Keyboard events allow JavaScript to respond to keyboard actions.
+
+The most commonly used ones are:
+
+| Event      | Meaning         | Common use         |
+| ---------- | --------------- | ------------------ |
+| `keydown`  | Key is pressed  | Keyboard shortcuts |
+| `keyup`    | Key is released | Detect release     |
+| `keypress` | Older key event | Avoid for new code |
+
+For modern JavaScript, mainly use **`keydown` and `keyup`**.
+
+---
+
+# 5. `keydown`
+
+Triggered when a keyboard key is pressed.
+
+```javascript
+document.addEventListener("keydown", function (event) {
+    console.log(event.key);
+});
+```
+
+If the user presses `Enter`:
+
 ```text
-User types
-    ↓
-input event
-    ↓
-Get search text
-    ↓
-Filter products / call API
-    ↓
-Display results
+Enter
 ```
-This pattern is commonly used in **search boxes, filters, form validation, autocomplete, and live UI updates**.
+
+will be displayed.
+
+### Why do we use it?
+
+Useful for:
+
+* Keyboard shortcuts
+* Search
+* Games
+* Navigation
+* Form submission
+* Accessibility
+
+Example:
+
+```javascript
+document.addEventListener("keydown", function (event) {
+
+    if (event.key === "Enter") {
+        console.log("Search submitted");
+    }
+
+});
+```
+
+### Real-time example
+
+A search application can allow:
+
+```text
+User types search
+       ↓
+Presses Enter
+       ↓
+Search results displayed
+```
+
+---
+
+# 6. `keyup`
+
+Triggered when the user releases a keyboard key.
+
+```javascript
+document.addEventListener("keyup", function (event) {
+    console.log("Released:", event.key);
+});
+```
+
+### Why use it?
+
+Useful when we need to perform an action **after the key is released**.
+
+Example:
+
+```javascript
+const input = document.querySelector("#search");
+
+input.addEventListener("keyup", function () {
+    console.log("User finished pressing a key");
+});
+```
+
+This can be used for search/filter interfaces, although for live input processing, the `input` event is usually more appropriate.
+
+---
+
+# 7. Keyboard Shortcuts
+
+Event listeners are commonly used to implement keyboard shortcuts.
+
+```javascript
+document.addEventListener("keydown", function (event) {
+
+    if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        console.log("Save action triggered");
+    }
+
+});
+```
+
+### Why `event.ctrlKey`?
+
+It checks whether the **Ctrl key is being held down**.
+
+This allows us to detect:
+
+```text
+Ctrl + S
+Ctrl + C
+Ctrl + V
+Ctrl + Z
+```
+
+and similar combinations.
+
+---
+
+# 8. Event Object
+
+When an event occurs, JavaScript provides an **event object** containing information about that event.
+
+```javascript
+button.addEventListener("click", function (event) {
+    console.log(event);
+});
+```
+
+Some commonly used properties are:
+
+| Property         | Purpose                          |
+| ---------------- | -------------------------------- |
+| `event.target`   | Element that triggered the event |
+| `event.type`     | Type of event                    |
+| `event.key`      | Keyboard key pressed             |
+| `event.clientX`  | Mouse X position                 |
+| `event.clientY`  | Mouse Y position                 |
+| `event.ctrlKey`  | Whether Ctrl is pressed          |
+| `event.shiftKey` | Whether Shift is pressed         |
+| `event.altKey`   | Whether Alt is pressed           |
+
+---
+
+# 9. `event.target`
+
+`event.target` tells us **which element actually triggered the event**.
+
+```javascript
+document.addEventListener("click", function (event) {
+    console.log(event.target);
+});
+```
+
+If the user clicks a button:
+
+```html
+<button id="saveBtn">Save</button>
+```
+
+`event.target` refers to that button.
+
+### Why is it useful?
+
+It is especially useful when we have **multiple elements** and want to identify which one the user interacted with.
 
 # 2. Event Object
 ### Explanation
@@ -5021,7 +5335,7 @@ button
 event.currentTarget:
 div
 ```
-### Easy memory
+
 ```text
 target         → Who actually triggered it?
 currentTarget  → Whose listener is running?
@@ -7304,7 +7618,7 @@ A tool such as Vite can manage this application during development and create a 
 **Note:** remember the distinction clearly: **ES modules (`import`/`export`) are a JavaScript language feature, while Webpack and Vite are development/build tools that work with your modules and dependencies.**
  
   ## 20_JSON
-
+JSON stands for JavaScript Object Notation. It is a lightweight, text-based format used for storing and transporting data across the web.While it is derived from JavaScript, JSON is completely language-independent. Almost every modern programming language can read (parse) and write (generate) JSON data, making it the universal standard for APIs and web communication.
 These concepts are very important when working with **JSON data, REST APIs, frontend applications, and objects**.
 # 1. Parsing
 ### Explanation
@@ -8663,7 +8977,7 @@ Convert response to JSON
    ↓
 Display Orders
 ```
-### Important Interview Point
+
 Always **return** the next Promise when chaining:
 ```js
 .then(user => {
@@ -15782,7 +16096,6 @@ Service worker cache
 Memoization is mainly about reusing computation results.
 
 Browser/HTTP caching is mainly about reusing previously fetched resources.
-
 # 42. Performance Tools
 ## Browser DevTools
 ### Performance
@@ -17543,78 +17856,7 @@ npm run dev
 | Prettier | Automatically format code       | ESLint formatting rules / Biome |
 | esbuild  | Bundle JavaScript               | Webpack, Rollup, Parcel         |
 
-# 30. Real-Time Development Example
-Imagine a company building a student portal.
-The project contains:
-```text
-login.js
-student.js
-marks.js
-attendance.js
-dashboard.js
-api.js
-utils.js
-```
-### npm
-Installs:
-```text
-axios
-react
-etc.
-```
-### ESLint
-Checks:
-```text
-Unused variables
-Incorrect patterns
-Code-quality issues
-```
-### Prettier
-Formats:
-```text
-JavaScript
-JSON
-CSS
-HTML
-```
-### Bundler
-Processes:
-```text
-Multiple modules
-      ↓
-Optimized build
-```
-### npm vs Yarn
-
-Both are package managers.
-
-```text
-npm → Node.js default package manager
-Yarn → Alternative package manager
-```
-
-### ESLint vs Prettier
-
-```text
-ESLint → Code quality
-Prettier → Code formatting
-```
-
-### Bundler vs npm
-
-```text
-npm → Manages dependencies
-Bundler → Processes application modules
-```
-
-### ESLint vs Compiler
-
-```text
-ESLint → Analyzes code
-Compiler/transpiler → Converts code
-```
-
-# 33. One-Line Explanation for Each
+# 30. One-Line Explanation for Each
 
 **npm:**
 Manages JavaScript packages, dependencies, and project scripts.
@@ -17633,4 +17875,3799 @@ Combines application modules and dependencies into build-ready files.
 
 **esbuild:**
 A fast bundler and build tool used to process JavaScript and other web assets.
+
+# 40_Javascript in the Browser
+JavaScript in the browser allows web pages to become **interactive, dynamic, and responsive to user actions**. The browser provides APIs such as the DOM, Events, Storage, History API, and Media API.
+## 1. DOM — Document Object Model
+The DOM represents an HTML page as a **tree of objects** that JavaScript can access and modify.
+### Why is DOM used?
+* Read HTML elements
+* Change content
+* Change styles
+* Create/remove elements
+* Handle user input
+### Selecting Elements
+```javascript
+const title = document.querySelector("#title");
+const buttons = document.querySelectorAll(".btn");
+```
+Common methods:
+
+| Method               | Purpose                       |
+| -------------------- | ----------------------------- |
+| `getElementById()`   | Select element by ID          |
+| `querySelector()`    | Select first matching element |
+| `querySelectorAll()` | Select all matching elements  |
+| `createElement()`    | Create an element             |
+
+### Modifying DOM
+```javascript
+const title = document.querySelector("#title");
+title.textContent = "Welcome Vaishu";
+title.style.color = "blue";
+```
+### Creating Elements
+```javascript
+const li = document.createElement("li");
+li.textContent = "CSE";
+document.querySelector("#departmentList")
+    .appendChild(li);
+```
+### `textContent` vs `innerHTML`
+```javascript
+element.textContent = "Hello Vaishu";
+```
+Use `textContent` for plain text.
+```javascript
+element.innerHTML = "<strong>Hello Vaishu</strong>";
+```
+Use `innerHTML` when intentionally inserting HTML.
+# 2. Events
+Events allow JavaScript to respond to **user or browser actions**.
+Examples:
+```text
+click
+submit
+input
+change
+keydown
+keyup
+mouseover
+load
+```
+### Why are Events used?
+Without events, JavaScript would not know when the user interacts with the page.
+### Event Listener
+```javascript
+const button = document.querySelector("#addButton");
+button.addEventListener("click", () => {
+    console.log("Button clicked");
+});
+```
+### Form Event
+```javascript
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    console.log("Form submitted");
+});
+```
+`preventDefault()` stops the browser's default action, such as reloading the page after form submission.
+### Event Object
+```javascript
+button.addEventListener("click", (event) => {
+    console.log(event.target);
+});
+```
+`event.target` identifies the element that triggered the event.
+# 3. Event Bubbling
+When an event occurs on a child element, it can propagate toward its parent elements.
+```text
+Button
+   ↓
+Card
+   ↓
+Container
+   ↓
+Document
+```
+Example:
+```javascript
+card.addEventListener("click", () => {
+    console.log("Card clicked");
+});
+button.addEventListener("click", () => {
+    console.log("Button clicked");
+});
+```
+Clicking the button can trigger both handlers.
+Stop propagation when required:
+```javascript
+button.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+```
+### Why is bubbling useful?
+It is useful when an action should affect both the clicked element and its parent, such as cards, menus, expandable sections, and nested UI components.
+# 4. Rendering
+Rendering means **displaying application data in the browser UI**.
+Typical flow:
+```text
+Data
+ ↓
+JavaScript
+ ↓
+Create / Update DOM
+ ↓
+Browser renders UI
+```
+Example:
+```javascript
+const students = [
+    { name: "Vaishu", department: "CSE" },
+    { name: "Ravi", department: "ECE" }
+];
+function renderStudents() {
+    const list = document.querySelector("#studentList");
+    list.innerHTML = "";
+    students.forEach(student => {
+        const li = document.createElement("li");
+        li.textContent =
+            `${student.name} - ${student.department}`;
+
+        list.appendChild(li);
+    });
+}
+renderStudents();
+```
+### Why use a render function?
+Instead of manually updating different elements whenever data changes, one function can rebuild the UI from the current state.
+```text
+State changes
+     ↓
+render()
+     ↓
+Updated DOM
+```
+### Rendering vs DOM Manipulation
+**DOM manipulation** is the operation:
+```javascript
+element.textContent = "Vaishu";
+```
+**Rendering** is the overall process of converting application state/data into the visible UI.
+# 5. Web Storage API
+Web Storage allows the browser to store data locally.
+Two main types:
+```text
+localStorage
+sessionStorage
+```
+## localStorage
+Data remains after closing the browser.
+```javascript
+localStorage.setItem("studentName", "Vaishu");
+```
+Read:
+```javascript
+const name = localStorage.getItem("studentName");
+console.log(name);
+```
+Delete:
+```javascript
+localStorage.removeItem("studentName");
+```
+Clear everything:
+```javascript
+localStorage.clear();
+```
+### Storing Objects
+Storage stores strings, so objects must be converted to JSON.
+```javascript
+const student = {
+    name: "Vaishu",
+    department: "CSE"
+};
+localStorage.setItem(
+    "student",
+    JSON.stringify(student)
+);
+```
+Read it:
+```javascript
+const data = localStorage.getItem("student");
+const student = JSON.parse(data);
+console.log(student.name);
+```
+### Why use localStorage?
+Useful for small client-side data such as:
+* Preferences
+* Theme settings
+* Draft data
+* Simple offline application data
+It should not be used for sensitive information such as passwords.
+## sessionStorage
+```javascript
+sessionStorage.setItem("user", "Vaishu");
+```
+The data is available for the current browser tab/session.
+```text
+localStorage
+→ persists after browser restart
+sessionStorage
+→ persists during the tab session
+```
+# 6. History API
+The History API allows JavaScript to manipulate the browser's session history without performing a full page reload.
+Important methods:
+```javascript
+history.pushState()
+history.replaceState()
+history.back()
+history.forward()
+```
+### `pushState()`
+Adds a new history entry.
+```javascript
+history.pushState(
+    { page: "students" },
+    "",
+    "/students"
+);
+```
+The URL changes without reloading the page.
+### `replaceState()`
+Replaces the current history entry.
+```javascript
+history.replaceState(
+    { page: "home" },
+    "",
+    "/home"
+);
+```
+### `popstate`
+Detects browser Back/Forward navigation.
+```javascript
+window.addEventListener("popstate", (event) => {
+    console.log("Navigation changed");
+    console.log(event.state);
+});
+```
+### Why use History API?
+It is useful for **single-page applications (SPAs)** where the URL needs to change while the page remains loaded.
+Example:
+```text
+/students
+/students/101
+/settings
+/profile
+```
+The application can change the displayed content without completely reloading the page.
+# 7. Media API
+The Media APIs allow browser applications to access and control media devices such as:
+* Camera
+* Microphone
+* Audio
+* Video
+One important API is:
+```javascript
+navigator.mediaDevices.getUserMedia()
+```
+### Access Camera
+```javascript
+const video = document.querySelector("#camera");
+navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+    })
+    .catch(error => {
+        console.error("Camera access failed:", error);
+    });
+```
+HTML:
+```html
+<video id="camera" autoplay></video>
+```
+### Camera + Microphone
+```javascript
+navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: true
+});
+```
+The browser asks the user for permission before accessing these devices.
+### Why use Media API?
+Used in applications such as:
+
+```text
+Video calling
+Online interviews
+Camera capture
+Voice recording
+Face detection
+Video conferencing
+```
+# Browser JavaScript Overall Flow
+
+```text
+                    Browser
+                       |
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+       DOM           Events         APIs
+        |              |              |
+        ↓              ↓              ↓
+     Update UI      User Action    Browser Features
+        |                             |
+        ├──────────┬──────────┬───────┤
+        ↓          ↓          ↓
+     Storage    History     Media
+        |
+        ↓
+    Application State
+        |
+        ↓
+     Rendering
+        |
+        ↓
+     Updated UI
+```
+## Quick Reference
+
+| Concept     | Main Purpose              | Common API                 |
+| ----------- | ------------------------- | -------------------------- |
+| DOM         | Access/change HTML        | `document.querySelector()` |
+| Events      | Respond to actions        | `addEventListener()`       |
+| Rendering   | Display application state | DOM APIs                   |
+| Storage     | Store browser data        | `localStorage`             |
+| History API | Manage browser navigation | `pushState()`              |
+| Media API   | Access camera/microphone  | `getUserMedia()`           |
+
+# 41_Javascript in Node.js
+Node.js allows JavaScript to run **outside the browser**, mainly for backend applications, APIs, CLI tools, file processing, and servers.
+```text
+Browser JavaScript
+→ DOM, Events, localStorage, Media API
+Node.js
+→ Files, HTTP servers, OS, Processes, npm packages
+```
+## 1. Modules
+A module is a separate JavaScript file containing reusable code.
+### Why use modules?
+* Organize large applications
+* Reuse code
+* Separate responsibilities
+* Avoid one large JavaScript file
+### Common Node.js modules
+```text
+http  → create servers
+fs    → work with files
+path  → handle file paths
+os    → operating-system information
+```
+These are built into Node.js, so they don't need installation.
+### Importing Built-in Modules
+```javascript
+const fs = require("fs");
+const path = require("path");
+const http = require("http");
+```
+### Creating Your Own Module
+`student.js`
+```javascript
+function createStudent(name, department) {
+    return {
+        name,
+        department
+    };
+}
+module.exports = {
+    createStudent
+};
+```
+`app.js`
+```javascript
+const { createStudent } = require("./student");
+const student = createStudent("Vaishu", "CSE");
+console.log(student);
+```
+Output:
+```text
+{
+  name: 'Vaishu',
+  department: 'CSE'
+}
+```
+### Module Types
+```text
+Built-in modules
+    ↓
+http, fs, path, os
+Custom modules
+    ↓
+./student.js
+External modules
+    ↓
+uuid, express, socket.io
+```
+# 2. File System (`fs`)
+The `fs` module allows Node.js to **create, read, update, and delete files**.
+### Why use `fs`?
+Used for:
+* Reading configuration files
+* Saving application data
+* Creating logs
+* Processing uploaded files
+* Working with JSON files
+Import:
+```javascript
+const fs = require("fs");
+```
+### Write a File
+```javascript
+fs.writeFileSync(
+    "students.txt",
+    "Vaishu - CSE"
+);
+```
+### Read a File
+```javascript
+const data = fs.readFileSync(
+    "students.txt",
+    "utf-8"
+);
+console.log(data);
+```
+### Append Data
+```javascript
+fs.appendFileSync(
+    "students.txt",
+    "\nRavi - ECE"
+);
+```
+### Check if File Exists
+```javascript
+if (fs.existsSync("students.txt")) {
+    console.log("File exists");
+}
+```
+### Delete a File
+```javascript
+fs.unlinkSync("students.txt");
+```
+### Asynchronous File Operations
+For server applications, asynchronous operations are generally preferred because they don't block the Node.js event loop.
+```javascript
+fs.readFile(
+    "students.txt",
+    "utf-8",
+    (error, data) => {
+        if (error) {
+            console.error(error);
+            return;
+        }
+        console.log(data);
+    }
+);
+```
+```text
+Synchronous
+→ waits until operation finishes
+Asynchronous
+→ continues execution while operation is in progress
+```
+# 3. HTTP Module
+The `http` module allows Node.js to create an **HTTP server**.
+### Why use HTTP?
+Used to build:
+* Web servers
+* REST APIs
+* Backend services
+* Request/response systems
+Import:
+```javascript
+const http = require("http");
+```
+### Basic HTTP Server
+```javascript
+const http = require("http");
+const server = http.createServer((req, res) => {
+    res.writeHead(200, {
+        "Content-Type": "text/plain"
+    });
+    res.end("Hello Vaishu");
+});
+server.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
+```
+Run:
+```bash
+node app.js
+```
+Open:
+```text
+http://localhost:3000
+```
+### Request and Response
+```text
+Browser
+   |
+   | HTTP Request
+   ↓
+Node.js Server
+   |
+   | HTTP Response
+   ↓
+Browser
+```
+`req` contains information about the request.
+```javascript
+req.url
+req.method
+```
+Example:
+```javascript
+const server = http.createServer((req, res) => {
+    if (req.url === "/students" &&
+        req.method === "GET") {
+        res.writeHead(200, {
+            "Content-Type": "application/json"
+        });
+        res.end(
+            JSON.stringify([
+                {
+                    id: 1,
+                    name: "Vaishu",
+                    department: "CSE"
+                }
+            ])
+        );
+    }
+});
+```
+### Common HTTP Methods
+
+| Method | Purpose     |
+| ------ | ----------- |
+| GET    | Read data   |
+| POST   | Create data |
+| PUT    | Update data |
+| DELETE | Delete data |
+
+# 4. npm Packages
+npm is the package ecosystem used with Node.js.
+### Why use npm packages?
+Instead of implementing everything yourself, you can install reusable libraries.
+Examples:
+```text
+express  → Web framework
+uuid     → Generate unique IDs
+socket.io → Realtime communication
+dotenv   → Environment variables
+```
+### Initialize a Project
+```bash
+npm init -y
+```
+This creates:
+```text
+package.json
+```
+### Install a Package
+Example using `uuid`:
+```bash
+npm install uuid
+```
+Use it:
+```javascript
+const { v4: uuidv4 } = require("uuid");
+const studentId = uuidv4();
+console.log(studentId);
+```
+Example output:
+```text
+7f8c1c2e-3b1d-4a8a-9f4e-...
+```
+### Development Dependency
+```bash
+npm install --save-dev jest
+```
+Development dependencies are mainly required while developing/testing the application.
+### `package.json`
+Example:
+```json
+{
+    "name": "student-app",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "uuid": "^13.0.0"
+    }
+}
+```
+Run the script:
+```bash
+npm start
+```
+# 5. Process Object
+`process` is a **global Node.js object** that provides information and control over the running Node.js process.
+No installation or import is required.
+### Why use `process`?
+Used to access:
+* Node.js version
+* Operating system
+* Process ID
+* Environment variables
+* Command-line arguments
+* Current directory
+* Exit status
+### Node Version
+```javascript
+console.log(process.version);
+```
+Example:
+```text
+v24.x.x
+```
+### Operating System
+```javascript
+console.log(process.platform);
+```
+Example:
+```text
+win32
+```
+### Process ID
+```javascript
+console.log(process.pid);
+```
+### Current Directory
+```javascript
+console.log(process.cwd());
+```
+### Environment Variables
+```javascript
+console.log(process.env.NODE_ENV);
+```
+Set in terminal:
+```bash
+set NODE_ENV=development
+```
+Then:
+```javascript
+console.log(process.env.NODE_ENV);
+```
+For sensitive configuration such as API keys, environment variables are preferred over hardcoding values in source code.
+### Command-Line Arguments
+Run:
+```bash
+node app.js Vaishu CSE
+```
+Read arguments:
+```javascript
+console.log(process.argv);
+```
+The custom arguments can be accessed from index `2`:
+```javascript
+const name = process.argv[2];
+const department = process.argv[3];
+console.log(name);
+console.log(department);
+```
+Output:
+```text
+Vaishu
+CSE
+```
+### Exit Process
+```javascript
+process.exit(1);
+```
+The value represents the exit status:
+```text
+0 → successful
+non-zero → error
+```
+# 42_Web Sockets
+WebSocket provides a **persistent, two-way connection** between client and server.
+## WebSocket Methods and Events
+### `new WebSocket()`
+Creates a WebSocket connection.
+```javascript
+const socket = new WebSocket("ws://localhost:3000");
+```
+### `send()`
+Sends data to the server.
+```javascript
+socket.send("Hello Server");
+```
+### `close()`
+Closes the WebSocket connection.
+```javascript
+socket.close();
+```
+### `onopen`
+Runs when the connection is successfully established.
+```javascript
+socket.onopen = () => {
+    console.log("Connected");
+};
+```
+### `onmessage`
+Runs when data is received from the server.
+```javascript
+socket.onmessage = (event) => {
+    console.log(event.data);
+};
+```
+### `onerror`
+Runs when a WebSocket error occurs.
+```javascript
+socket.onerror = (error) => {
+    console.log("Connection error", error);
+};
+```
+### `onclose`
+Runs when the connection is closed.
+```javascript
+socket.onclose = () => {
+    console.log("Connection closed");
+};
+```
+### WebSocket Flow
+```text
+new WebSocket()
+       ↓
+    onopen
+       ↓
+     send()
+       ↓
+   onmessage
+       ↓
+     close()
+       ↓
+    onclose
+```
+# Socket.IO
+Socket.IO provides **event-based real-time communication** between client and server.
+## Socket.IO Methods
+### `io()`
+Connects the client to the Socket.IO server.
+```javascript
+const socket = io("http://localhost:3000");
+```
+### `socket.emit()`
+Sends a custom event and data.
+```javascript
+socket.emit("message", "Hello Vaishu");
+```
+### `socket.on()`
+Listens for a custom event.
+```javascript
+socket.on("message", (data) => {
+    console.log(data);
+});
+```
+### `io.emit()`
+Sends an event to **all connected clients**.
+```javascript
+io.emit("message", "New student added");
+```
+### `socket.broadcast.emit()`
+Sends an event to all clients **except the sender**.
+```javascript
+socket.broadcast.emit(
+    "message",
+    "Another user joined"
+);
+```
+### `socket.disconnect()`
+Disconnects the client.
+```javascript
+socket.disconnect();
+```
+### Connection Event
+Runs when a client connects.
+```javascript
+io.on("connection", (socket) => {
+    console.log("Client connected");
+});
+```
+### Disconnect Event
+```javascript
+socket.on("disconnect", () => {
+    console.log("Client disconnected");
+});
+```
+## Socket.IO Communication
+```text
+Client                         Server
+socket.emit()
+      ───────── event ────────→
+socket.on()
+      ←──────── event ─────────
+```
+## WebSocket vs Socket.IO
+
+| WebSocket          | Socket.IO    |
+| ------------------ | ------------ |
+| `new WebSocket()`  | `io()`       |
+| `send()`           | `emit()`     |
+| `onmessage`        | `on()`       |
+| `onopen`           | `connection` |
+| `onclose`          | `disconnect` |
+| Native browser API | Library      |
+| Message-based      | Event-based  |
+
+# 43_Service Workers and PWA
+## Service Worker
+A **Service Worker** is a background JavaScript file that runs separately from the web page and can intercept network requests, cache resources, and support offline functionality.
+### Why use Service Workers?
+* Offline access
+* Cache website resources
+* Background processing
+* Push notifications
+* Background synchronization
+### Registering a Service Worker
+```javascript
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+}
+```
+### Important Service Worker Events
+#### `install`
+Runs when the Service Worker is installed.
+```javascript
+self.addEventListener("install", (event) => {
+    console.log("Service Worker installed");
+});
+```
+#### `activate`
+Runs after installation and is commonly used for cleaning old caches.
+```javascript
+self.addEventListener("activate", (event) => {
+    console.log("Service Worker activated");
+});
+```
+#### `fetch`
+Intercepts network requests.
+```javascript
+self.addEventListener("fetch", (event) => {
+    console.log("Request:", event.request.url);
+});
+```
+# Offline Caching
+The Cache API stores resources so they can be served when the network is unavailable.
+```javascript
+const CACHE_NAME = "app-v1";
+const files = [
+    "/",
+    "/index.html",
+    "/style.css",
+    "/app.js"
+];
+self.addEventListener("install", (event) => {
+
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => cache.addAll(files))
+    );
+});
+```
+Serve cached files:
+```javascript
+self.addEventListener("fetch", (event) => {
+
+    event.respondWith(
+        caches.match(event.request)
+            .then(cachedResponse => {
+                return cachedResponse ||
+                    fetch(event.request);
+            })
+    );
+});
+```
+### Important Cache Methods
+
+| Method           | Purpose                  |
+| ---------------- | ------------------------ |
+| `caches.open()`  | Opens/creates cache      |
+| `cache.add()`    | Adds one resource        |
+| `cache.addAll()` | Adds multiple resources  |
+| `caches.match()` | Searches cached resource |
+| `cache.put()`    | Stores request/response  |
+| `cache.delete()` | Removes cached resource  |
+
+# Background Sync
+Background Sync allows a web application to **retry operations when the network becomes available**.
+Example use:
+```text
+User submits data
+      ↓
+Internet unavailable
+      ↓
+Store request locally
+      ↓
+Internet returns
+      ↓
+Sync request with server
+```
+Register sync:
+```javascript
+navigator.serviceWorker.ready.then(registration => {
+    registration.sync.register("sync-students");
+});
+```
+Handle it in the Service Worker:
+```javascript
+self.addEventListener("sync", (event) => {
+    if (event.tag === "sync-students") {
+        event.waitUntil(syncStudents());
+    }
+});
+```
+```javascript
+async function syncStudents() {
+    console.log("Synchronizing student data");
+}
+```
+### Why use Background Sync?
+Useful for applications where data should be sent even when the user temporarily loses connectivity.
+# PWA — Progressive Web App
+A PWA is a web application that provides app-like features such as **offline support and installation**.
+A basic PWA generally uses:
+```text
+Web App
+   +
+Service Worker
+   +
+Web App Manifest
+```
+## Web App Manifest
+The manifest provides information used when installing the web application.
+`manifest.json`
+```json
+{
+    "name": "Student Manager",
+    "short_name": "Students",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
+```
+Connect it to HTML:
+```html
+<link rel="manifest" href="/manifest.json">
+```
+### Important Manifest Properties
+
+| Property     | Purpose                     |
+| ------------ | --------------------------- |
+| `name`       | Full application name       |
+| `short_name` | Short application name      |
+| `start_url`  | Page opened when app starts |
+| `display`    | App display mode            |
+| `icons`      | Application icons           |
+
+# Installable App
+A PWA can be installed from a supported browser when the application satisfies the browser's installability requirements.
+```text
+Website
+   ↓
+Manifest + Service Worker
+   ↓
+Install
+   ↓
+App-like experience
+```
+### Core Concepts
+| Concept         | Purpose                             |
+| --------------- | ----------------------------------- |
+| Service Worker  | Background network handling         |
+| Cache API       | Store resources                     |
+| `install`       | Prepare Service Worker/cache        |
+| `activate`      | Activate and clean old resources    |
+| `fetch`         | Intercept requests                  |
+| Background Sync | Retry operations when online        |
+| Manifest        | Defines installable app information |
+| PWA             | Web app with app-like capabilities  |
+
+# 44_Typescript Basics
+TypeScript is a **superset of JavaScript** that adds static typing and additional language features. TypeScript code is compiled into JavaScript before it runs in the browser or Node.js.
+```text
+TypeScript
+    ↓
+TypeScript Compiler (tsc)
+    ↓
+JavaScript
+    ↓
+Browser / Node.js
+```
+TypeScript helps identify many errors during development instead of discovering them only at runtime.
+# 1. TypeScript vs JavaScript
+JavaScript is dynamically typed.
+```javascript
+let age = 20;
+age = "twenty"; // Allowed in JavaScript
+```
+TypeScript allows us to specify the expected type.
+```typescript
+let age: number = 20;
+age = "twenty"; // Error
+```
+The TypeScript compiler detects the incorrect assignment.
+# 2. Installing TypeScript
+Install TypeScript globally:
+```bash
+npm install -g typescript
+```
+Check the version:
+```bash
+tsc --version
+```
+For a project, TypeScript can also be installed locally:
+```bash
+npm install --save-dev typescript
+```
+Create a configuration file:
+```bash
+tsc --init
+```
+This creates:
+```text
+tsconfig.json
+```
+# 3. Basic TypeScript Syntax
+A TypeScript file uses the `.ts` extension.
+```typescript
+let name: string = "Vaishu";
+let age: number = 22;
+let isStudent: boolean = true;
+```
+General syntax:
+```typescript
+let variableName: type = value;
+```
+# 4. Basic Types
+## String
+```typescript
+let studentName: string = "Vaishu";
+```
+## Number
+```typescript
+let marks: number = 85;
+```
+## Boolean
+```typescript
+let isPassed: boolean = true;
+```
+## Array
+```typescript
+let skills: string[] = [
+    "JavaScript",
+    "TypeScript",
+    "Python"
+];
+```
+Another syntax:
+```typescript
+let marks: Array<number> = [80, 90, 85];
+```
+## Tuple
+A tuple defines a fixed structure and order of values.
+```typescript
+let student: [string, number] = ["Vaishu", 22];
+```
+Here:
+```text
+string → first value
+number → second value
+```
+This is different from a normal array where the number and order of elements are more flexible.
+# 5. Object Types
+An object can be given a specific structure.
+```typescript
+let student: {
+    name: string;
+    age: number;
+    department: string;
+} = {
+    name: "Vaishu",
+    age: 22,
+    department: "CSE"
+};
+```
+This ensures that the object contains the expected properties and types.
+# 6. Type Inference
+TypeScript can automatically determine a variable's type from its initial value.
+```typescript
+let name = "Vaishu";
+let age = 22;
+let isStudent = true;
+```
+TypeScript infers:
+```text
+name       → string
+age        → number
+isStudent  → boolean
+```
+Therefore, this produces an error:
+```typescript
+let age = 22;
+age = "twenty";
+```
+### Why use type inference?
+It reduces unnecessary type declarations while still providing type safety.
+Instead of:
+```typescript
+let name: string = "Vaishu";
+```
+we can often write:
+```typescript
+let name = "Vaishu";
+```
+# 7. `any`
+`any` disables most TypeScript type checking for a value.
+```typescript
+let data: any = "Vaishu";
+data = 100;
+data = true;
+data = [];
+```
+It can accept different types.
+### When to use
+Use `any` only when the type is genuinely unknown and cannot reasonably be described.
+Avoid using `any` unnecessarily because it removes TypeScript's type-safety benefits.
+# 8. `unknown`
+`unknown` is safer than `any` when the type is not known.
+```typescript
+let data: unknown = "Vaishu";
+```
+Before using the value, its type should be checked.
+```typescript
+if (typeof data === "string") {
+    console.log(data.toUpperCase());
+}
+```
+### Difference
+```text
+any
+→ Can be used directly
+unknown
+→ Must be checked before using it
+```
+# 9. `void`
+`void` is commonly used for functions that do not return a value.
+```typescript
+function showMessage(): void {
+    console.log("Student added");
+}
+```
+The function performs an operation but does not return a value.
+# 10. `null` and `undefined`
+```typescript
+let selectedStudent: string | null = null;
+```
+The variable can contain either:
+```text
+string
+or
+null
+```
+`undefined` represents a value that has not been assigned.
+```typescript
+let result: undefined = undefined;
+```
+With strict TypeScript settings, these values are handled more carefully.
+# 11. Union Types
+A union allows a variable to have more than one possible type.
+```typescript
+let studentId: number | string;
+studentId = 101;
+studentId = "ST101";
+```
+Another example:
+```typescript
+function printId(id: number | string) {
+    console.log(id);
+}
+```
+Union types are useful when an application legitimately accepts different types of values.
+# 12. Literal Types
+A literal type restricts a value to specific values.
+```typescript
+let status: "pending" | "completed" | "cancelled";
+status = "completed";
+```
+This is valid:
+```typescript
+status = "pending";
+```
+This produces an error:
+```typescript
+status = "processing";
+```
+Literal types are useful for predefined states, roles, modes, and options.
+# 13. Type Aliases
+A type alias allows us to create a reusable type definition.
+```typescript
+type Student = {
+    id: number;
+    name: string;
+    department: string;
+};
+```
+Now it can be reused:
+```typescript
+const student1: Student = {
+    id: 101,
+    name: "Vaishu",
+    department: "CSE"
+};
+const student2: Student = {
+    id: 102,
+    name: "Priya",
+    department: "IT"
+};
+```
+### Why use type aliases?
+They prevent repeated type definitions and make complex types easier to understand.
+# 14. Interfaces
+Interfaces define the structure that an object should follow.
+```typescript
+interface Student {
+    id: number;
+    name: string;
+    department: string;
+}
+const student: Student = {
+    id: 101,
+    name: "Vaishu",
+    department: "CSE"
+};
+```
+Interfaces are commonly used to describe:
+* Objects
+* Class structures
+* API data
+* Function contracts
+* Application models
+# 15. Optional Properties
+A property can be made optional using `?`.
+```typescript
+interface Student {
+    id: number;
+    name: string;
+    department?: string;
+}
+```
+Both are valid:
+```typescript
+const student1: Student = {
+    id: 101,
+    name: "Vaishu"
+};
+const student2: Student = {
+    id: 102,
+    name: "Priya",
+    department: "CSE"
+};
+```
+# 16. Readonly Properties
+`readonly` prevents a property from being modified after initialization.
+```typescript
+interface Student {
+    readonly id: number;
+    name: string;
+}
+const student: Student = {
+    id: 101,
+    name: "Vaishu"
+};
+student.name = "Priya"; // Valid
+student.id = 102; // Error
+```
+# 17. Interface Extension
+An interface can extend another interface.
+```typescript
+interface Person {
+    name: string;
+    age: number;
+}
+interface Student extends Person {
+    department: string;
+}
+```
+Now `Student` contains:
+```text
+name
+age
+department
+```
+Example:
+```typescript
+const student: Student = {
+    name: "Vaishu",
+    age: 22,
+    department: "CSE"
+};
+```
+# 18. Functions in TypeScript
+Function parameters can have types.
+```typescript
+function add(a: number, b: number) {
+    return a + b;
+}
+```
+The return type can also be explicitly defined.
+```typescript
+function add(a: number, b: number): number {
+    return a + b;
+}
+```
+### Arrow Function
+```typescript
+const multiply = (a: number, b: number): number => {
+    return a * b;
+};
+```
+# 19. Function Type
+A variable can describe the type of a function.
+```typescript
+let calculate: (a: number, b: number) => number;
+calculate = (a, b) => {
+    return a + b;
+};
+```
+The function must accept two numbers and return a number.
+# 20. Enums
+Enums define a collection of named constants.
+```typescript
+enum Role {
+    Student,
+    Staff,
+    Admin
+}
+let userRole: Role = Role.Student;
+```
+String enums can also be used:
+```typescript
+enum Status {
+    Pending = "PENDING",
+    Completed = "COMPLETED",
+    Cancelled = "CANCELLED"
+}
+```
+Enums are useful when a value must belong to a predefined set.
+# 21. Type Assertions
+Type assertions tell TypeScript that you know the type of a value.
+```typescript
+const input = document.getElementById(
+    "studentName"
+) as HTMLInputElement;
+console.log(input.value);
+```
+Type assertion does not convert the actual JavaScript value. It only tells TypeScript how the value should be treated during type checking.
+# 22. Type Narrowing
+Type narrowing means checking a value's type before performing an operation.
+```typescript
+function printValue(value: string | number) {
+    if (typeof value === "string") {
+        console.log(value.toUpperCase());
+    } else {
+        console.log(value.toFixed(2));
+    }
+}
+```
+TypeScript understands that:
+```text
+if string → value is string
+else      → value is number
+```
+Common narrowing techniques include:
+```typescript
+typeof
+instanceof
+in
+```
+# 23. Generics
+Generics allow us to create reusable code that works with different types while maintaining type safety.
+```typescript
+function identity<T>(value: T): T {
+    return value;
+}
+const name = identity<string>("Vaishu");
+const age = identity<number>(22);
+```
+`T` represents a type that is determined when the function is used.
+### Generic Array Example
+```typescript
+function getFirstItem<T>(items: T[]): T {
+    return items[0];
+}
+const firstStudent = getFirstItem<string>(
+    ["Vaishu", "Priya"]
+);
+const firstMark = getFirstItem<number>(
+    [80, 90, 95]
+);
+```
+### Why Generics?
+Without generics, developers may use `any`:
+```typescript
+function identity(value: any): any {
+    return value;
+}
+```
+Generics preserve the original type:
+```text
+Input type → Generic → Same output type
+```
+# 24. Generic Interfaces
+Generics can also be used with interfaces.
+```typescript
+interface ApiResponse<T> {
+    success: boolean;
+    data: T;
+}
+```
+Use it with different data types:
+```typescript
+const studentResponse: ApiResponse<string[]> = {
+    success: true,
+    data: ["Vaishu", "Priya"]
+};
+```
+Another example:
+```typescript
+const countResponse: ApiResponse<number> = {
+    success: true,
+    data: 25
+};
+```
+# 25. Classes
+TypeScript supports classes with type annotations.
+```typescript
+class Student {
+    name: string;
+    department: string;
+    constructor(name: string, department: string) {
+        this.name = name;
+        this.department = department;
+    }
+    display(): void {
+        console.log(
+            `${this.name} - ${this.department}`
+        );
+    }
+}
+const student = new Student("Vaishu", "CSE");
+student.display();
+```
+# 26. Access Modifiers
+TypeScript provides access modifiers:
+```text
+public
+private
+protected
+```
+### Public
+Accessible from anywhere.
+```typescript
+class Student {
+    public name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+```
+### Private
+Accessible only inside the class.
+```typescript
+class Student {
+    private marks: number = 90;
+    getMarks(): number {
+        return this.marks;
+    }
+}
+```
+### Protected
+Accessible inside the class and its subclasses.
+```typescript
+class Person {
+    protected name: string = "Vaishu";
+}
+class Student extends Person {
+    displayName() {
+        console.log(this.name);
+    }
+}
+```
+# 27. Inheritance
+A class can inherit properties and methods from another class.
+```typescript
+class Person {
+    name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+}
+class Student extends Person {
+    department: string;
+    constructor(name: string, department: string) {
+        super(name);
+        this.department = department;
+    }
+}
+```
+# 28. Abstract Classes
+An abstract class provides a base structure that other classes must implement.
+```typescript
+abstract class Employee {
+    abstract calculateSalary(): number;
+    displayRole(): void {
+        console.log("Employee");
+    }
+}
+class Developer extends Employee {
+    calculateSalary(): number {
+        return 50000;
+    }
+}
+```
+An abstract class cannot be directly instantiated.
+# 29. `keyof`
+`keyof` creates a union of the property names of a type.
+```typescript
+interface Student {
+    name: string;
+    age: number;
+    department: string;
+}
+type StudentKeys = keyof Student;
+```
+`StudentKeys` becomes:
+```text
+"name" | "age" | "department"
+```
+Example:
+```typescript
+function getValue(
+    student: Student,
+    key: keyof Student
+) {
+    return student[key];
+}
+```
+This prevents invalid property names.
+# 30. Utility Types
+TypeScript provides built-in utility types for transforming existing types.
+### Partial
+Makes all properties optional.
+```typescript
+interface Student {
+    name: string;
+    age: number;
+}
+const update: Partial<Student> = {
+    name: "Vaishu"
+};
+```
+### Required
+Makes all properties required.
+```typescript
+type RequiredStudent = Required<Student>;
+```
+### Pick
+Selects specific properties.
+```typescript
+type StudentName = Pick<Student, "name">;
+```
+### Omit
+Removes specific properties.
+```typescript
+type StudentWithoutAge = Omit<Student, "age">;
+```
+These are especially useful when working with API requests and update operations.
+# 31. Decorators
+Decorators are functions that can be attached to classes and other supported declarations to add or modify behavior.
+Decorator syntax uses `@`.
+A simple class decorator example:
+```typescript
+function Logger(target: Function) {
+    console.log("Class created:", target.name);
+}
+@Logger
+class Student {
+    name = "Vaishu";
+}
+```
+The decorator is applied to the class when it is defined.
+Decorators are commonly associated with frameworks and libraries that use metadata or declarative programming.
+### Important
+Decorators depend on the TypeScript configuration and decorator model being used. Modern TypeScript supports the newer ECMAScript decorator proposal, while many existing TypeScript frameworks and projects use the older legacy decorator behavior. Therefore, decorator syntax and configuration should be checked against the framework/project version.
+# 32. Modules
+TypeScript supports ES Modules using `export` and `import`.
+### student.ts
+```typescript
+export interface Student {
+    name: string;
+    department: string;
+}
+export function displayStudent(
+    student: Student
+) {
+    console.log(student.name);
+}
+```
+### app.ts
+```typescript
+import {
+    Student,
+    displayStudent
+} from "./student";
+const student: Student = {
+    name: "Vaishu",
+    department: "CSE"
+};
+displayStudent(student);
+```
+Modules help divide large applications into reusable files.
+# 33. `tsconfig.json`
+`tsconfig.json` controls how TypeScript projects are compiled.
+Example:
+```json
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ES2020",
+        "strict": true,
+        "outDir": "./dist"
+    },
+    "include": [
+        "src"
+    ]
+}
+```
+Important options:
+
+| Option    | Purpose                      |
+| --------- | ---------------------------- |
+| `target`  | JavaScript version generated |
+| `module`  | Module system                |
+| `strict`  | Enables strict type checking |
+| `outDir`  | Output directory             |
+| `rootDir` | Source directory             |
+| `include` | Files to compile             |
+| `exclude` | Files to ignore              |
+
+# 34. TypeScript Compilation
+Suppose we have:
+```text
+src/
+└── app.ts
+```
+Compile:
+```bash
+tsc
+```
+With the `outDir` configured:
+```text
+project/
+├── src/
+│   └── app.ts
+│
+├── dist/
+│   └── app.js
+│
+└── tsconfig.json
+```
+The browser or Node.js executes the generated JavaScript, not the TypeScript source directly.
+# 35. Strict Type Checking
+A recommended TypeScript configuration is:
+```json
+{
+    "compilerOptions": {
+        "strict": true
+    }
+}
+```
+This enables stronger checks for:
+* `null`
+* `undefined`
+* function parameters
+* return types
+* implicit `any`
+* type compatibility
+Example:
+```typescript
+let name: string = "Vaishu";
+name = null;
+```
+With strict null checking enabled, TypeScript reports an error.
+If `null` is intentionally allowed:
+```typescript
+let name: string | null = null;
+```
+# 45_Design Patterns
+Design patterns are **reusable approaches to solving commonly occurring software design problems**. They provide a structured way to organize code without requiring a specific programming language or framework.
+The main design patterns covered here are:
+1. Singleton
+2. Factory
+3. Observer
+4. Module
+5. MVC
+6. Strategy
+# 1. Singleton Pattern
+The **Singleton Pattern** ensures that only **one instance of an object or class** is created and that the same instance can be accessed throughout the application.
+### Where it is used
+Common use cases:
+* Application configuration
+* Logging
+* Database connection management
+* Cache management
+* Shared application state
+### Example
+```javascript
+class AppConfig {
+    constructor() {
+        if (AppConfig.instance) {
+            return AppConfig.instance;
+        }
+        this.theme = "dark";
+        this.language = "English";
+        AppConfig.instance = this;
+    }
+}
+const config1 = new AppConfig();
+const config2 = new AppConfig();
+console.log(config1 === config2); // true
+```
+Both variables refer to the same instance.
+```text
+config1 ──┐
+          ↓
+      AppConfig
+          ↑
+config2 ──┘
+```
+### Key Point
+```text
+Singleton
+→ One instance
+→ Shared access
+→ Same object throughout the application
+```
+# 2. Factory Pattern
+The **Factory Pattern** provides a function or class that creates objects without requiring the calling code to know how those objects are created.
+### Where it is used
+Useful when:
+* Different types of objects need to be created
+* Object creation logic is complex
+* The application should not directly depend on specific object implementations
+### Example
+```javascript
+function createUser(type, name) {
+    if (type === "student") {
+        return {
+            name,
+            role: "Student",
+            access: "Basic"
+        };
+    }
+    if (type === "staff") {
+        return {
+            name,
+            role: "Staff",
+            access: "Staff Dashboard"
+        };
+    }
+    return {
+        name,
+        role: "Guest",
+        access: "Limited"
+    };
+}
+const user1 = createUser("student", "Vaishu");
+const user2 = createUser("staff", "Priya");
+console.log(user1);
+console.log(user2);
+```
+Output:
+```text
+{
+    name: "Vaishu",
+    role: "Student",
+    access: "Basic"
+}
+{
+    name: "Priya",
+    role: "Staff",
+    access: "Staff Dashboard"
+}
+```
+Instead of directly creating different objects:
+```javascript
+const student = {...};
+const staff = {...};
+```
+the Factory handles object creation.
+### Key Point
+```text
+Factory
+→ Creates objects
+→ Hides object creation logic
+→ Returns different object types when required
+```
+# 3. Observer Pattern
+The **Observer Pattern** creates a relationship where one object, called the **Subject**, notifies multiple objects, called **Observers**, when its state changes.
+### Structure
+```text
+             Subject
+          ↙     ↓     ↘
+    Observer  Observer  Observer
+```
+### Where it is used
+Common examples:
+* Event listeners
+* Notifications
+* Real-time updates
+* UI state changes
+* Publish/subscribe systems
+### Example
+```javascript
+class StudentSystem {
+    constructor() {
+        this.observers = [];
+    }
+    subscribe(observer) {
+        this.observers.push(observer);
+    }
+    notify(message) {
+        this.observers.forEach(observer => {
+            observer(message);
+        });
+    }
+}
+const system = new StudentSystem();
+system.subscribe(message => {
+    console.log("Staff notified:", message);
+});
+system.subscribe(message => {
+    console.log("Admin notified:", message);
+});
+system.notify("New student Vaishu registered");
+```
+Output:
+```text
+Staff notified: New student Vaishu registered
+Admin notified: New student Vaishu registered
+```
+The Subject does not need to know exactly what each Observer does.
+### Key Point
+```text
+Subject
+→ Maintains observers
+→ Notifies observers
+Observer
+→ Receives updates
+→ Performs its own action
+```
+# 4. Module Pattern
+The **Module Pattern** organizes related variables and functions into a single unit while controlling which parts are accessible from outside.
+It provides **encapsulation** and helps avoid global variables.
+### Where it is used
+* Organizing JavaScript functionality
+* Hiding internal variables
+* Creating reusable components
+* Preventing global namespace pollution
+### Example
+```javascript
+const StudentModule = (() => {
+    const students = [];
+    function addStudent(name) {
+        students.push(name);
+    }
+    function getStudents() {
+        return students;
+    }
+    return {
+        addStudent,
+        getStudents
+    };
+})();
+StudentModule.addStudent("Vaishu");
+StudentModule.addStudent("Priya");
+console.log(StudentModule.getStudents());
+```
+Output:
+```text
+["Vaishu", "Priya"]
+```
+The `students` array is private.
+This will not work:
+```javascript
+console.log(StudentModule.students);
+```
+because `students` was not exposed.
+### Modern JavaScript Alternative
+Modern JavaScript uses **ES Modules**:
+```javascript
+// student.js
+const students = [];
+export function addStudent(name) {
+    students.push(name);
+}
+export function getStudents() {
+    return students;
+}
+```
+```javascript
+// app.js
+import { addStudent, getStudents } from "./student.js";
+addStudent("Vaishu");
+console.log(getStudents());
+```
+### Key Point
+```text
+Module
+→ Groups related code
+→ Hides internal implementation
+→ Exposes only required functionality
+```
+For modern JavaScript applications, **ES Modules are generally preferred over the older IIFE Module Pattern**.
+# 5. MVC Pattern
+MVC stands for:
+```text
+Model
+View
+Controller
+```
+It separates application responsibilities.
+```text
+             User
+              ↓
+             View
+              ↓
+         Controller
+          ↙      ↘
+       Model     View
+         ↓
+        Data
+```
+### Model
+Handles data.
+```javascript
+const students = [];
+function addStudent(student) {
+    students.push(student);
+}
+function getStudents() {
+    return students;
+}
+```
+### View
+Handles the UI.
+```html
+<h2>Student Management</h2>
+<button id="addStudent">
+    Add Student
+</button>
+<div id="studentList"></div>
+```
+### Controller
+Handles the application flow.
+```javascript
+function addStudent() {
+    const student = {
+        id: Date.now(),
+        name: "Vaishu"
+    };
+    addStudentToModel(student);
+    renderStudent(student);
+}
+```
+
+### Responsibilities
+
+| Component  | Responsibility                    |
+| ---------- | --------------------------------- |
+| Model      | Data and data operations          |
+| View       | User interface                    |
+| Controller | Application flow and coordination |
+
+### Key Point
+```text
+MVC
+→ Separates data, UI, and application logic
+→ Improves maintainability
+→ Makes large applications easier to organize
+```
+MVC is closely related to the **Code Organization** topic because it is an architectural pattern used to structure applications.
+# 6. Strategy Pattern
+The **Strategy Pattern** allows multiple algorithms or approaches to be defined separately and selected at runtime.
+Instead of writing many `if...else` conditions inside one function, each strategy contains its own implementation.
+### Example
+Suppose a student system calculates discounts differently.
+```javascript
+const regularDiscount = {
+    calculate: price => price * 0.05
+};
+const studentDiscount = {
+    calculate: price => price * 0.20
+};
+const premiumDiscount = {
+    calculate: price => price * 0.30
+};
+function calculateDiscount(price, strategy) {
+    return strategy.calculate(price);
+}
+console.log(
+    calculateDiscount(1000, studentDiscount)
+);
+```
+Output:
+```text
+200
+```
+The strategy can be changed without changing `calculateDiscount()`.
+```javascript
+console.log(
+    calculateDiscount(1000, premiumDiscount)
+);
+```
+Output:
+```text
+300
+```
+### Without Strategy
+You might write:
+```javascript
+function calculateDiscount(price, type) {
+    if (type === "regular") {
+        return price * 0.05;
+    }
+    if (type === "student") {
+        return price * 0.20;
+    }
+    if (type === "premium") {
+        return price * 0.30;
+    }
+}
+```
+As the number of strategies increases, this can become difficult to maintain.
+### With Strategy
+```text
+calculateDiscount()
+       ↓
+   Strategy
+   ↙  ↓  ↘
+Regular Student Premium
+```
+```text
+Strategy
+→ Defines multiple approaches
+→ Allows switching between them
+→ Reduces large conditional statements
+→ Makes algorithms easier to extend
+```
+#  Summary
+
+| Pattern   | Main Purpose                          | Typical Use                |
+| --------- | ------------------------------------- | -------------------------- |
+| Singleton | Maintain one instance                 | Configuration, logging     |
+| Factory   | Create objects                        | Object creation            |
+| Observer  | Notify multiple objects               | Events, notifications      |
+| Module    | Encapsulate related code              | Code organization          |
+| MVC       | Separate application responsibilities | Web applications           |
+| Strategy  | Switch between algorithms             | Payment, discount, sorting |
+
+```text
+Singleton
+→ One object
+Factory
+→ Creates objects
+Observer
+→ Notifies objects
+Module
+→ Organizes and hides code
+MVC
+→ Separates application responsibilities
+Strategy
+→ Switches between algorithms
+```
+
+# 46_Code Organization
+# Code Organization
+Code organization is the process of structuring application code, files, folders, and responsibilities in a clear and maintainable way.
+The main concepts are:
+1. MVC
+2. MVVM
+3. Folder Structure
+4. Clean Code Practices
+## 1. MVC — Model View Controller
+MVC divides an application into three main components:
+```text
+User Request
+     ↓
+ Controller
+   ↙     ↘
+Model    View
+ ↓         ↓
+Data      UI
+```
+### Model
+The Model manages application data and data-related operations.
+```javascript
+// studentModel.js
+const students = [];
+function addStudent(student) {
+    students.push(student);
+}
+function getStudents() {
+    return students;
+}
+module.exports = {
+    addStudent,
+    getStudents
+};
+```
+### Purpose
+* Manages data
+* Handles data-related operations
+* Keeps data logic separate from the UI
+### View
+The View represents the user interface.
+```html
+<!-- index.html -->
+<h2>Student Management</h2>
+<input id="studentName" placeholder="Enter name">
+<button onclick="addStudent()">
+    Add Student
+</button>
+<div id="studentList"></div>
+```
+### Purpose
+* Displays information
+* Collects user input
+* Handles the presentation layer
+### Controller
+The Controller handles requests and connects the Model with the View.
+```javascript
+// studentController.js
+const studentModel = require("./studentModel");
+function addStudent(req, res) {
+    const student = {
+        id: Date.now(),
+        name: req.body.name
+    };
+    studentModel.addStudent(student);
+    res.json({
+        message: "Student added",
+        student
+    });
+}
+```
+### Purpose
+* Receives requests
+* Processes the request
+* Calls the appropriate Model operation
+* Sends the response
+### MVC Flow
+```text
+User
+ ↓
+View
+ ↓
+Controller
+ ↓
+Model
+ ↓
+Data
+```
+MVC is commonly used for separating application logic into different responsibilities.
+# 2. MVVM — Model View ViewModel
+MVVM divides an application into:
+```text
+Model
+  ↕
+ViewModel
+  ↕
+View
+```
+### Model
+The Model contains application data.
+```javascript
+const student = {
+    name: "Vaishu",
+    department: "CSE"
+};
+```
+### View
+The View represents the user interface.
+```html
+<h2 id="studentName"></h2>
+```
+### ViewModel
+The ViewModel acts as an intermediate layer between the View and Model.
+```javascript
+const student = {
+    name: "Vaishu",
+    department: "CSE"
+};
+const viewModel = {
+    displayName: student.name,
+    displayDepartment: student.department
+};
+document.getElementById("studentName").textContent =
+    viewModel.displayName;
+```
+### Purpose
+The ViewModel:
+* Gets data from the Model
+* Prepares data for the View
+* Handles UI-related logic
+* Keeps UI logic separate from the Model
+### MVVM Flow
+```text
+Model
+  ↓
+ViewModel
+  ↓
+View
+```
+The ViewModel can also communicate with the Model when the user performs an action.
+```text
+View
+ ↕
+ViewModel
+ ↕
+Model
+```
+# 3. MVC vs MVVM
+| MVC                                         | MVVM                               |
+| ------------------------------------------- | ---------------------------------- |
+| Model, View, Controller                     | Model, View, ViewModel             |
+| Controller manages application flow         | ViewModel manages UI-related logic |
+| Common in web/backend architecture          | Common in UI-focused applications  |
+| Controller communicates with Model and View | ViewModel connects View and Model  |
+| Request-oriented                            | UI/state-oriented                  |
+### Simple Difference
+```text
+MVC
+Controller → controls application flow
+MVVM
+ViewModel → connects View and Model
+```
+# 4. Folder Structure
+Folder structure organizes files according to their responsibilities.
+A common backend application structure is:
+```text
+student-management/
+│
+├── server/
+│   │
+│   ├── controllers/
+│   │   └── studentController.js
+│   │
+│   ├── models/
+│   │   └── studentModel.js
+│   │
+│   ├── services/
+│   │   └── studentService.js
+│   │
+│   ├── routes/
+│   │   └── studentRoutes.js
+│   │
+│   └── app.js
+│
+├── public/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+│
+├── package.json
+└── README.md
+```
+### Folder Responsibilities
+```text
+models/
+→ Data and database-related operations
+controllers/
+→ Request and response handling
+services/
+→ Business logic
+routes/
+→ Application routes or API endpoints
+public/
+→ Frontend files
+app.js
+→ Application entry point
+```
+# 5. Service Layer
+A Service layer is often added between the Controller and Model.
+Without a Service layer:
+```text
+Route
+ ↓
+Controller
+ ↓
+Model
+```
+With a Service layer:
+```text
+Route
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Model
+```
+The Service layer contains business logic.
+```javascript
+// studentService.js
+function createStudent(name, department) {
+    if (!name || !department) {
+        throw new Error("All fields are required");
+    }
+    return {
+        id: Date.now(),
+        name,
+        department
+    };
+}
+module.exports = {
+    createStudent
+};
+```
+### Common Service Responsibilities
+* Validation
+* Business rules
+* Calculations
+* Data processing
+* Combining multiple operations
+# 6. Clean Code Practices
+Clean code is code that is easy to read, understand, maintain, test, and modify.
+## 6.1 Meaningful Names
+Avoid unclear variable names.
+```javascript
+// Avoid
+const x = 500;
+// Better
+const studentFee = 500;
+```
+Meaningful names make the purpose of the variable clear.
+## 6.2 Small Functions
+Functions should perform a focused task.
+```javascript
+function calculateTotal(price, quantity) {
+    return price * quantity;
+}
+```
+Instead of creating one large function that performs validation, calculation, database operations, and UI updates, separate these responsibilities into smaller functions.
+## 6.3 Avoid Duplicate Code
+Avoid repeating the same logic.
+```javascript
+// Avoid
+console.log("Student added");
+console.log("Student added");
+console.log("Student added");
+```
+Create reusable logic when the same operation is required multiple times.
+```javascript
+function showMessage(message) {
+    console.log(message);
+}
+showMessage("Student added");
+showMessage("Student updated");
+```
+## 6.4 Single Responsibility
+A function or module should have one primary responsibility.
+```javascript
+function calculateTotal(price, quantity) {
+    return price * quantity;
+}
+```
+The function is responsible only for calculating the total.
+Avoid combining unrelated responsibilities:
+```text
+Calculate price
+Save database record
+Send email
+Update UI
+Validate input
+```
+inside a single function.
+## 6.5 Separation of Concerns
+Different parts of an application should handle different responsibilities.
+```text
+UI
+ ↓
+Route
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Model
+ ↓
+Data
+```
+For example:
+```text
+HTML
+→ User Interface
+Controller
+→ Request handling
+Service
+→ Business logic
+Model
+→ Data operations
+```
+# 7. Complete Code Organization Example
+### Folder Structure
+```text
+student-management/
+│
+├── server/
+│   ├── routes/
+│   │   └── studentRoutes.js
+│   │
+│   ├── controllers/
+│   │   └── studentController.js
+│   │
+│   ├── services/
+│   │   └── studentService.js
+│   │
+│   ├── models/
+│   │   └── studentModel.js
+│   │
+│   └── app.js
+│
+└── public/
+    ├── index.html
+    ├── style.css
+    └── app.js
+```
+### Route
+```javascript
+// studentRoutes.js
+const express = require("express");
+const router = express.Router();
+const studentController = require("../controllers/studentController");
+router.post("/students", studentController.addStudent);
+module.exports = router;
+```
+### Controller
+```javascript
+// studentController.js
+const studentService = require("../services/studentService");
+function addStudent(req, res) {
+    const student = studentService.createStudent(
+        req.body.name,
+        req.body.department
+    );
+    res.json(student);
+}
+module.exports = {
+    addStudent
+};
+```
+### Service
+```javascript
+// studentService.js
+const studentModel = require("../models/studentModel");
+function createStudent(name, department) {
+    if (!name || !department) {
+        throw new Error("Name and department are required");
+    }
+    const student = {
+        id: Date.now(),
+        name,
+        department
+    };
+    return studentModel.addStudent(student);
+}
+module.exports = {
+    createStudent
+};
+```
+### Model
+```javascript
+// studentModel.js
+const students = [];
+function addStudent(student) {
+    students.push(student);
+    return student;
+}
+module.exports = {
+    addStudent
+};
+```
+
+```text
+Browser
+   ↓
+Route
+   ↓
+Controller
+   ↓
+Service
+   ↓
+Model
+   ↓
+Data
+```
+
+| Concept                | Purpose                                  |
+| ---------------------- | ---------------------------------------- |
+| MVC                    | Separates Model, View, and Controller    |
+| MVVM                   | Separates Model, View, and ViewModel     |
+| Folder Structure       | Organizes files by responsibility        |
+| Service Layer          | Handles business logic                   |
+| Single Responsibility  | Keeps each component focused             |
+| Separation of Concerns | Separates different types of logic       |
+| Meaningful Names       | Improves readability                     |
+| Small Functions        | Makes code easier to maintain            |
+| Reusable Code          | Reduces duplication                      |
+| Clean Code             | Improves readability and maintainability |
+
+# 47_Data Structures in JavaScript
+Data structures organize and store data so that it can be accessed and modified efficiently.
+## 1. Stack
+A **Stack** follows **LIFO (Last In, First Out)**.
+### Main methods
+| Method                | Purpose            |
+| --------------------- | ------------------ |
+| `push()`              | Add element to top |
+| `pop()`               | Remove top element |
+| `arr[arr.length - 1]` | View top element   |
+| `length`              | Get size           |
+
+```javascript
+const stack = [];
+stack.push("Page 1");
+stack.push("Page 2");
+stack.push("Page 3");
+console.log(stack.pop()); // Page 3
+console.log(stack[stack.length - 1]); // Page 2
+```
+**Why use:** When the most recently added item must be processed first.
+**Real-time use:** Undo/redo, browser history, function call stack.
+# 2. Queue
+A **Queue** follows **FIFO (First In, First Out)**.
+### Main methods
+
+| Method    | Purpose                   |
+| --------- | ------------------------- |
+| `push()`  | Add element to rear       |
+| `shift()` | Remove element from front |
+| `length`  | Get size                  |
+
+```javascript
+const queue = [];
+queue.push("Vaishu");
+queue.push("Ravi");
+queue.push("Priya");
+console.log(queue.shift()); // Vaishu
+console.log(queue.shift()); // Ravi
+```
+**Why use:** When items must be processed in the order they arrive.
+**Real-time use:** Task queues, print queues, request processing.
+**Alternative:** For large queues, use an index instead of repeatedly calling `shift()`.
+# 3. Linked List
+A **Linked List** stores data in nodes. Each node contains data and references to other nodes.
+Unlike an array, elements do not have to be stored next to each other in memory.
+There are four common types:
+1. Singly Linked List
+2. Doubly Linked List
+3. Circular Singly Linked List
+4. Circular Doubly Linked List
+
+## 3.1 Singly Linked List
+Each node contains:
+* `data`
+* `next`
+`next` points to the next node.
+```text
+Vaishu → Ravi → Priya → null
+```
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+const first = new Node("Vaishu");
+const second = new Node("Ravi");
+first.next = second;
+console.log(first.data);        // Vaishu
+console.log(first.next.data);   // Ravi
+```
+**Why use:** Sequential traversal where movement is only required forward.
+## 3.2 Doubly Linked List
+Each node contains:
+* `data`
+* `next`
+* `prev`
+```text
+null ← Vaishu ⇄ Ravi ⇄ Priya → null
+```
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+const first = new Node("Vaishu");
+const second = new Node("Ravi");
+first.next = second;
+second.prev = first;
+```
+**Why use:** When traversal is required in both forward and backward directions.
+**Real-time use:** Browser history, navigation systems.
+## 3.3 Circular Singly Linked List
+The last node points back to the first node.
+```text
+Vaishu → Ravi → Priya
+  ↑                ↓
+  └────────────────┘
+```
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+const first = new Node("Vaishu");
+const second = new Node("Ravi");
+const third = new Node("Priya");
+first.next = second;
+second.next = third;
+third.next = first;
+```
+**Why use:** When data needs to be processed repeatedly in a cycle.
+**Real-time use:** Round-robin scheduling, repeated turn-based systems.
+## 3.4 Circular Doubly Linked List
+Each node has both `prev` and `next`, and the first and last nodes are connected.
+```text
+       ┌──────────────────────┐
+       ↓                      ↑
+Vaishu ⇄ Ravi ⇄ Priya
+       ↑                      ↓
+       └──────────────────────┘
+```
+```javascript
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+const first = new Node("Vaishu");
+const second = new Node("Ravi");
+const third = new Node("Priya");
+first.next = second;
+second.prev = first;
+second.next = third;
+third.prev = second;
+third.next = first;
+first.prev = third;
+```
+**Why use:** When cyclic traversal is required in both directions.
+## Linked List Comparison
+
+| Type            | `next` | `prev` | Circular |
+| --------------- | ------ | ------ | -------- |
+| Singly          | Yes    | No     | No       |
+| Doubly          | Yes    | Yes    | No       |
+| Circular Singly | Yes    | No     | Yes      |
+| Circular Doubly | Yes    | Yes    | Yes      |
+
+### Why Linked List?
+Use a linked list when elements need frequent insertion/deletion and direct index access is not the main requirement.
+**Alternative:** JavaScript `Array` is generally used when index-based access is important.
+# 4. Set
+A **Set** stores unique values.
+```javascript
+const skills = new Set();
+skills.add("JavaScript");
+skills.add("Python");
+skills.add("JavaScript");
+console.log(skills);
+// Set { "JavaScript", "Python" }
+console.log(skills.has("Python")); // true
+skills.delete("JavaScript");
+console.log(skills.size); // 1
+```
+### Main methods
+
+| Method     | Purpose              |
+| ---------- | -------------------- |
+| `add()`    | Add value            |
+| `has()`    | Check value          |
+| `delete()` | Remove value         |
+| `clear()`  | Remove all           |
+| `size`     | Get number of values |
+
+**Why use:** Unique values and fast membership checking.
+### Remove duplicates
+```javascript
+const numbers = [10, 20, 10, 30, 20];
+const uniqueNumbers = [...new Set(numbers)];
+console.log(uniqueNumbers);
+// [10, 20, 30]
+```
+# 5. Map
+A **Map** stores data as key-value pairs.
+```javascript
+const students = new Map();
+students.set(101, "Vaishu");
+students.set(102, "Ravi");
+console.log(students.get(101));
+// Vaishu
+console.log(students.has(102));
+// true
+```
+### Main methods
+
+| Method     | Purpose               |
+| ---------- | --------------------- |
+| `set()`    | Add/update entry      |
+| `get()`    | Get value             |
+| `has()`    | Check key             |
+| `delete()` | Remove entry          |
+| `clear()`  | Remove all            |
+| `size`     | Get number of entries |
+
+**Why use:** Efficient key-value storage and lookup.
+### Map vs Object
+
+| Map                      | Object                            |
+| ------------------------ | --------------------------------- |
+| `set()` / `get()`        | Property assignment/access        |
+| Any value can be a key   | Mainly strings/symbols            |
+| Built-in `size`          | No direct `size`                  |
+| Designed for collections | Commonly used for structured data |
+
+# 6. Graph
+A **Graph** consists of **nodes (vertices)** and **connections (edges)**.
+```text
+Vaishu ─── Ravi
+  │          │
+  │          │
+Priya ─── Arun
+```
+### JavaScript representation
+An adjacency list can be represented using `Map`.
+```javascript
+const graph = new Map();
+graph.set("Vaishu", ["Ravi", "Priya"]);
+graph.set("Ravi", ["Vaishu", "Arun"]);
+graph.set("Priya", ["Vaishu"]);
+graph.set("Arun", ["Ravi"]);
+console.log(graph.get("Vaishu"));
+// ["Ravi", "Priya"]
+```
+**Why use:** Represent relationships between different entities.
+**Real-time use:**
+* Social networks
+* Maps and routes
+* Network connections
+* Recommendation systems
+* Dependency relationships
+### Common types/concepts
+* Directed Graph
+* Undirected Graph
+* Weighted Graph
+* BFS
+* DFS
+# 7. Tree
+A **Tree** represents hierarchical data using parent-child relationships.
+```text
+          CEO
+         /   \
+     Manager Manager
+      /   \
+    Dev   Dev
+```
+### JavaScript representation
+```javascript
+class TreeNode {
+    constructor(value) {
+        this.value = value;
+        this.children = [];
+    }
+}
+const root = new TreeNode("CEO");
+const manager = new TreeNode("Manager");
+manager.children.push(
+    new TreeNode("Developer")
+);
+root.children.push(manager);
+console.log(root.children[0].value);
+// Manager
+```
+**Why use:** Represent hierarchical relationships.
+**Real-time use:**
+* File systems
+* HTML DOM
+* Organization structures
+* Categories
+* Menus
+### Common tree types
+* Binary Tree
+* Binary Search Tree
+* Heap
+* Trie
+
+# Data Structures Summary
+| Data Structure | Principle                     | JavaScript             |
+| -------------- | ----------------------------- | ---------------------- |
+| Stack          | LIFO                          | `Array`                |
+| Queue          | FIFO                          | `Array` / custom queue |
+| Linked List    | Nodes connected by references | Custom classes         |
+| Set            | Unique values                 | `Set`                  |
+| Map            | Key-value pairs               | `Map`                  |
+| Graph          | Connected nodes               | `Map` / arrays         |
+| Tree           | Hierarchical nodes            | Objects/classes        |
+
+### Quick Selection
+```text
+LIFO processing             → Stack
+FIFO processing             → Queue
+Sequential connected nodes  → Linked List
+Unique values               → Set
+Key-value lookup            → Map
+Relationships/connections   → Graph
+Hierarchical data           → Tree
+```
+
+# 48_Algorithms in Javascript
+An **algorithm** is a step-by-step procedure used to solve a problem or perform a task efficiently.
+
+For JavaScript, the important algorithm topics are:
+
+1. Sorting
+2. Searching
+3. Recursion
+4. Dynamic Programming
+
+---
+
+# 1. Sorting Algorithms
+
+Sorting means arranging data in a particular order, usually **ascending or descending**.
+
+Example:
+
+```javascript
+const numbers = [40, 10, 30, 20];
+
+numbers.sort((a, b) => a - b);
+
+console.log(numbers);
+// [10, 20, 30, 40]
+```
+
+JavaScript provides `Array.sort()`, but understanding the underlying sorting algorithms is important for problem solving and interviews.
+
+## Sorting Algorithms
+
+| Algorithm      |       Best |    Average |      Worst | Main idea                                 |
+| -------------- | ---------: | ---------: | ---------: | ----------------------------------------- |
+| Bubble Sort    |       O(n) |      O(n²) |      O(n²) | Repeatedly swap adjacent elements         |
+| Selection Sort |      O(n²) |      O(n²) |      O(n²) | Select minimum and place it               |
+| Insertion Sort |       O(n) |      O(n²) |      O(n²) | Insert each element into correct position |
+| Merge Sort     | O(n log n) | O(n log n) | O(n log n) | Divide and merge                          |
+| Quick Sort     | O(n log n) | O(n log n) |      O(n²) | Partition around pivot                    |
+| Heap Sort      | O(n log n) | O(n log n) | O(n log n) | Use heap structure                        |
+| Counting Sort  |     O(n+k) |     O(n+k) |     O(n+k) | Count occurrences                         |
+| Radix Sort     |      O(nk) |      O(nk) |      O(nk) | Sort digit by digit                       |
+| Bucket Sort    |     O(n+k) |     O(n+k) |      O(n²) | Distribute into buckets                   |
+
+---
+
+## 1.1 Bubble Sort
+
+Bubble Sort repeatedly compares **adjacent elements** and swaps them when they are in the wrong order.
+
+```text
+[5, 3, 8, 1]
+
+5 > 3 → swap
+[3, 5, 8, 1]
+
+8 > 1 → swap
+[3, 5, 1, 8]
+```
+
+### Code
+
+```javascript
+function bubbleSort(arr) {
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length - i - 1; j++) {
+
+            if (arr[j] > arr[j + 1]) {
+                [arr[j], arr[j + 1]] =
+                [arr[j + 1], arr[j]];
+            }
+        }
+    }
+
+    return arr;
+}
+
+console.log(bubbleSort([5, 3, 8, 1]));
+// [1, 3, 5, 8]
+```
+
+**Why use:** Mainly useful for learning sorting logic; rarely preferred for large data.
+
+---
+
+## 1.2 Selection Sort
+
+Selection Sort finds the **smallest element** and places it at the beginning.
+
+```javascript
+function selectionSort(arr) {
+
+    for (let i = 0; i < arr.length; i++) {
+
+        let minIndex = i;
+
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        [arr[i], arr[minIndex]] =
+        [arr[minIndex], arr[i]];
+    }
+
+    return arr;
+}
+
+console.log(selectionSort([64, 25, 12, 22, 11]));
+// [11, 12, 22, 25, 64]
+```
+
+**Why use:** Simple algorithm when the number of swaps should be minimized.
+
+**Time:** `O(n²)`
+
+---
+
+## 1.3 Insertion Sort
+
+Insertion Sort takes one element at a time and inserts it into its correct position in the already sorted portion.
+
+```text
+[5, 3, 4, 1]
+
+5
+5 3  → 3 5
+3 5 4 → 3 4 5
+3 4 5 1 → 1 3 4 5
+```
+
+```javascript
+function insertionSort(arr) {
+
+    for (let i = 1; i < arr.length; i++) {
+
+        const current = arr[i];
+        let j = i - 1;
+
+        while (j >= 0 && arr[j] > current) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = current;
+    }
+
+    return arr;
+}
+
+console.log(insertionSort([5, 3, 4, 1]));
+// [1, 3, 4, 5]
+```
+
+**Why use:** Effective for small or nearly sorted data.
+
+**Best:** `O(n)` when already/nearly sorted.
+
+---
+
+# 1.4 Merge Sort
+
+Merge Sort uses **Divide and Conquer**.
+
+Steps:
+
+1. Divide array into two halves.
+2. Recursively sort both halves.
+3. Merge the sorted halves.
+
+```text
+[8, 4, 2, 6]
+
+[8, 4] [2, 6]
+
+[8] [4] [2] [6]
+
+[4, 8] [2, 6]
+
+[2, 4, 6, 8]
+```
+
+### Code
+
+```javascript
+function mergeSort(arr) {
+
+    if (arr.length <= 1) {
+        return arr;
+    }
+
+    const mid = Math.floor(arr.length / 2);
+
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+
+    return merge(left, right);
+}
+
+function merge(left, right) {
+
+    const result = [];
+
+    let i = 0;
+    let j = 0;
+
+    while (i < left.length && j < right.length) {
+
+        if (left[i] < right[j]) {
+            result.push(left[i]);
+            i++;
+        } else {
+            result.push(right[j]);
+            j++;
+        }
+    }
+
+    return [
+        ...result,
+        ...left.slice(i),
+        ...right.slice(j)
+    ];
+}
+
+console.log(mergeSort([8, 4, 2, 6]));
+// [2, 4, 6, 8]
+```
+
+**Time:** `O(n log n)`
+
+**Why use:** Efficient and predictable sorting.
+
+---
+
+# 1.5 Quick Sort
+
+Quick Sort also uses **Divide and Conquer**.
+
+Steps:
+
+1. Choose a pivot.
+2. Put smaller elements on the left.
+3. Put larger elements on the right.
+4. Recursively sort both sides.
+
+```javascript
+function quickSort(arr) {
+
+    if (arr.length <= 1) {
+        return arr;
+    }
+
+    const pivot = arr[arr.length - 1];
+
+    const left = [];
+    const right = [];
+
+    for (let i = 0; i < arr.length - 1; i++) {
+
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+
+    return [
+        ...quickSort(left),
+        pivot,
+        ...quickSort(right)
+    ];
+}
+
+console.log(quickSort([5, 2, 8, 1, 3]));
+// [1, 2, 3, 5, 8]
+```
+
+**Average:** `O(n log n)`
+
+**Worst:** `O(n²)`
+
+**Why use:** Very commonly used as an efficient general-purpose sorting approach.
+
+---
+
+# 1.6 Heap Sort
+
+Heap Sort uses a **Heap** data structure.
+
+For ascending order, a **Max Heap** is commonly used.
+
+Basic process:
+
+1. Build a heap.
+2. Move the largest element to the end.
+3. Rebuild the heap.
+4. Repeat.
+
+```javascript
+function heapSort(arr) {
+
+    const n = arr.length;
+
+    function heapify(n, i) {
+
+        let largest = i;
+        const left = 2 * i + 1;
+        const right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+
+        if (largest !== i) {
+
+            [arr[i], arr[largest]] =
+            [arr[largest], arr[i]];
+
+            heapify(n, largest);
+        }
+    }
+
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        heapify(n, i);
+    }
+
+    for (let i = n - 1; i > 0; i--) {
+
+        [arr[0], arr[i]] =
+        [arr[i], arr[0]];
+
+        heapify(i, 0);
+    }
+
+    return arr;
+}
+
+console.log(heapSort([4, 10, 3, 5, 1]));
+// [1, 3, 4, 5, 10]
+```
+
+**Time:** `O(n log n)`
+
+**Why use:** Useful when guaranteed `O(n log n)` sorting is required without depending on recursion depth or extra merge arrays.
+
+---
+
+# 1.7 Counting Sort
+
+Counting Sort works by counting how many times each value occurs.
+
+Example:
+
+```text
+[1, 3, 2, 1, 3, 1]
+
+1 → 3 times
+2 → 1 time
+3 → 2 times
+
+Result:
+[1, 1, 1, 2, 3, 3]
+```
+
+```javascript
+function countingSort(arr) {
+
+    const max = Math.max(...arr);
+    const count = new Array(max + 1).fill(0);
+
+    for (const num of arr) {
+        count[num]++;
+    }
+
+    const result = [];
+
+    for (let i = 0; i < count.length; i++) {
+
+        while (count[i] > 0) {
+            result.push(i);
+            count[i]--;
+        }
+    }
+
+    return result;
+}
+
+console.log(countingSort([4, 2, 2, 8, 3, 3, 1]));
+// [1, 2, 2, 3, 3, 4, 8]
+```
+
+**Time:** `O(n + k)`
+
+`k` = range of values.
+
+**Why use:** Efficient when integer values have a relatively small range.
+
+---
+
+# 1.8 Radix Sort
+
+Radix Sort sorts numbers **digit by digit**.
+
+Example:
+
+```text
+[170, 45, 75, 90, 802]
+
+Sort by units
+Sort by tens
+Sort by hundreds
+
+→ [45, 75, 90, 170, 802]
+```
+
+A simplified implementation:
+
+```javascript
+function radixSort(arr) {
+
+    const max = Math.max(...arr);
+
+    for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+
+        const output = new Array(arr.length);
+        const count = new Array(10).fill(0);
+
+        for (const num of arr) {
+            const digit = Math.floor(num / exp) % 10;
+            count[digit]++;
+        }
+
+        for (let i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+
+        for (let i = arr.length - 1; i >= 0; i--) {
+
+            const digit =
+                Math.floor(arr[i] / exp) % 10;
+
+            output[count[digit] - 1] = arr[i];
+            count[digit]--;
+        }
+
+        for (let i = 0; i < arr.length; i++) {
+            arr[i] = output[i];
+        }
+    }
+
+    return arr;
+}
+
+console.log(radixSort([170, 45, 75, 90, 802]));
+// [45, 75, 90, 170, 802]
+```
+
+**Why use:** Efficient for integers with a limited number of digits.
+
+---
+
+# 1.9 Bucket Sort
+
+Bucket Sort distributes elements into different buckets and sorts each bucket.
+
+```text
+Values:
+
+0.12  0.25  0.37  0.81
+
+Bucket 0 → 0.12, 0.25, 0.37
+Bucket 1 → 0.81
+
+Sort buckets
+Combine
+```
+
+```javascript
+function bucketSort(arr) {
+
+    const buckets = Array.from(
+        { length: 10 },
+        () => []
+    );
+
+    for (const num of arr) {
+
+        const index = Math.floor(num * 10);
+
+        buckets[index].push(num);
+    }
+
+    for (const bucket of buckets) {
+        bucket.sort((a, b) => a - b);
+    }
+
+    return buckets.flat();
+}
+
+console.log(
+    bucketSort([0.42, 0.12, 0.89, 0.33, 0.71])
+);
+// [0.12, 0.33, 0.42, 0.71, 0.89]
+```
+
+**Why use:** Useful when data is uniformly distributed over a known range.
+
+---
+
+# 2. Searching Algorithms
+
+Searching means finding a particular value in a data structure.
+
+Important searching algorithms:
+
+1. Linear Search
+2. Binary Search
+3. Jump Search
+4. Interpolation Search
+5. Exponential Search
+6. Hash-based Search
+
+---
+
+## 2.1 Linear Search
+
+Checks each element one by one.
+
+```text
+[10, 20, 30, 40, 50]
+
+Search 40
+
+10 → no
+20 → no
+30 → no
+40 → found
+```
+
+```javascript
+function linearSearch(arr, target) {
+
+    for (let i = 0; i < arr.length; i++) {
+
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+console.log(
+    linearSearch([10, 20, 30, 40], 30)
+);
+// 2
+```
+
+**Time:** `O(n)`
+
+**Why use:** Works on both sorted and unsorted arrays.
+
+---
+
+# 2.2 Binary Search
+
+Binary Search repeatedly divides a **sorted array** into two halves.
+
+```text
+[10, 20, 30, 40, 50, 60, 70]
+
+Target = 60
+
+Middle = 40
+60 > 40 → search right
+
+[50, 60, 70]
+
+Middle = 60 → found
+```
+
+```javascript
+function binarySearch(arr, target) {
+
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left <= right) {
+
+        const mid =
+            Math.floor((left + right) / 2);
+
+        if (arr[mid] === target) {
+            return mid;
+        }
+
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+console.log(
+    binarySearch([10, 20, 30, 40, 50, 60], 50)
+);
+// 4
+```
+
+**Time:** `O(log n)`
+
+**Important:** The array must be sorted.
+
+---
+
+# 2.3 Recursive Binary Search
+
+Binary Search can also be implemented using recursion.
+
+```javascript
+function binarySearch(arr, target, left = 0, right = arr.length - 1) {
+
+    if (left > right) {
+        return -1;
+    }
+
+    const mid =
+        Math.floor((left + right) / 2);
+
+    if (arr[mid] === target) {
+        return mid;
+    }
+
+    if (arr[mid] < target) {
+        return binarySearch(
+            arr,
+            target,
+            mid + 1,
+            right
+        );
+    }
+
+    return binarySearch(
+        arr,
+        target,
+        left,
+        mid - 1
+    );
+}
+
+console.log(
+    binarySearch([10, 20, 30, 40, 50], 40)
+);
+// 3
+```
+
+---
+
+# 2.4 Jump Search
+
+Jump Search works on a **sorted array** by jumping ahead by a fixed block size instead of checking every element.
+
+Usually:
+
+```text
+Jump size ≈ √n
+```
+
+```javascript
+function jumpSearch(arr, target) {
+
+    const n = arr.length;
+    const step = Math.floor(Math.sqrt(n));
+
+    let prev = 0;
+    let current = step;
+
+    while (
+        current < n &&
+        arr[current - 1] < target
+    ) {
+        prev = current;
+        current += step;
+    }
+
+    current = Math.min(current, n);
+
+    for (let i = prev; i < current; i++) {
+
+        if (arr[i] === target) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+console.log(
+    jumpSearch([10, 20, 30, 40, 50, 60, 70], 50)
+);
+// 4
+```
+**Time:** `O(√n)`
+**Why use:** Searching sorted data with block-based movement.
+# 2.5 Interpolation Search
+Interpolation Search estimates where the target might be based on its value.
+It works particularly well when sorted values are **uniformly distributed**.
+```javascript
+function interpolationSearch(arr, target) {
+    let low = 0;
+    let high = arr.length - 1;
+    while (
+        low <= high &&
+        target >= arr[low] &&
+        target <= arr[high]
+    ) {
+        const pos =
+            low +
+            Math.floor(
+                ((target - arr[low]) *
+                (high - low)) /
+                (arr[high] - arr[low])
+            );
+        if (arr[pos] === target) {
+            return pos;
+        }
+        if (arr[pos] < target) {
+            low = pos + 1;
+        } else {
+            high = pos - 1;
+        }
+    }
+
+    return -1;
+}
+console.log(
+    interpolationSearch(
+        [10, 20, 30, 40, 50],
+        40
+    )
+);
+// 3
+```
+**Average:** `O(log log n)` for uniformly distributed data.
+**Worst:** `O(n)`
+# 2.6 Exponential Search
+Exponential Search first finds a range where the target could exist, then applies Binary Search.
+```text
+Check:
+index 1
+index 2
+index 4
+index 8
+index 16
+...
+```
+```javascript
+function binarySearchRange(arr, target, left, right) {
+    while (left <= right) {
+        const mid =
+            Math.floor((left + right) / 2);
+        if (arr[mid] === target) {
+            return mid;
+        }
+        if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+function exponentialSearch(arr, target) {
+    if (arr[0] === target) {
+        return 0;
+    }
+    let i = 1;
+    while (
+        i < arr.length &&
+        arr[i] <= target
+    ) {
+        i *= 2;
+    }
+    return binarySearchRange(
+        arr,
+        target,
+        Math.floor(i / 2),
+        Math.min(i, arr.length - 1)
+    );
+}
+console.log(
+    exponentialSearch(
+        [10, 20, 30, 40, 50, 60, 70],
+        60
+    )
+);
+// 5
+```
+**Time:** `O(log n)`
+**Why use:** Useful when the search range is unknown or potentially very large.
+# 2.7 Hash-Based Search
+JavaScript's `Map` and `Set` provide efficient lookup.
+```javascript
+const students = new Map();
+students.set(101, "Vaishu");
+students.set(102, "Ravi");
+students.set(103, "Priya");
+console.log(students.get(102));
+// Ravi
+```
+Average lookup is approximately **O(1)**.
+**Why use:** When frequent lookup by key is required.
+# Searching Comparison
+
+| Algorithm            | Data requirement |      Average |    Worst |
+| -------------------- | ---------------- | -----------: | -------: |
+| Linear Search        | Any array        |         O(n) |     O(n) |
+| Binary Search        | Sorted           |     O(log n) | O(log n) |
+| Jump Search          | Sorted           |        O(√n) |    O(√n) |
+| Interpolation Search | Sorted + uniform | O(log log n) |     O(n) |
+| Exponential Search   | Sorted           |     O(log n) | O(log n) |
+| Hash Search          | Map/Set          |         O(1) |    O(n)* |
+
+`*` Worst-case hash lookup depends on implementation/collision behavior.
+# 3. Recursion
+**Recursion** is when a function calls itself to solve a smaller version of the same problem.
+Every recursive function needs:
+1. **Base case** — stops recursion.
+2. **Recursive case** — calls itself with a smaller problem.
+### Example
+```javascript
+function countdown(n) {
+    if (n === 0) {
+        return;
+    }
+    console.log(n);
+    countdown(n - 1);
+}
+countdown(5);
+```
+Output:
+```text
+5
+4
+3
+2
+1
+```
+### Factorial
+```javascript
+function factorial(n) {
+    if (n === 0 || n === 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+console.log(factorial(5));
+// 120
+```
+**Why use:** Trees, graphs, divide-and-conquer algorithms, backtracking and dynamic programming.
+# 4. Dynamic Programming
+**Dynamic Programming (DP)** solves problems by breaking them into smaller subproblems and **storing previously calculated results**.
+It is useful when:
+* The same subproblems occur repeatedly.
+* The problem has optimal substructure.
+There are two common approaches:
+1. Memoization — Top-down
+2. Tabulation — Bottom-up
+## 4.1 Memoization
+Store results from recursive calls.
+### Without memoization
+```javascript
+function fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return (
+        fibonacci(n - 1) +
+        fibonacci(n - 2)
+    );
+}
+```
+The same values are calculated repeatedly.
+### With Memoization
+```javascript
+function fibonacci(n, memo = {}) {
+    if (n <= 1) {
+        return n;
+    }
+    if (memo[n] !== undefined) {
+        return memo[n];
+    }
+    memo[n] =
+        fibonacci(n - 1, memo) +
+        fibonacci(n - 2, memo);
+    return memo[n];
+}
+console.log(fibonacci(10));
+// 55
+```
+**Why use:** Avoid repeated calculations.
+## 4.2 Tabulation
+Build the solution from the smallest problem upward.
+```javascript
+function fibonacci(n) {
+    const dp = [0, 1];
+    for (let i = 2; i <= n; i++) {
+        dp[i] =
+            dp[i - 1] +
+            dp[i - 2];
+    }
+    return dp[n];
+}
+console.log(fibonacci(10));
+// 55
+```
+**Why use:** Avoid recursion and build results iteratively.
+
+# Algorithm Summary
+
+| Category            | Algorithms                                                                |
+| ------------------- | ------------------------------------------------------------------------- |
+| Sorting             | Bubble, Selection, Insertion, Merge, Quick, Heap, Counting, Radix, Bucket |
+| Searching           | Linear, Binary, Jump, Interpolation, Exponential, Hash-based              |
+| Recursion           | Base case + recursive case                                                |
+| Dynamic Programming | Memoization + Tabulation                                                  |
 

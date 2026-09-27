@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#2563eb">
+
+    <title>Team Task Manager</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+
+            <div>
+                <h1>Team Task Manager</h1>
+                <p>Offline-first PWA</p>
+            </div>
+
+            <!-- Online / Offline Status -->
+            <span id="status">
+                Checking...
+            </span>
+
+        </header>
+
+
+        <!-- Install PWA -->
+        <button id="installBtn" class="install-btn">
+            Install App
+        </button>
+
+
+        <!-- Task Input -->
+        <section class="task-input">
+
+            <h2>Add New Task</h2>
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="taskInput"
+                    placeholder="Enter task name..."
+                >
+
+                <button id="addTaskBtn">
+                    Add Task
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Offline Information -->
+        <div id="offlineMessage"
+             class="offline-message">
+
+            You are offline.
+            Tasks will be synchronized when
+            the connection returns.
+
+        </div>
+
+
+        <!-- Task List -->
+        <section>
+
+            <h2>Tasks</h2>
+
+            <div id="taskList">
+                <!-- Tasks will be displayed here -->
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>

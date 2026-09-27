@@ -1,0 +1,27 @@
+[
+  {
+    "id": "101",
+    "name": "Vaishu",
+    "department": "CSE"
+  },
+  {
+    "id": "97e49eaa-0036-41a8-8687-1f3660abca11",
+    "name": "Sri Vais",
+    "department": "AI-DS"
+  },
+  {
+    "id": "ce5a43a8-c570-4b5a-96a8-6d7e8e6341c2",
+    "name": "Preeth",
+    "department": "AI-DS"
+  },
+  {
+    "id": "3f7f140c-71d4-4e96-a92b-af416e27cd95",
+    "name": "Surii",
+    "department": "AI-DS"
+  },
+  {
+    "id": "57d54a1a-0307-485d-b949-79401ee26a99",
+    "name": "Kaavs",
+    "department": "AI-DS"
+  }
+]

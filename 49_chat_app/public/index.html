@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Chat appp</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <div class="chat-app">
+
+        <header class="chat-header">
+
+            <div>
+
+                <h1>Chat App</h1>
+
+                <p id="connectionStatus">
+                    Connecting...
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <section class="user-section">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter your name"
+            >
+
+            <button id="joinButton">
+                Join Chat
+            </button>
+
+        </section>
+
+
+        <main
+            id="chatMessages"
+            class="chat-messages"
+        >
+        </main>
+
+
+        <p id="errorMessage"></p>
+
+
+        <form
+            id="messageForm"
+            class="message-form"
+        >
+
+            <input
+                type="text"
+                id="messageInput"
+                placeholder="Type a message..."
+                autocomplete="off"
+                disabled
+            >
+
+            <button
+                type="submit"
+                id="sendButton"
+                disabled
+            >
+                Send
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Socket.IO client -->
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

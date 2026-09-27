@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm POC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Student Performance Analyzer</h1>
+
+    <h2>Students</h2>
+    <div id="students"></div>
+
+    <h2>Sorting Algorithms</h2>
+
+    <button onclick="sortStudents('bubble')">Bubble Sort</button>
+    <button onclick="sortStudents('selection')">Selection Sort</button>
+    <button onclick="sortStudents('insertion')">Insertion Sort</button>
+    <button onclick="sortStudents('merge')">Merge Sort</button>
+    <button onclick="sortStudents('quick')">Quick Sort</button>
+    <button onclick="sortStudents('heap')">Heap Sort</button>
+    <button onclick="sortStudents('counting')">Counting Sort</button>
+    <button onclick="sortStudents('radix')">Radix Sort</button>
+    <button onclick="sortStudents('bucket')">Bucket Sort</button>
+
+    <h2>Searching Algorithms</h2>
+
+    <input
+        type="number"
+        id="searchMarks"
+        placeholder="Enter marks"
+    >
+
+    <button onclick="linearSearch()">Linear Search</button>
+    <button onclick="binarySearch()">Binary Search</button>
+    <button onclick="jumpSearch()">Jump Search</button>
+    <button onclick="interpolationSearch()">Interpolation Search</button>
+    <button onclick="exponentialSearch()">Exponential Search</button>
+    <button onclick="hashSearch()">Hash Search</button>
+
+    <h2>Recursion</h2>
+
+    <button onclick="calculateTotal()">Calculate Total Marks</button>
+
+    <h2>Dynamic Programming</h2>
+
+    <button onclick="calculateMaximumMarks()">
+        Calculate Maximum Marks
+    </button>
+
+    <h2>Result</h2>
+
+    <div id="result"></div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>

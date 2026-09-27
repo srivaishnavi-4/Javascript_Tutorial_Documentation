@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TypeScript Student Manager</title>
+</head>
+
+<body>
+
+    <h1>Student Manager</h1>
+
+    <form id="studentForm">
+
+        <input
+            id="name"
+            type="text"
+            placeholder="Student name"
+            required
+        >
+
+        <input
+            id="department"
+            type="text"
+            placeholder="Department"
+            required
+        >
+
+        <button type="submit">
+            Add Student
+        </button>
+
+    </form>
+
+    <h2>Students</h2>
+
+    <ul id="studentList"></ul>
+
+    <script
+        type="module"
+        src="./dist/app.js">
+    </script>
+
+</body>
+
+</html>

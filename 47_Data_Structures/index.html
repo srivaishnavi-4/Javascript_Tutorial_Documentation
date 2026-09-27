@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vaishu Data Structures POC</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <header>
+            <h1>Data Structures POC</h1>
+            <p>Interactive JavaScript implementation</p>
+        </header>
+
+
+        <section class="controls">
+
+            <label for="structureSelect">
+                Select Data Structure
+            </label>
+
+            <select id="structureSelect">
+
+                <option value="array">Array</option>
+
+                <option value="stack">Stack</option>
+
+                <option value="queue">Queue</option>
+
+                <option value="singly">
+                    Singly Linked List
+                </option>
+
+                <option value="doubly">
+                    Doubly Linked List
+                </option>
+
+                <option value="circular">
+                    Circular Linked List
+                </option>
+
+                <option value="set">Set</option>
+
+                <option value="map">Map</option>
+
+                <option value="tree">
+                    Binary Search Tree
+                </option>
+
+                <option value="graph">Graph</option>
+
+            </select>
+
+
+            <div class="input-row">
+
+                <input
+                    type="text"
+                    id="valueInput"
+                    placeholder="Enter value"
+                >
+
+                <input
+                    type="text"
+                    id="secondInput"
+                    placeholder="Second value"
+                    class="hidden"
+                >
+
+                <button id="actionButton">
+                    Add
+                </button>
+
+            </div>
+
+
+            <div class="operation-row">
+
+                <button data-operation="search">
+                    Search
+                </button>
+
+                <button data-operation="delete">
+                    Delete
+                </button>
+
+                <button data-operation="clear">
+                    Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="structure-info">
+
+            <h2 id="structureTitle">
+                Array
+            </h2>
+
+            <p id="structureDescription">
+                Ordered collection of values.
+            </p>
+
+        </section>
+
+
+        <section class="output-section">
+
+            <h3>Current Structure</h3>
+
+            <div id="output"></div>
+
+        </section>
+
+
+        <section class="result-section">
+
+            <h3>Operation Result</h3>
+
+            <p id="result">
+                Ready
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

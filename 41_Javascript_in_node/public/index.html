@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management</title>
+
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <h1>Student Management</h1>
+
+        <p class="subtitle">
+            Node.js Student Management System
+        </p>
+
+
+        <!-- ======================================
+             ADD STUDENT
+        ======================================= -->
+
+        <div class="card">
+
+            <h2>Add Student</h2>
+
+
+            <form id="studentForm">
+
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Student Name"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    id="department"
+                    placeholder="Department"
+                    required
+                >
+
+
+                <button type="submit">
+                    Add Student
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- ======================================
+             STUDENT LIST
+        ======================================= -->
+
+        <div class="card">
+
+            <h2>Students</h2>
+
+
+            <div id="studentList">
+
+                <p>
+                    Loading students...
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <p id="message"></p>
+
+
+    </div>
+
+
+    <script>
+
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+
+        const form =
+            document.querySelector("#studentForm");
+
+        const studentList =
+            document.querySelector("#studentList");
+
+        const message =
+            document.querySelector("#message");
+
+
+        // ==========================================
+        // LOAD STUDENTS
+        // ==========================================
+
+        async function loadStudents() {
+
+            try {
+
+                /*
+                Send GET request
+                to Node.js server.
+                */
+
+                const response =
+                    await fetch("/students");
+
+
+                const students =
+                    await response.json();
+
+
+                displayStudents(students);
+
+            }
+
+            catch (error) {
+
+                message.textContent =
+                    "Unable to load students.";
+
+            }
+
+        }
+
+
+        // ==========================================
+        // DISPLAY STUDENTS
+        // ==========================================
+
+        function displayStudents(students) {
+
+            studentList.innerHTML = "";
+
+
+            if (students.length === 0) {
+
+                studentList.innerHTML =
+                    "<p>No students found.</p>";
+
+                return;
+            }
+
+
+            students.forEach(
+                function (student) {
+
+                    const div =
+                        document.createElement("div");
+
+
+                    div.className =
+                        "student";
+
+
+                    div.innerHTML = `
+
+                        <div>
+
+                            <strong>
+                                ${student.name}
+                            </strong>
+
+                            <span>
+                                ${student.department}
+                            </span>
+
+                        </div>
+
+                    `;
+
+
+                    studentList.appendChild(div);
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // ADD STUDENT
+        // ==========================================
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                // Prevent page refresh
+
+                event.preventDefault();
+
+
+                const name =
+                    document.querySelector("#name")
+                        .value
+                        .trim();
+
+
+                const department =
+                    document.querySelector("#department")
+                        .value
+                        .trim();
+
+
+                try {
+
+                    /*
+                    Send POST request
+                    to Node.js server.
+                    */
+
+                    const response =
+                        await fetch(
+                            "/students",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        name: name,
+
+                                        department:
+                                            department
+
+                                    })
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        message.textContent =
+                            result.error;
+
+                        return;
+                    }
+
+
+                    message.textContent =
+                        "Student added successfully!";
+
+
+                    // Clear form
+
+                    form.reset();
+
+
+                    // Reload students
+
+                    loadStudents();
+
+                }
+
+                catch (error) {
+
+                    message.textContent =
+                        "Server error.";
+
+                }
+
+            }
+        );
+
+
+        // ==========================================
+        // INITIAL LOAD
+        // ==========================================
+
+        loadStudents();
+
+    </script>
+
+
+</body>
+
+</html>
